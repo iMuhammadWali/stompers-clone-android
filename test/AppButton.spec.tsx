@@ -29,4 +29,20 @@ describe('Shared button theme',()=>{
     await fireEvent.press(view.getByText('Unavailable'));
     expect(presses).toBe(0);
   });
+  it('adds non-interactive shine only to enabled primary actions and allows opting out',async()=>{
+    let presses=0;
+    const view=await render(<PaperProvider theme={theme}>
+      <AppButton testID="shiny" mode="contained" onPress={()=>presses++}>Send</AppButton>
+      <AppButton testID="flat" mode="contained" glossy={false}>Flat</AppButton>
+      <AppButton testID="inactive" mode="contained" disabled>Disabled</AppButton>
+      <AppButton testID="tonal" mode="contained-tonal">Selection</AppButton>
+    </PaperProvider>);
+    expect(view.getByTestId('shiny-gloss').props.pointerEvents).toBe('none');
+    expect(view.queryByTestId('flat-gloss')).toBeNull();
+    expect(view.queryByTestId('inactive-gloss')).toBeNull();
+    expect(view.queryByTestId('tonal-gloss')).toBeNull();
+    await fireEvent.press(view.getByText('Send'));
+    expect(presses).toBe(1);
+  });
+
 });

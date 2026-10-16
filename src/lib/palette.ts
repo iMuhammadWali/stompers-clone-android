@@ -65,3 +65,14 @@ export const avatarColors = {
     ]
   ]
 };
+
+// One shared switch and finish settings for every enabled primary button.
+export const buttonFinish = {
+  enabled: true,
+  highlight: '#FFFFFF',
+  highlightOpacity: 0.64,
+  shadeOpacity: 0.13,
+  edgeWidth: 1.5,
+  lowerEdgeWidth: 3,
+  radius: 18,
+};

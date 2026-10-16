@@ -165,6 +165,17 @@
     "appearance": {
       "mode": "light",
       "followSystem": false
+    },
+    "buttonFinish": {
+      "enabled": true,
+      "highlight": "#FFFFFF",
+      "highlightOpacity": 0.64,
+      "shadeOpacity": 0.13,
+      "edgeWidth": 1.5,
+      "lowerEdgeWidth": 3,
+      "radius": 18,
+      "implementation": "src/components/AppButton.tsx",
+      "scope": "Enabled contained buttons; tonal, text, and disabled controls stay flat."
     }
   },
   "components": [

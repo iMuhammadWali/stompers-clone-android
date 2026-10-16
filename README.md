@@ -130,3 +130,13 @@ export const brandColors = { action: '#FFAD1F', /* other existing values */ };
 
 When changing colors, run `npm test` for contrast checks and `npm run test:ui`
 for shared theme propagation and password visibility checks.
+
+### Primary button finish
+
+Enabled primary buttons share a static gloss: a white highlight fading down from the
+top, a small side glint, a darker lower edge, and a charcoal outline. Text, tonal,
+and disabled buttons stay flat. The decorative overlay ignores touch and is hidden
+from accessibility. Paper retains the actual press target, ripple, and loading state.
+`buttonFinish` in `src/lib/palette.ts` controls intensity, edges, corner radius, and
+an application-wide enable switch. `glossy={false}` opts out for one AppButton.
+Changing `brandColors.action` still recolors every primary button, including glossy ones.

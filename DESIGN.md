@@ -156,3 +156,13 @@ Dark mode is removed by explicit user instruction. The app does not read the sys
 scheme. MD3LightTheme and the reference palette are always active; native configuration
 uses userInterfaceStyle: light and the status bar uses dark content. Earlier dark-theme
 inspection examples in this document are historical and are not part of the active design.
+
+### Primary button finish
+
+Enabled primary buttons share a static gloss: a white highlight fading down from the
+top, a small side glint, a darker lower edge, and a charcoal outline. Text, tonal,
+and disabled buttons stay flat. The decorative overlay ignores touch and is hidden
+from accessibility. Paper retains the actual press target, ripple, and loading state.
+`buttonFinish` in `src/lib/palette.ts` controls intensity, edges, corner radius, and
+an application-wide enable switch. `glossy={false}` opts out for one AppButton.
+Changing `brandColors.action` still recolors every primary button, including glossy ones.
