@@ -141,45 +141,6 @@
           "level5": "#FFF0B4"
         }
       },
-      "dark": {
-        "primary": "#B4C5FF",
-        "onPrimary": "#102464",
-        "primaryContainer": "#2D4593",
-        "onPrimaryContainer": "#E4EBFF",
-        "secondary": "#FFE683",
-        "onSecondary": "#3B2E00",
-        "secondaryContainer": "#5B4710",
-        "onSecondaryContainer": "#FFF0B4",
-        "tertiary": "#FFC2AA",
-        "onTertiary": "#50200D",
-        "tertiaryContainer": "#713720",
-        "onTertiaryContainer": "#FFE3D8",
-        "background": "#101A33",
-        "onBackground": "#F0F3FF",
-        "surface": "#162341",
-        "onSurface": "#F0F3FF",
-        "surfaceVariant": "#263653",
-        "onSurfaceVariant": "#C4CEE5",
-        "surfaceDisabled": "#303B51",
-        "onSurfaceDisabled": "#A8B1C6",
-        "outline": "#9BAAC9",
-        "outlineVariant": "#435477",
-        "error": "#FFB3BC",
-        "onError": "#570C20",
-        "errorContainer": "#7D2333",
-        "onErrorContainer": "#FFE2E5",
-        "inverseSurface": "#E6EDFF",
-        "inverseOnSurface": "#182644",
-        "inversePrimary": "#2546D8",
-        "elevation": {
-          "level0": "transparent",
-          "level1": "#1A2949",
-          "level2": "#203051",
-          "level3": "#253657",
-          "level4": "#293B5E",
-          "level5": "#2D4065"
-        }
-      },
       "avatars": {
         "light": [
           [
@@ -198,26 +159,12 @@
             "#FFE368",
             "#3D310C"
           ]
-        ],
-        "dark": [
-          [
-            "#244C4D",
-            "#BAFFF5"
-          ],
-          [
-            "#603629",
-            "#FFD5C2"
-          ],
-          [
-            "#42335F",
-            "#EBDDFF"
-          ],
-          [
-            "#58460D",
-            "#FFE786"
-          ]
         ]
       }
+    },
+    "appearance": {
+      "mode": "light",
+      "followSystem": false
     }
   },
   "components": [
@@ -281,8 +228,8 @@
     }
   ],
   "narrative": {
-    "northStar": "A walking club’s people directory",
-    "overview": "The implemented palette is sunshine yellow, navy text, cobalt actions, and varied avatar colors. See COLOR-RATIONALE.md for research and limits. Android physical-device validation remains outstanding.",
+    "northStar": "A walking club\u2019s people directory",
+    "overview": "Always-light social walking app: sunshine yellow, navy text, cobalt actions, and colorful avatars. System dark mode is intentionally ignored. Android physical-device validation remains outstanding.",
     "keyCharacteristics": [
       "Sunny light and navy-dark system themes.",
       "Flat, readable people lists and explicit invitation states.",

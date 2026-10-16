@@ -20,9 +20,8 @@ export function Icon({name,color,size=24}:{name:'friends'|'requests'|'profile';c
   return <Svg width={size} height={size} viewBox="0 0 24 24"><Path d={paths[name]} fill="none" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/></Svg>;
 }
 export function PersonAvatar({name,size=52}:{name:string;size?:number}) {
-  const theme=useTheme();
   const initials=name.split(/[ _\.]+/).map(s=>s[0]).slice(0,2).join('').toUpperCase();
-  const palette=avatarColors[theme.dark?'dark':'light'];
+  const palette=avatarColors.light;
   const index=Array.from(name).reduce((sum,c)=>sum+c.charCodeAt(0),0)%palette.length;
   const [background,foreground]=palette[index];
   return <Avatar.Text size={size} label={initials} style={{backgroundColor:background}} color={foreground}/>;

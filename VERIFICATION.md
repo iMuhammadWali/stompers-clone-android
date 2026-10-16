@@ -39,3 +39,8 @@ Six additional palette contrast tests cover text, controls, and four avatar colo
 each theme. Native component tests cover a visible SVG eye and show/hide masking on both
 sign-in and registration. No icon font is required for that control. Physical-device testing
 remains open; these component checks do not grant native release approval.
+
+## Light-only update
+
+Dark mode removed by user request. Runtime theme and native appearance configuration
+are pinned to light; phone/browser dark preference cannot select the former navy theme.

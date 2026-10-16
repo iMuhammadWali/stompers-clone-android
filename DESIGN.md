@@ -31,35 +31,6 @@ colors:
   light-inverseSurface: "#1A2947"
   light-inverseOnSurface: "#FFFFFF"
   light-inversePrimary: "#B4C5FF"
-  dark-primary: "#B4C5FF"
-  dark-onPrimary: "#102464"
-  dark-primaryContainer: "#2D4593"
-  dark-onPrimaryContainer: "#E4EBFF"
-  dark-secondary: "#FFE683"
-  dark-onSecondary: "#3B2E00"
-  dark-secondaryContainer: "#5B4710"
-  dark-onSecondaryContainer: "#FFF0B4"
-  dark-tertiary: "#FFC2AA"
-  dark-onTertiary: "#50200D"
-  dark-tertiaryContainer: "#713720"
-  dark-onTertiaryContainer: "#FFE3D8"
-  dark-background: "#101A33"
-  dark-onBackground: "#F0F3FF"
-  dark-surface: "#162341"
-  dark-onSurface: "#F0F3FF"
-  dark-surfaceVariant: "#263653"
-  dark-onSurfaceVariant: "#C4CEE5"
-  dark-surfaceDisabled: "#303B51"
-  dark-onSurfaceDisabled: "#A8B1C6"
-  dark-outline: "#9BAAC9"
-  dark-outlineVariant: "#435477"
-  dark-error: "#FFB3BC"
-  dark-onError: "#570C20"
-  dark-errorContainer: "#7D2333"
-  dark-onErrorContainer: "#FFE2E5"
-  dark-inverseSurface: "#E6EDFF"
-  dark-inverseOnSurface: "#182644"
-  dark-inversePrimary: "#2546D8"
 
 ---
 # Design System: Stride (working name)
@@ -185,3 +156,10 @@ all elevation, outline, inverse, error, and selection roles are explicit in both
 Avatar containers vary deterministically between mint, coral, lilac, and yellow.
 Research, application limits, and color rationale are in COLOR-RATIONALE.md.
 The password toggle uses SVG paths, independent of font loading.
+
+## Light-only appearance
+
+Dark mode is removed by explicit user instruction. The app does not read the system color
+scheme. MD3LightTheme and the sunshine palette are always active; native configuration
+uses userInterfaceStyle: light and the status bar uses dark content. Earlier dark-theme
+inspection examples in this document are historical and are not part of the active design.

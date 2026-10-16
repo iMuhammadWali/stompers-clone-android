@@ -15,7 +15,7 @@ Real mode uses the existing API v1 contract with refresh tokens in SecureStore.
 
 Design direction: a playful social walking game identity, a sunshine-yellow daylight canvas,
 navy text, cobalt actions, golden invitation/selection surfaces, and mint/coral/lilac/yellow
-avatar backgrounds. Dark mode uses navy surfaces and lighter accents. Color choices are
+avatar backgrounds. Dark mode is removed; always use the bright theme, including on dark-mode phones. Color choices are
 informed by research on color-emotion associations, not claims about exercise motivation.
 Preserve flat people lists, the existing account flows, and the original footprint mark.
 No invented fitness claims or activity statistics. Password visibility uses an authored SVG

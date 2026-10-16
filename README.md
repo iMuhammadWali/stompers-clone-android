@@ -9,7 +9,7 @@ frontend for the existing authentication and friends API. Stride is a temporary 
 - Friends list, local search, request invitations, incoming accept/decline, outgoing cancellation,
   friendship removal with confirmation, and pull-to-refresh.
 - Profile editing and logout.
-- Light and dark themes, safe-area handling, keyboard avoidance on forms, and accessible labels.
+- Fixed light theme, safe-area handling, keyboard avoidance on forms, and accessible labels.
 - Explicitly labeled demo mode with sample people. Demo changes live only in memory and reset
   when the app restarts. No real invitation is sent and no account is created in demo mode.
 - API client with timeouts, structured errors, pagination, refresh-token rotation, serialized
@@ -62,7 +62,7 @@ npm run export:web
 
 Color rationale and cited research are in COLOR-RATIONALE.md. The password eye is SVG-based
 and has component tests for both masking directions. Palette tests check foreground/background
-contrast in both themes.
+contrast in the active light theme.
 
 The client tests exercise storage, shared refresh, invalid sessions, offline refresh, logout,
 pagination, API errors, health, and demo friendship state. Export verifies JavaScript bundling;
@@ -101,3 +101,6 @@ helper engine refused a download whose checksum sidecar could not be verified, s
 context loader and detector were not used. Native design guidance was read directly. The attempt
 to persist the skill in the remote Skills workspace failed with HTTP 422; cross-session availability
 is not confirmed. No unverified engine binary was executed or included in this app.
+
+The app intentionally ignores system dark mode. Expo userInterfaceStyle is light, the Paper
+provider always uses MD3LightTheme, and status bar content is dark.

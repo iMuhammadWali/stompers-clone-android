@@ -34,10 +34,10 @@ Sources:
 | People | Mint, coral, lilac, and yellow avatar backgrounds | Distinguish people without implying unimplemented activity/status |
 | Errors | Red #AC2430 plus explicit text | Preserve a separate, labeled error role |
 
-The dark theme is composed separately with navy surfaces, lighter cobalt actions, and
-readable warm accents. Input outlines, inverse surfaces, and elevation levels are explicitly
-defined so inherited gray-purple colors do not dilute the intended palette.
+Dark mode was removed at the user's request. The bright palette is always active, including
+when the operating system or browser requests dark appearance. Expo's native configuration,
+Paper's theme, and status bar content are set consistently for light mode.
 
-Automated tests check text pairs at 4.5:1 and input outlines at 3:1 in both themes, including
-all four avatar pairings. Color is paired with text, icons, position, and state labels.
+Automated tests check active text pairs at 4.5:1 and input outlines at 3:1, including all
+four avatar pairings. Color is paired with text, icons, position, and state labels.
 These checks do not replace testing on a physical Android phone.
