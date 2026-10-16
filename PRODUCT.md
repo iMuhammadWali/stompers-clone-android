@@ -13,10 +13,10 @@ The backend is not deployed yet. A clearly labeled, entirely local demo supports
 Real credentials are never sent to demo mode. Demo data is synthetic and resets on restart.
 Real mode uses the existing API v1 contract with refresh tokens in SecureStore.
 
-Design direction: a playful social walking game identity, a sunshine-yellow daylight canvas,
-navy text, cobalt actions, golden invitation/selection surfaces, and mint/coral/lilac/yellow
-avatar backgrounds. Dark mode is removed; always use the bright theme, including on dark-mode phones. Color choices are
-informed by research on color-emotion associations, not claims about exercise motivation.
+Design direction: preserve the approved UI and follow the supplied Stompers screenshots
+for color balance: cool light gray canvas, white surfaces, charcoal text, cyan actions,
+peach selections, and golden avatar accents. Dark mode remains removed. Color is
+concentrated in controls and small accents rather than the full background.
 Preserve flat people lists, the existing account flows, and the original footprint mark.
 No invented fitness claims or activity statistics. Password visibility uses an authored SVG
 control, without an icon-font dependency.

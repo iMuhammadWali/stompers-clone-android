@@ -2,35 +2,35 @@
 name: "Stride (working name)"
 description: "Playful social walking app; physical-device validation remains pending."
 colors:
-  light-primary: "#2546D8"
+  light-primary: "#00666B"
   light-onPrimary: "#FFFFFF"
-  light-primaryContainer: "#DCE6FF"
-  light-onPrimaryContainer: "#142657"
-  light-secondary: "#5B4800"
+  light-primaryContainer: "#24DDD5"
+  light-onPrimaryContainer: "#173436"
+  light-secondary: "#875000"
   light-onSecondary: "#FFFFFF"
-  light-secondaryContainer: "#FFE36A"
-  light-onSecondaryContainer: "#26314B"
-  light-tertiary: "#9B3E1D"
+  light-secondaryContainer: "#FFD0A3"
+  light-onSecondaryContainer: "#38302A"
+  light-tertiary: "#805600"
   light-onTertiary: "#FFFFFF"
-  light-tertiaryContainer: "#FFD9CA"
-  light-onTertiaryContainer: "#43180B"
-  light-background: "#FFF5BF"
-  light-onBackground: "#192744"
-  light-surface: "#FFFDF4"
-  light-onSurface: "#192744"
-  light-surfaceVariant: "#FFF0A0"
-  light-onSurfaceVariant: "#4B5262"
-  light-surfaceDisabled: "#E5DFBE"
-  light-onSurfaceDisabled: "#6A6B64"
-  light-outline: "#687086"
-  light-outlineVariant: "#D3CA91"
+  light-tertiaryContainer: "#FFE38A"
+  light-onTertiaryContainer: "#40320A"
+  light-background: "#F5F6F8"
+  light-onBackground: "#292A31"
+  light-surface: "#FFFFFF"
+  light-onSurface: "#292A31"
+  light-surfaceVariant: "#E7E9F0"
+  light-onSurfaceVariant: "#656775"
+  light-surfaceDisabled: "#E1E3E8"
+  light-onSurfaceDisabled: "#6A6C75"
+  light-outline: "#797C86"
+  light-outlineVariant: "#DCDFE5"
   light-error: "#AC2430"
   light-onError: "#FFFFFF"
   light-errorContainer: "#FFE0E1"
   light-onErrorContainer: "#6C1420"
-  light-inverseSurface: "#1A2947"
+  light-inverseSurface: "#2D2E35"
   light-inverseOnSurface: "#FFFFFF"
-  light-inversePrimary: "#B4C5FF"
+  light-inversePrimary: "#6DECE4"
 
 ---
 # Design System: Stride (working name)
@@ -39,33 +39,26 @@ colors:
 
 **Creative North Star: "A walking club’s people directory"**
 
-This is a source-derived record of the implemented account, friends, requests, invitation, and profile interface. Sunshine yellow, navy ink, cobalt actions, multicolor initials, and divided people lists give the application a friendly club character. Stride is a working name, not an approved brand identity. No approved visual comp exists.
+This is a source-derived record of the implemented account, friends, requests, invitation, and profile interface. Cool light gray, charcoal ink, cyan actions, multicolor initials, and divided people lists give the application a friendly club character. Stride is a working name, not an approved brand identity. No approved visual comp exists.
 
 The implementation uses React Native Paper Material 3 with platform system typography. This is an Android-native interface; web renders are surrogates. Android-device validation remains outstanding. Native screenshots were unavailable, so the reviewer requires recapture rather than granting native approval. No detector ran for the native target; the optional helper engine refused an unverifiable download. This document records implementation, not release readiness.
 
 **Key Characteristics:**
-- Sunny light and navy-dark system themes.
+- Always-light neutral surfaces with cyan, peach, and golden accents.
 - Flat, readable people lists and explicit invitation states.
 - Platform typography, outlined fields, and restrained primary actions.
 - A small original geometric footprint mark.
 
 ## Colors
 
-The action palette is burnt orange in light mode and peach in dark mode; olive containers hold initials and secondary actions. Frontmatter colors are normative source values, not a newly generated palette.
-
-### Primary
-
-Light and dark primary/on-primary pairs serve contained actions, the footprint mark, and active navigation. Primary-container pairs are defined by the app theme but are not a second competing action color.
-
-### Secondary
-
-Secondary-container and on-secondary-container provide olive avatars, the demo banner, selected authentication mode, and the incoming-request action. The app does not explicitly retheme Paper’s standalone secondary or tertiary families; do not promote inherited unused defaults into brand colors.
-
-### Neutral
-
-Background and surface share a value in each mode. Surface-variant holds search and loading placeholders. On-surface is main ink; on-surface-variant supports usernames and explanation. Outline is the outlined-control stroke. Outline-variant is inherited from Paper and appears in dividers and navigation boundaries. Error is inherited from Paper and used by Notice. Disabled colors, dialog tones, inverse snackbar colors, and badge colors also remain library defaults.
-
-**The Semantic Pair Rule.** Keep each foreground with its corresponding container in the active theme; do not carry light-mode ink onto dark-mode surfaces.
+The user-supplied Stompers screenshots establish the color direction. Preserve the
+approved layout and typography. Use a cool gray canvas (#F5F6F8), white surfaces,
+charcoal text (#292A31), cool gray search fields (#E7E9F0), peach selections (#FFD0A3),
+and cyan contained actions (#24DDD5) with dark text (#173436). Golden yellow is a small
+avatar accent. Text actions and focus indicators use dark teal (#00666B) for contrast.
+Dark mode is removed. Semantic foreground/container pairs are defined in src/lib/palette.ts.
+Contained buttons explicitly use primaryContainer/onPrimaryContainer; other controls
+retain their existing modes and geometry. Native-device validation remains outstanding.
 
 ## Typography
 
@@ -124,7 +117,7 @@ The three tab icons are inline path-based SVGs, 24 units with 1.8-unit strokes, 
 
 ### People rows and avatars
 
-Initials derive from the first two name segments and use olive paired colors. Names use title-medium; usernames use supporting body-medium. Flat rows expose Manage, Accept/Decline, or Cancel as explicit controls. Received-request actions sit beneath the person description and wrap as necessary. No canonical card or chip component is implemented.
+Initials derive from the first two name segments and use mint, peach, gray, and golden yellow paired colors. Names use title-medium; usernames use supporting body-medium. Flat rows expose Manage, Accept/Decline, or Cancel as explicit controls. Received-request actions sit beneath the person description and wrap as necessary. No canonical card or chip component is implemented.
 
 ### Feedback and overlays
 
@@ -141,7 +134,7 @@ Notice uses the Paper error role with a polite accessibility live region. A retr
 - **Do** extend Paper text variants and the existing single-column spacing rhythm.
 - **Do** preserve divided people rows and explicit action labels.
 - **Do** keep demo context visible and identify sample people.
-- **Do** validate Android touch targets, font scaling, keyboard behavior, and dark mode on a device.
+- **Do** validate Android touch targets, font scaling, keyboard behavior, and fixed light appearance on a device.
 
 ### Don't:
 - **Don't** treat surrogate web captures as native visual approval.
@@ -160,6 +153,6 @@ The password toggle uses SVG paths, independent of font loading.
 ## Light-only appearance
 
 Dark mode is removed by explicit user instruction. The app does not read the system color
-scheme. MD3LightTheme and the sunshine palette are always active; native configuration
+scheme. MD3LightTheme and the reference palette are always active; native configuration
 uses userInterfaceStyle: light and the status bar uses dark content. Earlier dark-theme
 inspection examples in this document are historical and are not part of the active design.

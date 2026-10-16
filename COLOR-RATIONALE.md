@@ -23,21 +23,22 @@ Sources:
 - Elliot, *Color and psychological functioning: a review of theoretical and empirical work*:
   https://doi.org/10.3389/fpsyg.2015.00368
 
-## Design inference implemented
+## Reference palette implemented
 
-| Role | Light theme | Purpose |
-| --- | --- | --- |
-| Canvas | Sunshine yellow #FFF5BF | A warm, brighter visual field with a game-like character |
-| Main action | Cobalt #2546D8 with white text | Strong, consistent action and selection contrast |
-| Invitations and selected controls | Yellow #FFE36A with navy text | A clearly differentiated social interaction surface |
-| Reading text | Navy #192744 | Legibility on bright surfaces |
-| People | Mint, coral, lilac, and yellow avatar backgrounds | Distinguish people without implying unimplemented activity/status |
-| Errors | Red #AC2430 plus explicit text | Preserve a separate, labeled error role |
+The user's supplied Stompers screenshots are the visual reference for this revision.
+They show a largely neutral shell, with bright color concentrated in actions, selections,
+and game content. The approved layout is preserved; this revision changes colors only.
 
-Dark mode was removed at the user's request. The bright palette is always active, including
-when the operating system or browser requests dark appearance. Expo's native configuration,
-Paper's theme, and status bar content are set consistently for light mode.
+| Role | Color |
+| --- | --- |
+| Canvas | Cool light gray #F5F6F8 |
+| Surfaces | White #FFFFFF |
+| Text | Charcoal #292A31 |
+| Search fields | Cool gray #E7E9F0 |
+| Contained actions | Cyan #24DDD5 with dark #173436 text |
+| Text actions and focus | Dark teal #00666B |
+| Selections and invitations | Peach #FFD0A3 with dark text |
+| People | Mint, peach, gray, and golden yellow |
 
-Automated tests check active text pairs at 4.5:1 and input outlines at 3:1, including all
-four avatar pairings. Color is paired with text, icons, position, and state labels.
-These checks do not replace testing on a physical Android phone.
+Dark mode remains removed. Existing automated contrast checks require active text pairs
+at 4.5:1 and input outlines at 3:1. Physical Android testing remains outstanding.

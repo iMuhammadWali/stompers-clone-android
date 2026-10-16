@@ -1,15 +1,60 @@
-// Playful daylight scheme: sunshine canvas, cobalt actions, readable ink.
+// Neutral daylight shell with cyan actions and peach selections, following the supplied reference screenshots.
 export const lightColors = {
-  primary:'#2546D8', onPrimary:'#FFFFFF', primaryContainer:'#DCE6FF', onPrimaryContainer:'#142657',
-  secondary:'#5B4800', onSecondary:'#FFFFFF', secondaryContainer:'#FFE36A', onSecondaryContainer:'#26314B',
-  tertiary:'#9B3E1D', onTertiary:'#FFFFFF', tertiaryContainer:'#FFD9CA', onTertiaryContainer:'#43180B',
-  background:'#FFF5BF', onBackground:'#192744', surface:'#FFFDF4', onSurface:'#192744',
-  surfaceVariant:'#FFF0A0', onSurfaceVariant:'#4B5262', surfaceDisabled:'#E5DFBE', onSurfaceDisabled:'#6A6B64',
-  outline:'#687086', outlineVariant:'#D3CA91',
-  error:'#AC2430', onError:'#FFFFFF', errorContainer:'#FFE0E1', onErrorContainer:'#6C1420',
-  inverseSurface:'#1A2947', inverseOnSurface:'#FFFFFF', inversePrimary:'#B4C5FF',
-  elevation:{level0:'transparent',level1:'#FFFCED',level2:'#FFF9DF',level3:'#FFF7D4',level4:'#FFF4C9',level5:'#FFF0B4'},
+  "primary": "#00666B",
+  "onPrimary": "#FFFFFF",
+  "primaryContainer": "#24DDD5",
+  "onPrimaryContainer": "#173436",
+  "secondary": "#875000",
+  "onSecondary": "#FFFFFF",
+  "secondaryContainer": "#FFD0A3",
+  "onSecondaryContainer": "#38302A",
+  "tertiary": "#805600",
+  "onTertiary": "#FFFFFF",
+  "tertiaryContainer": "#FFE38A",
+  "onTertiaryContainer": "#40320A",
+  "background": "#F5F6F8",
+  "onBackground": "#292A31",
+  "surface": "#FFFFFF",
+  "onSurface": "#292A31",
+  "surfaceVariant": "#E7E9F0",
+  "onSurfaceVariant": "#656775",
+  "surfaceDisabled": "#E1E3E8",
+  "onSurfaceDisabled": "#6A6C75",
+  "outline": "#797C86",
+  "outlineVariant": "#DCDFE5",
+  "error": "#AC2430",
+  "onError": "#FFFFFF",
+  "errorContainer": "#FFE0E1",
+  "onErrorContainer": "#6C1420",
+  "inverseSurface": "#2D2E35",
+  "inverseOnSurface": "#FFFFFF",
+  "inversePrimary": "#6DECE4",
+  "elevation": {
+    "level0": "transparent",
+    "level1": "#FFFFFF",
+    "level2": "#FAFBFC",
+    "level3": "#F7F8FA",
+    "level4": "#F4F6F8",
+    "level5": "#F0F3F5"
+  }
 };
 export const avatarColors = {
-  light:[['#B5F0EA','#163D40'],['#FFD0BE','#542414'],['#E0D5FF','#352653'],['#FFE368','#3D310C']],
+  "light": [
+    [
+      "#BDF5EF",
+      "#173C3C"
+    ],
+    [
+      "#FFD0A3",
+      "#542E16"
+    ],
+    [
+      "#E7E9F0",
+      "#383943"
+    ],
+    [
+      "#FFE38A",
+      "#40320A"
+    ]
+  ]
 };
