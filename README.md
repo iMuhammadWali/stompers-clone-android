@@ -228,3 +228,6 @@ Fixed catalog samples include eyewear and companions.
 from the same artwork used in the UI. Tests cover fixed-preview structure, the combined
 new look, legacy migration, and restoration after reopening. Native layout still needs
 phone verification; no emulator or device screenshots are claimed.
+
+The Look/Face/Clothes/Pet category controls are pinned directly below the preview.
+Switching category resets only the options scroll position; draft selections are retained.

@@ -21,3 +21,6 @@ The live preview and Back are pinned outside the options ScrollView. Height scal
 within 72–200 units, leaving room for scrolling controls. Defaults and static samples
 use Sand skin; stored skin is preserved. Six disjoint hairstyles per gender, removable
 sunglasses, and fox/dragon/alien-saucer companions extend the existing illustrated world.
+
+The Look/Face/Clothes/Pet category controls are pinned directly below the preview.
+Switching category resets only the options scroll position; draft selections are retained.

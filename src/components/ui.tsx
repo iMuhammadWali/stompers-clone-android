@@ -27,12 +27,12 @@ export function PersonAvatar({name,size=52}:{name:string;size?:number}) {
   const [background,foreground]=palette[index];
   return <Avatar.Text size={size} label={initials} style={{backgroundColor:background}} color={foreground}/>;
 }
-export function Page({children,refresh=false,fixedHeader}:{children:React.ReactNode;refresh?:boolean;fixedHeader?:React.ReactNode}) {
+export function Page({children,refresh=false,fixedHeader,scrollKey}:{children:React.ReactNode;refresh?:boolean;fixedHeader?:React.ReactNode;scrollKey?:string}) {
   const {demo,error,reload,loading}=useSession(),theme=useTheme();
   return <SafeAreaView edges={['top','left','right']} style={{flex:1,backgroundColor:theme.colors.background}}>
     {demo&&<View style={[styles.demo,{backgroundColor:theme.colors.secondaryContainer}]}><Text variant="labelMedium" style={{color:theme.colors.onSecondaryContainer}}>Demo mode · Sample people</Text></View>}
     {fixedHeader&&<View testID="fixed-page-header" style={{flexShrink:0}}>{fixedHeader}</View>}
-    <ScrollView testID="page-scroll" style={{flex:1}} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.page}
+    <ScrollView key={scrollKey} testID="page-scroll" style={{flex:1}} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.page}
       refreshControl={refresh?<RefreshControl refreshing={loading} onRefresh={()=>void reload()} tintColor={theme.colors.primary}/>:undefined}>
       {error&&<Banner visible actions={[{label:'Retry',onPress:()=>void reload()}]}>{error}</Banner>}
       {children}

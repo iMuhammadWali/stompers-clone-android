@@ -133,7 +133,7 @@ it('keeps catalog images fixed while changes update the character draft',async()
   expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,hairColor:'honey',skin:'deep',hair:'curls',expression:'grin',nose:'wedge'});
 });
 
-it('keeps the changing character preview outside the scrollable options',async()=>{
+it('keeps the preview and category controls outside the scrollable options',async()=>{
   const view=await screen();
   const fixed=view.getByTestId('fixed-page-header'),preview=view.getByTestId('character-preview');
   function hasAncestor(node:TestInstance,target:TestInstance):boolean {
@@ -141,9 +141,14 @@ it('keeps the changing character preview outside the scrollable options',async()
     return false;
   }
   expect(hasAncestor(preview,fixed)).toBe(true);
+  for(const category of ['Look','Face','Clothes','Pet'])expect(hasAncestor(view.getByLabelText(category),fixed)).toBe(true);
   expect(hasAncestor(view.getByLabelText('Curls'),fixed)).toBe(false);
   await fireEvent.press(view.getByLabelText('Quiff'));
   expect(view.getByLabelText(/Your character wearing lagoon tee, with quiff hair/)).toBeTruthy();
+  await fireEvent.press(view.getByText('Face'));
+  expect(view.getByLabelText('Round')).toBeTruthy();
+  expect(hasAncestor(view.getByLabelText('Face'),fixed)).toBe(true);
+  expect(view.getByLabelText(/with quiff hair/)).toBeTruthy();
 });
 it('offers separate hairstyle catalogs and saves sunglasses and an alien spaceship together',async()=>{
   mockSave.mockResolvedValue(undefined);const view=await screen();

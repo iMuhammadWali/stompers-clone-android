@@ -310,3 +310,6 @@ legacy migration, glasses removal, new companion validation, fixed header ancest
 combined selections, and actual appearance-store restoration after remount. Original
 SVG catalog and track renders were visually inspected. Native phone layout remains
 subject to the user's screenshot review.
+
+The Look/Face/Clothes/Pet category controls are pinned directly below the preview.
+Switching category resets only the options scroll position; draft selections are retained.

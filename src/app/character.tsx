@@ -42,13 +42,13 @@ function Editor() {
     try {await save(draft);router.replace('/(tabs)/track');}
     catch {setError('Your look could not be saved on this device. Please try again.');setBusy(false);}
   }
-  return <Page fixedHeader={<View style={{width:'100%',maxWidth:600,alignSelf:'center',paddingHorizontal:24,paddingBottom:12,gap:8}}>
+  return <Page scrollKey={section} fixedHeader={<View style={{width:'100%',maxWidth:600,alignSelf:'center',paddingHorizontal:24,paddingBottom:12,gap:8}}>
     <View style={{flexDirection:'row',alignItems:'center',gap:12}}><AppButton onPress={()=>router.canGoBack()?router.back():router.replace('/(tabs)/track')} contentStyle={{minHeight:48}}>Back</AppButton><Text variant="titleLarge" style={{fontWeight:'700',flex:1,flexShrink:1}}>Edit character</Text></View>
     <View testID="character-preview" style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:theme.colors.outlineVariant,backgroundColor:theme.colors.background}}><TrackScene appearance={draft} compact height={Math.min(200,Math.max(72,Math.round(height*0.24)))}/></View>
-  </View>}>
     <View accessibilityRole="radiogroup" accessibilityLabel="Character category" style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>
       {[{id:'look',label:'Look'},{id:'face',label:'Face'},{id:'clothes',label:'Clothes'},{id:'pet',label:'Pet'}].map(item=><Pressable key={item.id} accessibilityRole="radio" accessibilityLabel={item.label} accessibilityState={{selected:section===item.id,checked:section===item.id}} onPress={()=>setSection(item.id)} android_ripple={{color:theme.colors.surfaceVariant}} style={{flexGrow:1,flexShrink:1,flexBasis:fontScale>1.3||width<360?'44%':'21%',minWidth:64,minHeight:48,paddingVertical:12,paddingHorizontal:8,borderRadius:12,borderWidth:section===item.id?2:1,borderColor:section===item.id?theme.colors.onSurface:theme.colors.outline,backgroundColor:section===item.id?theme.colors.secondaryContainer:theme.colors.surface,justifyContent:'center',alignItems:'center'}}><Text variant="labelLarge" style={{textAlign:'center',fontWeight:'700',flexShrink:1,color:theme.colors.onSurface}}>{item.label}</Text></Pressable>)}
     </View>
+  </View>}>
     {section==='look'&&<>
     <ChoiceGroup title="Gender">{genders.map(g=><Choice caption key={g.id} label={g.label} selected={draft.gender===g.id} onPress={()=>choose('gender',g.id)}><SvgXml xml={choiceArtwork.gender[g.id]} width="100%" height={68} accessible={false}/></Choice>)}</ChoiceGroup>
 
