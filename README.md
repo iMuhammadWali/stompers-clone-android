@@ -237,3 +237,7 @@ Home now reads today's Steps from Android Health Connect with explicit read perm
 and shows the saved character and companion on a personal track. No competitors or fake
 step totals are shown. Only local health data is read; step totals are not uploaded.
 See HEALTH-CONNECT.md for setup, tested cases, permission behavior, and native build steps.
+
+Race screen v1.0.1 puts the Health Connect action above the track, with an outlined
+daily step counter, an open character stage, a personal target strip and refresh status.
+Install this update over v1.0.0 to preserve device-local character settings.

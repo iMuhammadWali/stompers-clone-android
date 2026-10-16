@@ -53,3 +53,13 @@ References:
 - https://developer.android.com/health-and-fitness/health-connect/get-started
 - https://developer.android.com/health-and-fitness/health-connect/aggregate-data
 - https://matinzd.github.io/react-native-health-connect/docs/get-started/
+
+## Race screen v1.0.1
+
+The outlined daily counter sits above an open, responsive race stage. Connection,
+installation, empty-source and read-error explanations appear before the track,
+so connecting steps does not require scrolling past the character. The character
+marker follows today's aggregate toward a clearly labeled 10,000-step personal target.
+The marker stops at the flag after the target; the main count retains every extra step.
+Tap the Health Connect sync line for details and step-access settings. This screen does
+not display sampled friends or fabricate weekly history, rankings, rewards or steps.

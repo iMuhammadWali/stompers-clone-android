@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {defaultAppearance,parseAppearance,appearanceKey,hairstyles,skinTones,hairColors,outfits,pets,eyeStyles,noseStyles,expressions,shirtStyles,genders,isStyleAllowed,eyewearStyles} from '../src/lib/character/catalog';
-import {trackSvg,portraitSvg,petSvg,characterLayers,faceFeatures} from '../src/lib/character/artwork';
+import {trackSvg,raceSvg,portraitSvg,petSvg,characterLayers,faceFeatures} from '../src/lib/character/artwork';
 
 test('stored appearance tolerates corrupt data and obsolete choices without losing valid choices',()=>{
   for(const raw of [null,'broken','null','[]','3'])assert.deepEqual(parseAppearance(raw),defaultAppearance);
@@ -119,4 +119,18 @@ test('new companions remain distinct, persist through validation, and spaceship 
   }
   assert.doesNotMatch(petSvg('spaceship'),/data-limb="pet-leg/);
   assert.notEqual(trackSvg({...defaultAppearance,pet:'spaceship'},0),trackSvg({...defaultAppearance,pet:'spaceship'},2));
+});
+
+test('race stage keeps the whole rig above the floor in short and tall viewports',()=>{
+  for(const size of [{width:360,height:210},{width:393,height:420},{width:600,height:210}]){
+    const xml=raceSvg({...defaultAppearance,pet:'spaceship'},0,6142,size);
+    assert.doesNotMatch(xml,/NaN|undefined|Infinity/);
+    assert.match(xml,/data-layer="pet-spaceship"/);
+    const h=Number(xml.match(/viewBox="0 0 390 ([\d.]+)"/)![1]);
+    // The stage's rig transform is the one immediately before characterLayers.
+    const transforms=[...xml.matchAll(/transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(([-\d.]+)\)"/g)];
+    const [, ,top,scale]=transforms[transforms.length-2];
+    assert.ok(Number(top)>=0);
+    assert.ok(Number(top)+185*Number(scale)<h);
+  }
 });

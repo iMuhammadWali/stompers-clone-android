@@ -190,6 +190,26 @@ export function trackSvg(a:Appearance,frame=0,steps?:number|null):string {
     `<g transform="translate(258 310) scale(0.8)">${petLayers(a.pet,frame)}</g>`+
     '</svg>';
 }
+/** The terrain fills the stage; the rig scales to keep every limb in view on short phones. */
+export function raceSvg(a:Appearance,frame=0,steps?:number|null,size={width:390,height:315}):string {
+  const c=sceneColors,h=Math.max(180,390*size.height/Math.max(1,size.width));
+  const ground=h-85,scale=Math.min(1.25,(h-54)/185),base=h-30,y=base-180*scale,x=190-60*scale;
+  const count=typeof steps==='number'&&Number.isSafeInteger(steps)&&steps>=0?steps.toLocaleString():null;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 ${h}" width="390" height="${h}">`+
+    `<rect width="390" height="${h}" fill="${c.sky}"/>`+
+    `<path d="M0 ${ground-20} Q64 ${ground-79} 144 ${ground-30} Q221 ${ground-92} 294 ${ground-35} Q351 ${ground-65} 390 ${ground-30} V${h} H0 Z" fill="${c.farHill}"/>`+
+    `<path d="M0 ${ground-4} Q68 ${ground-53} 130 ${ground-8} Q224 ${ground-59} 285 ${ground-9} Q350 ${ground-37} 390 ${ground-8} V${h} H0 Z" fill="${c.hill}"/>`+
+    bush(43,ground+4,0.66)+bush(354,ground+2,0.83)+bush(113,ground+5,0.32)+
+    `<path d="M0 ${ground+4} Q103 ${ground-4} 210 ${ground+5} T390 ${ground+1} V${h} H0 Z" fill="${c.edge}"/>`+
+    `<path d="M0 ${ground+17} Q105 ${ground+9} 214 ${ground+18} T390 ${ground+15} V${h-10} Q255 ${h-17} 144 ${h-8} T0 ${h-9} Z" fill="${c.track}"/>`+
+    `<path d="M-10 ${ground+30} Q123 ${ground+22} 220 ${ground+31} T402 ${ground+27} M-10 ${h-20} Q110 ${h-28} 221 ${h-19} T402 ${h-23}" fill="none" stroke="${c.lane}" stroke-width="3" stroke-dasharray="17 12"/>`+
+    `<path d="M13 ${ground+6} L20 ${ground-5} L34 ${ground-2} L40 ${ground+6} Z" fill="${c.stone}" stroke="#87765F" stroke-width="1.5"/>`+
+    `<ellipse cx="190" cy="${base+4}" rx="${37*scale}" ry="5" fill="#94643B" opacity="0.17"/>`+
+    (a.pet!=='none'?`<ellipse cx="301" cy="${base+3}" rx="25" ry="4" fill="#94643B" opacity="0.14"/>`:'')+
+    (count&&y>28?`<g data-race-steps="${steps}"><rect x="149" y="${y-28}" width="86" height="24" rx="8" fill="#FFFFFF" stroke="${c.ink}" stroke-width="1.8"/><path d="M184 ${y-4} L190 ${y+1} L196 ${y-4}" fill="#FFFFFF" stroke="${c.ink}" stroke-width="1.8"/><text x="192" y="${y-12}" text-anchor="middle" font-family="sans-serif" font-weight="800" font-size="12" fill="${c.ink}">${count}</text></g>`:'')+
+    `<g transform="translate(${x} ${y}) scale(${scale})">${characterLayers(a,frame)}</g>`+
+    `<g transform="translate(264 ${base-42}) scale(0.66)">${petLayers(a.pet,frame)}</g></svg>`;
+}
 export function portraitSvg(a:Appearance):string {return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -12 110 104" width="100" height="100">${characterLayers(a)}</svg>`;}
 export function petSvg(pet:Appearance['pet']):string {return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -10 100 90" width="100" height="90">${petLayers(pet)}</svg>`;}
 
