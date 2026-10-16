@@ -43,7 +43,7 @@ The APK build is separate from JS exports and mocked integration tests.
 
 ## Rebuilding
 
-Use JDK 17+, Android SDK 36 / Build Tools 36.0.0, NDK 27.1.12297006 and CMake 3.22.1.
+Use JDK 17+, Android API 37 (SDK package platforms;android-37.0) / Build Tools 37.0.0, NDK 27.1.12297006 and CMake 3.22.1.
 Run `npm ci`, `npx expo prebuild --platform android --no-install`, then
 `cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a`.
 This internal test build uses the Expo template's test signing key; it is not a Play Store
