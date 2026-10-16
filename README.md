@@ -165,3 +165,8 @@ The character defaults to a walking contact pose with explicit hands, elbows, an
 separated feet. `assets/characters/pose-sheet.svg` shows all eight walk poses and is
 regenerated alongside the track design sheet by the existing export-character-art script.
 Each pet has four offset leg and paw layers.
+
+Layering correction: both leg layers render before the shorts, so the near thigh cannot
+erase its trouser leg. Sleeves attach along each upper arm. The resting stride is narrower,
+and character/pet offsets align foot contact with their ground shadows. Pet front paws
+have additional horizontal separation so they do not merge in the default pose.

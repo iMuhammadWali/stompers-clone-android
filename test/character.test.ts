@@ -40,3 +40,13 @@ test('each walk pose retains two complete arms, hands, and legs, and each pet ha
     }
   }
 });
+
+test('shorts cover both upper-leg layers in every pose instead of being erased by the near thigh',()=>{
+  for(let frame=0;frame<8;frame++){
+    const xml=trackSvg(defaultAppearance,frame),shorts=xml.indexOf('data-clothing="shorts"');
+    assert.ok(shorts>xml.indexOf('data-limb="far-leg"'));
+    assert.ok(shorts>xml.indexOf('data-limb="near-leg"'));
+    assert.ok(xml.includes('data-clothing="near-arm-sleeve"'));
+    assert.ok(xml.includes('data-clothing="far-arm-sleeve"'));
+  }
+});

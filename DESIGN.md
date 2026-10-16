@@ -200,3 +200,8 @@ References studied:
 
 Design inference: the app's main idle image should communicate an easy walk. A contact
 pose gives a clearer small silhouette than overlapping feet or a raised, waving forearm.
+
+Layering correction: both leg layers render before the shorts, so the near thigh cannot
+erase its trouser leg. Sleeves attach along each upper arm. The resting stride is narrower,
+and character/pet offsets align foot contact with their ground shadows. Pet front paws
+have additional horizontal separation so they do not merge in the default pose.

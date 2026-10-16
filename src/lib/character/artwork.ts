@@ -13,10 +13,10 @@ export function characterLayers(value:Appearance,frame=0):string {
   const angle=((frame%8+8)%8)/8*Math.PI*2;
   const swing=Math.cos(angle),passing=Math.sin(angle);
   const frontLift=Math.max(0,passing)*14,backLift=Math.max(0,-passing)*14;
-  const backX=60-swing*25,backY=171-backLift;
-  const frontX=60+swing*25,frontY=171-frontLift;
-  const backLeg=`M51 123 Q${54-swing*12} ${148-backLift*1.3} ${backX} ${backY}`;
-  const frontLeg=`M68 123 Q${65+swing*12} ${148-frontLift*1.3} ${frontX} ${frontY}`;
+  const backX=60-swing*19,backY=171-backLift;
+  const frontX=60+swing*19,frontY=171-frontLift;
+  const backLeg=`M51 123 Q${54-swing*8} ${148-backLift*1.3} ${backX} ${backY}`;
+  const frontLeg=`M68 123 Q${65+swing*8} ${148-frontLift*1.3} ${frontX} ${frontY}`;
   const shoe=(x:number,y:number)=>`M${x-5} ${y-3} L${x+5} ${y-3} L${x+13} ${y+5} Q${x+15} ${y+10} ${x+6} ${y+10} L${x-10} ${y+10} Q${x-13} ${y+7} ${x-8} ${y+2} Z`;
   const backShoe=shoe(backX,backY),frontShoe=shoe(frontX,frontY);
   const farHand={x:78+swing*23,y:116-Math.max(swing,0)*19};
@@ -25,7 +25,8 @@ export function characterLayers(value:Appearance,frame=0):string {
     `<path d="M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-3}" fill="none" stroke="#343239" stroke-width="13" stroke-linecap="round"/>`+
     `<path d="M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-3}" fill="none" stroke="${color}" stroke-width="8.5" stroke-linecap="round"/>`+
     `<g data-limb="${name}-hand"><ellipse cx="${hand.x}" cy="${hand.y}" rx="5.8" ry="7" fill="${color}" ${stroke}/>`+
-    `<path d="M${hand.x+3} ${hand.y-3} Q${hand.x+8} ${hand.y-4} ${hand.x+6} ${hand.y+1}" fill="${color}" stroke="#343239" stroke-width="1.5" stroke-linecap="round"/></g></g>`;
+    `<path d="M${hand.x+3} ${hand.y-3} Q${hand.x+8} ${hand.y-4} ${hand.x+6} ${hand.y+1}" fill="${color}" stroke="#343239" stroke-width="1.5" stroke-linecap="round"/></g>`+
+    `<g data-clothing="${name}-sleeve"><path d="M${shoulderX} 85 L${shoulderX+(elbowX-shoulderX)*0.4} 92" fill="none" stroke="#343239" stroke-width="17" stroke-linecap="round"/><path d="M${shoulderX} 85 L${shoulderX+(elbowX-shoulderX)*0.4} 92" fill="none" stroke="${outfit.color}" stroke-width="12.5" stroke-linecap="round"/></g></g>`;
   const hairShapes={
     crop:'M34 45 Q24 19 43 13 Q65 1 84 20 L88 35 Q71 35 63 26 Q50 42 34 45 Z',
     waves:'M32 48 Q23 38 29 28 Q22 17 38 15 Q37 3 51 8 Q64 -1 73 12 Q87 6 90 23 Q99 32 87 41 L78 30 Q67 35 59 24 Q50 43 36 40 Z',
@@ -36,8 +37,8 @@ export function characterLayers(value:Appearance,frame=0):string {
     (a.hair==='ponytail'?path('M32 25 Q8 14 9 38 Q2 61 20 66 Q13 42 33 42 Z',hair.color):'')+
     `<g data-limb="far-leg">${limb(backLeg,skin.shade)}<g transform="rotate(${Math.max(swing,0)*16} ${backX+12} ${backY+9})">${path(backShoe,'#E1E1DD')}</g></g>`+
     arm(78,83+swing*5,farHand,skin.shade,'far-arm')+
-    path('M44 107 L74 107 L81 133 L65 138 L59 125 L53 138 L36 131 Z',outfit.shorts)+
     `<g data-limb="near-leg">${limb(frontLeg,skin.color)}<g transform="rotate(${-Math.max(swing,0)*7} ${frontX-10} ${frontY+9})">${path(frontShoe,'#F7F6F1')}</g></g>`+
+    `<g data-clothing="shorts">${path('M44 107 L74 107 L81 133 L65 138 L59 125 L53 138 L36 131 Z',outfit.shorts)}</g>`+
     path('M50 61 L51 77 L69 78 L69 60 Z',skin.shade)+
     path('M49 70 Q58 77 71 70 L82 79 L82 96 L76 95 L77 115 Q60 122 40 113 L42 96 L35 93 L36 80 Z',outfit.color)+
     `<path d="M72 76 L75 111 Q61 116 43 110" fill="none" stroke="${outfit.shade}" stroke-width="5"/>`+
@@ -57,8 +58,8 @@ export function petLayers(pet:Appearance['pet'],frame=0):string {
   if(pet==='none')return '';
   const hop=Math.abs(Math.sin(frame/8*Math.PI*2))*2;
   const step=Math.cos(frame/8*Math.PI*2)*3;
-  const legs=[{x:29,y:48,end:26-step,far:true},{x:53,y:49,end:57+step,far:true},
-    {x:36,y:51,end:34+step,far:false},{x:62,y:50,end:66-step,far:false}].map((leg,i)=>
+  const legs=[{x:29,y:48,end:26-step,far:true},{x:53,y:49,end:52+step,far:true},
+    {x:36,y:51,end:34+step,far:false},{x:62,y:50,end:70-step,far:false}].map((leg,i)=>
     `<g data-limb="pet-leg-${i+1}"><path d="M${leg.x} ${leg.y} L${leg.end} ${leg.far?66:69}" fill="none" stroke="${leg.far?'#64606A':'#343239'}" stroke-width="5.5" stroke-linecap="round"/>`+
     `<ellipse cx="${leg.end+1}" cy="${leg.far?66:69}" rx="3.5" ry="2.4" fill="${leg.far?'#64606A':'#343239'}"/></g>`).join('');
   if(pet==='dog')return `<g data-layer="pet-dog" transform="translate(0 ${-hop})">`+
@@ -103,8 +104,8 @@ export function trackSvg(a:Appearance,frame=0):string {
     `<path d="M8 298 L15 286 L29 289 L34 298 Z" fill="${c.stone}" stroke="#87765F" stroke-width="1.5"/>`+
     '<ellipse cx="192" cy="369" rx="42" ry="7" fill="#94643B" opacity="0.17"/>'+
     (a.pet!=='none'?'<ellipse cx="298" cy="365" rx="30" ry="5" fill="#94643B" opacity="0.14"/>':'')+
-    `<g transform="translate(124 159) scale(1.12)">${characterLayers(a,frame)}</g>`+
-    `<g transform="translate(258 306) scale(0.8)">${petLayers(a.pet,frame)}</g>`+
+    `<g transform="translate(124 166) scale(1.12)">${characterLayers(a,frame)}</g>`+
+    `<g transform="translate(258 310) scale(0.8)">${petLayers(a.pet,frame)}</g>`+
     '</svg>';
 }
 export function portraitSvg(a:Appearance):string {return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="17 0 89 85" width="100" height="100">${characterLayers(a)}</svg>`;}
