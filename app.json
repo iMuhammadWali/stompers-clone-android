@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Stride",
+    "slug": "stride-walking-club",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FAF7F0",
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "monochromeImage": "./assets/monochrome-icon.png"
+      },
+      "predictiveBackGestureEnabled": true,
+      "package": "com.walkingclub.stride"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font"
+    ],
+    "scheme": "stride"
+  }
+}
