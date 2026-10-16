@@ -176,6 +176,26 @@
       "radius": 18,
       "implementation": "src/components/AppButton.tsx",
       "scope": "Enabled contained and tonal buttons; text, outlined, and disabled controls stay flat."
+    },
+    "characterArtwork": {
+      "source": "src/lib/character/artwork.ts",
+      "catalog": "src/lib/character/catalog.ts",
+      "designSheet": "assets/characters/design-sheet.svg",
+      "provenance": "Original layered SVG artwork; no extracted game assets.",
+      "hairStyles": 4,
+      "hairColors": 3,
+      "skinTones": 5,
+      "outfits": 4,
+      "pets": [
+        "dog",
+        "cat",
+        "rabbit",
+        "none"
+      ],
+      "face": "Single fixed face",
+      "storage": "Device-local, account-scoped",
+      "motion": "Opt-in, reduced-motion-aware; stops on blur",
+      "track": "Side-on orange dirt path with pale gold surface and grounded avatars; no live race data"
     }
   },
   "components": [

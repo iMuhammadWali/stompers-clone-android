@@ -12,7 +12,7 @@ export default function AuthScreen() {
   const [signup,setSignup]=useState(false),[email,setEmail]=useState(''),[password,setPassword]=useState('');
   const [username,setUsername]=useState(''),[name,setName]=useState('');
   const [busy,setBusy]=useState(false),[error,setError]=useState('');
-  if(session.user) return <Redirect href="/(tabs)/friends"/>;
+  if(session.user) return <Redirect href="/(tabs)/track"/>;
   async function submit() {
     setError('');
     if(!/^\S+@\S+\.\S+$/.test(email.trim())) {setError('Enter a valid email address.');return;}

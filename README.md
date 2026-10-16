@@ -140,3 +140,23 @@ from accessibility. Paper retains the actual press target, ripple, and loading s
 `buttonFinish` in `src/lib/palette.ts` controls intensity, edges, corner radius, and
 an application-wide enable switch. `glossy={false}` opts out for one AppButton.
 Changing `brandColors.action` still recolors every primary button, including glossy ones.
+
+## Character, pets, and track
+
+Home → Make it yours opens the creator. Changes preview instantly; Save look commits them
+and returns to the track. Back discards the draft. Preview walk starts a small eight-pose
+loop; Pause and leaving the screen stop it. Reduced-motion preferences keep the art still.
+
+- `src/lib/character/catalog.ts`: stable option IDs, palettes, defaults, and storage validation.
+- `src/lib/character/artwork.ts`: original layered SVG rig, pet designs, and side-on track.
+- `src/lib/character/appearance.tsx`: account-scoped local appearance storage and state.
+- `src/components/character/TrackScene.tsx`: shared native/web scene and optional animation.
+- `assets/characters/design-sheet.svg`: reproducible design sheet. Rebuild with
+  `node --import tsx scripts/export-character-art.ts`.
+
+The artwork is authored in code; it uses no extracted Stompers assets or remote image URLs.
+Separate hair, skin, clothing, face, limbs, and pet layers support future facial options.
+This version uses a single face and body rig. Pets are visual companions; there is no pet
+inventory, gameplay, real step tracking, or server appearance sync yet. Cosmetic choices
+persist in browser localStorage for the preview and SecureStore on native devices, keyed
+by account. Authentication tokens keep their existing separate storage behavior.

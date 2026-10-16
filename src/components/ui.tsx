@@ -16,8 +16,8 @@ export function Mark({size=32,color}:{size?:number;color?:string}) {
     <Ellipse cx="28" cy="35" rx="4" ry="4" fill={color??theme.colors.primary}/>
   </Svg>;
 }
-export function Icon({name,color,size=24}:{name:'friends'|'requests'|'profile';color:string;size?:number}) {
-  const paths={friends:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75 M13 7a4 4 0 1 1-8 0a4 4 0 0 1 8 0',requests:'M22 3H2v14h5l5 4 5-4h5V3 M7 8h10 M7 12h6',profile:'M20 21v-2a7 7 0 0 0-14 0v2 M17 7a4 4 0 1 1-8 0a4 4 0 0 1 8 0'};
+export function Icon({name,color,size=24}:{name:'track'|'friends'|'requests'|'profile';color:string;size?:number}) {
+  const paths={track:'M3 10 L12 3 L21 10 M5 9v12h5v-7h4v7h5V9',friends:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75 M13 7a4 4 0 1 1-8 0a4 4 0 0 1 8 0',requests:'M22 3H2v14h5l5 4 5-4h5V3 M7 8h10 M7 12h6',profile:'M20 21v-2a7 7 0 0 0-14 0v2 M17 7a4 4 0 1 1-8 0a4 4 0 0 1 8 0'};
   return <Svg width={size} height={size} viewBox="0 0 24 24"><Path d={paths[name]} fill="none" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/></Svg>;
 }
 export function PersonAvatar({name,size=52}:{name:string;size?:number}) {
@@ -30,7 +30,7 @@ export function PersonAvatar({name,size=52}:{name:string;size?:number}) {
 export function Page({children,refresh=false}:{children:React.ReactNode;refresh?:boolean}) {
   const {demo,error,reload,loading}=useSession(),theme=useTheme();
   return <SafeAreaView edges={['top','left','right']} style={{flex:1,backgroundColor:theme.colors.background}}>
-    {demo&&<View style={[styles.demo,{backgroundColor:theme.colors.secondaryContainer}]}><Text variant="labelMedium" style={{color:theme.colors.onSecondaryContainer}}>Demo mode · Sample people · Changes reset on restart</Text></View>}
+    {demo&&<View style={[styles.demo,{backgroundColor:theme.colors.secondaryContainer}]}><Text variant="labelMedium" style={{color:theme.colors.onSecondaryContainer}}>Demo mode · Sample people</Text></View>}
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.page}
       refreshControl={refresh?<RefreshControl refreshing={loading} onRefresh={()=>void reload()} tintColor={theme.colors.primary}/>:undefined}>
       {error&&<Banner visible actions={[{label:'Retry',onPress:()=>void reload()}]}>{error}</Banner>}

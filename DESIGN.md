@@ -166,3 +166,18 @@ from accessibility. Paper retains the actual press target, ripple, and loading s
 `buttonFinish` in `src/lib/palette.ts` controls intensity, edges, corner radius, and
 an application-wide enable switch. `glossy={false}` opts out for one AppButton.
 Changing `brandColors.action` still recolors every primary button, including glossy ones.
+
+## Character and track artwork
+
+Original outlined 2D art uses a shared 120×190 character rig: oversized expressive head,
+soft angular hair silhouettes, bright tee, dark shorts, and pale sneakers. Separate layers
+hold skin, back/front limbs, clothing, face, and hair. Four hair silhouettes, three hair
+colors, five skin tones, and four outfits combine without changing the face or body rig.
+Dog, cat, and rabbit companions share a consistent outline, scale, and ground plane.
+
+The race-track reference informs the side view, neutral sky, orange dirt edges, pale gold
+path, and grounded character placement. Original hills, bushes, stones, dashed lane edges,
+and soft contact shadows give depth. No map, leaderboard, or real race position is implied.
+The 390×420 scene is shared between Home and the live creator preview. Walking is opt-in,
+pauses on blur, and respects reduced motion. Persisted appearance is device-local per account.
+The supplied Stompers screenshot is a direction reference; no game assets are copied.

@@ -1,0 +1,41 @@
+import React from 'react';
+import {jest,it,expect,beforeEach} from '@jest/globals';
+import {render,fireEvent} from '@testing-library/react-native';
+import {PaperProvider,MD3LightTheme} from 'react-native-paper';
+import {router} from 'expo-router';
+import CharacterScreen from '../src/app/character';
+import {defaultAppearance,type Appearance} from '../src/lib/character/catalog';
+import {lightColors} from '../src/lib/palette';
+const mockSave=jest.fn<(value:Appearance)=>Promise<void>>();
+jest.mock('expo-router',()=>({router:{replace:jest.fn(),back:jest.fn(),canGoBack:()=>true}}));
+jest.mock('react-native-safe-area-context',()=>require('react-native-safe-area-context/jest/mock').default);
+jest.mock('../src/lib/session',()=>({useSession:()=>({demo:true,error:'',loading:false})}));
+jest.mock('../src/lib/character/appearance',()=>({useAppearance:()=>({appearance:require('../src/lib/character/catalog').defaultAppearance,ready:true,save:mockSave})}));
+beforeEach(()=>{mockSave.mockReset();jest.mocked(router.replace).mockClear();});
+const screen=()=>render(<PaperProvider settings={{icon:()=>null}} theme={{...MD3LightTheme,colors:{...MD3LightTheme.colors,...lightColors}}}><CharacterScreen/></PaperProvider>);
+it('updates the track preview immediately, then saves the selected look',async()=>{
+  mockSave.mockResolvedValue(undefined);
+  const view=await screen();
+  await fireEvent.press(view.getByLabelText('Curls'));
+  await fireEvent.press(view.getByLabelText('Mochi · Cat'));
+  expect(view.getByLabelText(/Your character wearing lagoon, with curls hair and a cat/)).toBeTruthy();
+  await fireEvent.press(view.getByText('Save look'));
+  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,hair:'curls',pet:'cat'});
+  expect(router.replace).toHaveBeenCalledWith('/(tabs)/track');
+});
+it('keeps the edited look and shows an error if device storage fails',async()=>{
+  mockSave.mockRejectedValue(new Error('disk unavailable'));
+  const view=await screen();
+  await fireEvent.press(view.getByLabelText('Just me'));
+  await fireEvent.press(view.getByText('Save look'));
+  expect(view.getByText('Your look could not be saved on this device. Please try again.')).toBeTruthy();
+  expect(router.replace).not.toHaveBeenCalled();
+  expect(view.getByLabelText('Just me').props.accessibilityState.selected).toBe(true);
+});
+it('leaving the editor discards unsaved selections',async()=>{
+  const view=await screen();
+  await fireEvent.press(view.getByLabelText('Ponytail'));
+  await fireEvent.press(view.getByText('Back'));
+  expect(router.back).toHaveBeenCalled();
+  expect(mockSave).not.toHaveBeenCalled();
+});

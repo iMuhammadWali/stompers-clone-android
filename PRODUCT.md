@@ -2,7 +2,8 @@
 
 Working product name for an Android social walking app. Current scope is the API v1
 companion: sign up, sign in, manage friends, handle requests, and edit your display name.
-No walking data, competitions, items, rankings, or group functionality is implemented yet.
+A local character creator, pet selection, and illustrated track preview are implemented.
+No walking data, live competitions, items, rankings, or group functionality is implemented yet.
 
 People use this on a phone, often one-handed. Primary tasks are finding an exact username,
 accepting incoming requests, and seeing who is already a friend. Navigation must match
@@ -23,3 +24,9 @@ control, without an icon-font dependency.
 
 Use code-led design. Continue autonomously using the agreed scope and working name;
 the user is travelling and has asked not to block work with setup questions.
+
+Characters and pets: the new Home tab shows the current avatar and companion on a side-on
+orange walking track. The creator has four hairstyles, three hair colors, five skin tones,
+four outfits, and dog/cat/rabbit/no-pet choices. Facial features are fixed in this version.
+Appearance saves locally per account, separately from authentication. Demo social data still
+resets; saved appearance persists. There are no invented step counts or race results.
