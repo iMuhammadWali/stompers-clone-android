@@ -172,7 +172,7 @@ Changing `brandColors.action` still recolors every primary button, including glo
 Original outlined 2D art uses a shared 120×190 character rig: oversized expressive head,
 soft angular hair silhouettes, bright tee, dark shorts, and pale sneakers. Separate layers
 hold skin, back/front limbs, clothing, face, and hair. Four hair silhouettes, three hair
-colors, five skin tones, and four outfits combine without changing the face or body rig.
+colors, five skin tones, and four outfits combine on the shared body rig.
 Dog, cat, and rabbit companions share a consistent outline, scale, and ground plane.
 
 The race-track reference informs the side view, neutral sky, orange dirt edges, pale gold
@@ -205,3 +205,15 @@ Layering correction: both leg layers render before the shorts, so the near thigh
 erase its trouser leg. Sleeves attach along each upper arm. The resting stride is narrower,
 and character/pet offsets align foot contact with their ground shadows. Pet front paws
 have additional horizontal separation so they do not merge in the default pose.
+
+## Expanded face and clothing system
+
+Eyes, nose profiles, eyebrows/mouth expressions, and shirt details are independent
+layers. Nose choice modifies the actual face silhouette. Expressions adjust eyebrows
+and mouths while retaining the selected eye style. Gender choices adjust the jaw and
+shirt fit without forcing a hairstyle, color, face expression, or wardrobe.
+Classic tees use the original lightning mark, striped tees use two light bands,
+raglan shirts have contrast sleeves, and hoodies have a hood, long sleeves, drawstrings,
+and a pouch. Hands paint after all sleeves to avoid repeating the previous occlusion bug.
+All selections update the same rig used on the track. A generated features sheet records
+the individual options. Four editor sections keep the longer catalog usable on phones.

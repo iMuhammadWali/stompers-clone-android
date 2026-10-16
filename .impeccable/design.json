@@ -192,12 +192,31 @@
         "rabbit",
         "none"
       ],
-      "face": "Single fixed face",
+      "face": "4 eye styles, 3 noses, 5 independent expressions",
       "storage": "Device-local, account-scoped",
       "motion": "Opt-in, reduced-motion-aware; stops on blur",
       "track": "Side-on orange dirt path with pale gold surface and grounded avatars; no live race data",
       "poseSheet": "assets/characters/pose-sheet.svg",
-      "pose": "Readable walking contact pose; explicit hands and opposing arm swing; four pet legs"
+      "pose": "Readable walking contact pose; explicit hands and opposing arm swing; four pet legs",
+      "shirtStyles": [
+        "tee",
+        "striped",
+        "raglan",
+        "hoodie"
+      ],
+      "genderOptions": [
+        "male",
+        "female",
+        "nonbinary"
+      ],
+      "featuresSheet": "assets/characters/features-sheet.svg",
+      "migration": "Missing fields receive defaults; old appearance choices preserved",
+      "editorSections": [
+        "Look",
+        "Face",
+        "Clothes",
+        "Pet"
+      ]
     }
   },
   "components": [

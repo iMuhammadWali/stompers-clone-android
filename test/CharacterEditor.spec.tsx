@@ -17,8 +17,9 @@ it('updates the track preview immediately, then saves the selected look',async()
   mockSave.mockResolvedValue(undefined);
   const view=await screen();
   await fireEvent.press(view.getByLabelText('Curls'));
+  await fireEvent.press(view.getByText('Pet'));
   await fireEvent.press(view.getByLabelText('Mochi · Cat'));
-  expect(view.getByLabelText(/Your character wearing lagoon, with curls hair and a cat/)).toBeTruthy();
+  expect(view.getByLabelText(/Your character wearing lagoon tee, with curls hair and a cat/)).toBeTruthy();
   await fireEvent.press(view.getByText('Save look'));
   expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,hair:'curls',pet:'cat'});
   expect(router.replace).toHaveBeenCalledWith('/(tabs)/track');
@@ -26,6 +27,7 @@ it('updates the track preview immediately, then saves the selected look',async()
 it('keeps the edited look and shows an error if device storage fails',async()=>{
   mockSave.mockRejectedValue(new Error('disk unavailable'));
   const view=await screen();
+  await fireEvent.press(view.getByText('Pet'));
   await fireEvent.press(view.getByLabelText('Just me'));
   await fireEvent.press(view.getByText('Save look'));
   expect(view.getByText('Your look could not be saved on this device. Please try again.')).toBeTruthy();
@@ -38,4 +40,19 @@ it('leaving the editor discards unsaved selections',async()=>{
   await fireEvent.press(view.getByText('Back'));
   expect(router.back).toHaveBeenCalled();
   expect(mockSave).not.toHaveBeenCalled();
+});
+
+it('combines gender, eye, nose, expression, and shirt choices without replacing existing hair or pet choices',async()=>{
+  mockSave.mockResolvedValue(undefined);
+  const view=await screen();
+  await fireEvent.press(view.getByLabelText('Female'));
+  await fireEvent.press(view.getByText('Face'));
+  await fireEvent.press(view.getByLabelText('Almond'));
+  await fireEvent.press(view.getByLabelText('Straight'));
+  await fireEvent.press(view.getByLabelText('Grin'));
+  await fireEvent.press(view.getByText('Clothes'));
+  await fireEvent.press(view.getByLabelText('Hoodie'));
+  await fireEvent.press(view.getByLabelText('Lilac'));
+  await fireEvent.press(view.getByText('Save look'));
+  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',eyes:'almond',nose:'straight',expression:'grin',shirt:'hoodie',outfit:'lilac'});
 });

@@ -4,6 +4,26 @@ export const sceneColors={sky:'#F5F6F8',cloud:'#FFFFFF',farHill:'#ECE9DF',hill:'
 const stroke='stroke="#343239" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"';
 const path=(d:string,fill:string)=>`<path d="${d}" fill="${fill}" ${stroke}/>`;
 const limb=(d:string,color:string)=>`<path d="${d}" fill="none" stroke="#343239" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>`;
+/** Facial choices are independent of gender, skin, hair, and clothes. */
+export function faceFeatures(a:Appearance):string {
+  const surprised=a.expression==='surprised';
+  const normalEyes='<ellipse cx="71" cy="44" rx="5" ry="6" fill="#FFFFFF"/><ellipse cx="84" cy="44" rx="3.4" ry="5" fill="#FFFFFF"/><ellipse cx="73" cy="45" rx="2.2" ry="3.1" fill="#343239"/><ellipse cx="85" cy="45" rx="1.8" ry="2.8" fill="#343239"/>';
+  const eyes={
+    round:normalEyes,
+    almond:'<path d="M65 44 Q71 35 77 43 Q72 51 65 44 M80 43 Q84 36 88 43 Q84 49 80 43" fill="#FFFFFF" stroke="#343239" stroke-width="1"/><ellipse cx="73" cy="43" rx="2" ry="3" fill="#343239"/><ellipse cx="85" cy="43" rx="1.5" ry="2.6" fill="#343239"/>',
+    relaxed:'<path d="M66 42 Q72 39 77 42 L77 46 Q71 50 66 46 Z M81 42 Q85 39 88 42 L88 46 Q84 48 81 45 Z" fill="#FFFFFF"/><path d="M66 42 L77 42 M81 42 L88 42" stroke="#343239" stroke-width="1.7"/><ellipse cx="73" cy="44" rx="2" ry="2.5" fill="#343239"/><ellipse cx="85" cy="44" rx="1.5" ry="2.3" fill="#343239"/>',
+    sparkle:normalEyes+'<circle cx="72.2" cy="43.2" r="1.2" fill="#FFFFFF"/><circle cx="84.4" cy="43.2" r="0.9" fill="#FFFFFF"/><circle cx="74" cy="46.5" r="0.6" fill="#FFFFFF"/>',
+  };
+  const brows={smile:'M66 35 Q71 32 76 35 M81 35 L86 36',grin:'M65 35 Q71 30 77 34 M80 34 Q84 31 88 34',calm:'M66 35 L76 35 M81 35 L87 35',determined:'M66 34 L77 38 M81 38 L88 34',surprised:'M65 32 Q71 27 77 31 M81 31 Q85 27 89 31'};
+  const mouths={
+    smile:'<path d="M76 62 Q81 67 86 61" fill="none" stroke="#343239" stroke-width="2" stroke-linecap="round"/>',
+    grin:'<path d="M73 59 Q80 62 88 58 Q88 69 81 69 Q75 68 73 59 Z" fill="#63363E" stroke="#343239" stroke-width="1.5"/><path d="M75 60 Q81 63 86 60 L85 63 Q80 65 76 63 Z" fill="#FFFFFF"/>',
+    calm:'<path d="M77 63 L85 63" stroke="#343239" stroke-width="1.7" stroke-linecap="round"/>',
+    determined:'<path d="M76 64 Q81 61 86 63" fill="none" stroke="#343239" stroke-width="2" stroke-linecap="round"/>',
+    surprised:'<ellipse cx="81" cy="64" rx="3.2" ry="4.5" fill="#63363E" stroke="#343239" stroke-width="1.4"/>',
+  };
+  return `<g data-face="${a.eyes}-${a.nose}-${a.expression}"><g transform="${surprised?'translate(-5 -4) scale(1.07)':'translate(0 0)'}">${eyes[a.eyes]}</g><path d="${brows[a.expression]}" fill="none" stroke="#343239" stroke-width="1.8" stroke-linecap="round"/>${mouths[a.expression]}</g>`;
+}
 export function characterLayers(value:Appearance,frame=0):string {
   const a=parseAppearance(JSON.stringify(value));
   const skin=skinTones.find(x=>x.id===a.skin)!;
@@ -21,37 +41,43 @@ export function characterLayers(value:Appearance,frame=0):string {
   const backShoe=shoe(backX,backY),frontShoe=shoe(frontX,frontY);
   const farHand={x:78+swing*23,y:116-Math.max(swing,0)*19};
   const nearHand={x:43-swing*25,y:117-Math.max(-swing,0)*5};
-  const arm=(shoulderX:number,elbowX:number,hand:{x:number;y:number},color:string,name:string)=>`<g data-limb="${name}">`+
-    `<path d="M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-3}" fill="none" stroke="#343239" stroke-width="13" stroke-linecap="round"/>`+
-    `<path d="M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-3}" fill="none" stroke="${color}" stroke-width="8.5" stroke-linecap="round"/>`+
-    `<g data-limb="${name}-hand"><ellipse cx="${hand.x}" cy="${hand.y}" rx="5.8" ry="7" fill="${color}" ${stroke}/>`+
-    `<path d="M${hand.x+3} ${hand.y-3} Q${hand.x+8} ${hand.y-4} ${hand.x+6} ${hand.y+1}" fill="${color}" stroke="#343239" stroke-width="1.5" stroke-linecap="round"/></g>`+
-    `<g data-clothing="${name}-sleeve"><path d="M${shoulderX} 85 L${shoulderX+(elbowX-shoulderX)*0.4} 92" fill="none" stroke="#343239" stroke-width="17" stroke-linecap="round"/><path d="M${shoulderX} 85 L${shoulderX+(elbowX-shoulderX)*0.4} 92" fill="none" stroke="${outfit.color}" stroke-width="12.5" stroke-linecap="round"/></g></g>`;
+  const arm=(shoulderX:number,elbowX:number,hand:{x:number;y:number},color:string,name:string)=>{
+    const sleeve=a.shirt==='hoodie'?`M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-11}`:`M${shoulderX} 85 L${shoulderX+(elbowX-shoulderX)*0.4} 92`;
+    return `<g data-limb="${name}">`+
+      `<path d="M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-3}" fill="none" stroke="#343239" stroke-width="13" stroke-linecap="round"/>`+
+      `<path d="M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-3}" fill="none" stroke="${color}" stroke-width="8.5" stroke-linecap="round"/>`+
+      `<g data-clothing="${name}-sleeve"><path d="${sleeve}" fill="none" stroke="#343239" stroke-width="17" stroke-linecap="round"/><path d="${sleeve}" fill="none" stroke="${a.shirt==='raglan'?outfit.shade:outfit.color}" stroke-width="12.5" stroke-linecap="round"/></g>`+
+      `<g data-limb="${name}-hand"><ellipse cx="${hand.x}" cy="${hand.y}" rx="5.8" ry="7" fill="${color}" ${stroke}/>`+
+      `<path d="M${hand.x+3} ${hand.y-3} Q${hand.x+8} ${hand.y-4} ${hand.x+6} ${hand.y+1}" fill="${color}" stroke="#343239" stroke-width="1.5" stroke-linecap="round"/></g></g>`;
+  };
+  const noseOutline={button:'L88 48 Q98 51 89 56',straight:'L88 45 L98 54 Q97 57 88 57',rounded:'L88 47 Q104 55 88 59'};
+  const jaw=a.gender==='male'?'Q84 73 70 75 L54 71 Q41 66 36 58':a.gender==='female'?'Q85 70 69 74 Q45 75 36 58':'Q85 75 66 75 Q43 73 36 58';
+  const shirtBody=a.gender==='female'?'M49 70 Q58 77 71 70 L82 79 L82 96 L76 95 Q71 104 77 115 Q60 122 40 113 Q46 104 42 96 L35 93 L36 80 Z':a.gender==='male'?'M49 70 Q58 77 71 70 L84 79 L84 96 L77 95 L78 115 Q60 122 39 113 L41 96 L34 93 L35 80 Z':'M49 70 Q58 77 71 70 L82 79 L82 96 L76 95 L77 115 Q60 122 40 113 L42 96 L35 93 L36 80 Z';
+  const shirtDetail=a.shirt==='striped'?'<path d="M44 91 H74 M44 101 H74" stroke="#FFFFFF" stroke-width="4.5" opacity="0.85"/>':a.shirt==='hoodie'?'<path d="M54 79 L53 91 M67 79 L69 91 M51 103 Q61 97 71 103 L70 111 H51 Z" fill="none" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round"/>':a.shirt==='raglan'?`<path d="M48 75 L42 94 M72 75 L78 94" stroke="${outfit.shade}" stroke-width="2"/>`:'<path d="M62 95 L67 89 L64 96 L69 96 L60 104 L62 98 L58 98 Z" fill="#FFFFFF" opacity="0.85"/>';
   const hairShapes={
     crop:'M34 45 Q24 19 43 13 Q65 1 84 20 L88 35 Q71 35 63 26 Q50 42 34 45 Z',
     waves:'M32 48 Q23 38 29 28 Q22 17 38 15 Q37 3 51 8 Q64 -1 73 12 Q87 6 90 23 Q99 32 87 41 L78 30 Q67 35 59 24 Q50 43 36 40 Z',
     curls:'M32 49 Q22 44 26 34 Q17 23 30 18 Q26 6 41 8 Q45 -4 57 5 Q69 -2 77 9 Q93 6 92 21 Q104 30 92 39 L83 41 Q76 29 66 31 Q55 42 46 33 L38 49 Z',
     ponytail:'M32 49 Q22 34 32 19 Q48 0 70 10 Q90 12 91 35 L80 39 Q66 28 62 23 Q51 41 37 43 Z',
   };
-  return `<g data-layer="character" transform="translate(0 0)">`+
+  return `<g data-layer="character" data-gender="${a.gender}" data-shirt="${a.shirt}" transform="translate(0 0)">`+
     (a.hair==='ponytail'?path('M32 25 Q8 14 9 38 Q2 61 20 66 Q13 42 33 42 Z',hair.color):'')+
     `<g data-limb="far-leg">${limb(backLeg,skin.shade)}<g transform="rotate(${Math.max(swing,0)*16} ${backX+12} ${backY+9})">${path(backShoe,'#E1E1DD')}</g></g>`+
     arm(78,83+swing*5,farHand,skin.shade,'far-arm')+
     `<g data-limb="near-leg">${limb(frontLeg,skin.color)}<g transform="rotate(${-Math.max(swing,0)*7} ${frontX-10} ${frontY+9})">${path(frontShoe,'#F7F6F1')}</g></g>`+
     `<g data-clothing="shorts">${path('M44 107 L74 107 L81 133 L65 138 L59 125 L53 138 L36 131 Z',outfit.shorts)}</g>`+
     path('M50 61 L51 77 L69 78 L69 60 Z',skin.shade)+
-    path('M49 70 Q58 77 71 70 L82 79 L82 96 L76 95 L77 115 Q60 122 40 113 L42 96 L35 93 L36 80 Z',outfit.color)+
+    (a.shirt==='hoodie'?path('M43 78 Q32 60 49 61 L71 61 Q90 63 82 81 L72 83 Z',outfit.shade):'')+
+    path(shirtBody,outfit.color)+
     `<path d="M72 76 L75 111 Q61 116 43 110" fill="none" stroke="${outfit.shade}" stroke-width="5"/>`+
     '<path d="M48 73 Q58 82 72 74" fill="none" stroke="#343239" stroke-width="2.1"/>'+
     arm(43,42-swing*15,nearHand,skin.color,'near-arm')+
-    path('M34 34 Q39 15 61 17 Q84 17 88 38 L89 48 L94 53 Q96 57 88 58 Q85 75 66 75 Q43 73 36 58 Q25 59 26 49 Q27 42 34 45 Z',skin.color)+
+    path(`M34 34 Q39 15 61 17 Q84 17 88 38 ${noseOutline[a.nose]} ${jaw} Q25 59 26 49 Q27 42 34 45 Z`,skin.color)+
     `<path d="M36 50 Q31 46 31 53 M81 55 L85 57" fill="none" stroke="${skin.shade}" stroke-width="2.2"/>`+
-    '<ellipse cx="71" cy="44" rx="5" ry="6" fill="#FFFFFF"/><ellipse cx="84" cy="44" rx="3.4" ry="5" fill="#FFFFFF"/>'+
-    '<ellipse cx="73" cy="45" rx="2.2" ry="3.1" fill="#343239"/><ellipse cx="85" cy="45" rx="1.8" ry="2.8" fill="#343239"/>'+
-    '<path d="M66 35 Q71 32 76 35 M81 35 L86 36 M77 63 Q82 65 85 61" fill="none" stroke="#343239" stroke-width="2" stroke-linecap="round"/>'+
+    faceFeatures(a)+
     path(hairShapes[a.hair],hair.color)+
     `<path d="M37 22 Q49 12 62 15" fill="none" stroke="${hair.shine}" stroke-width="4" stroke-linecap="round"/>`+
-    `<path d="M62 95 L67 89 L64 96 L69 96 L60 104 L62 98 L58 98 Z" fill="#FFFFFF" opacity="0.85"/>`+
+    `<g data-shirt-detail="${a.shirt}">${shirtDetail}</g>`+
     '</g>';
 }
 export function petLayers(pet:Appearance['pet'],frame=0):string {
@@ -110,3 +136,5 @@ export function trackSvg(a:Appearance,frame=0):string {
 }
 export function portraitSvg(a:Appearance):string {return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="17 0 89 85" width="100" height="100">${characterLayers(a)}</svg>`;}
 export function petSvg(pet:Appearance['pet']):string {return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -10 100 90" width="100" height="90">${petLayers(pet)}</svg>`;}
+
+export function shirtSvg(a:Appearance):string {return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="24 67 70 65" width="100" height="90">${characterLayers(a)}</svg>`;}

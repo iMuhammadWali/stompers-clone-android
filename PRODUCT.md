@@ -27,6 +27,11 @@ the user is travelling and has asked not to block work with setup questions.
 
 Characters and pets: the new Home tab shows the current avatar and companion on a side-on
 orange walking track. The creator has four hairstyles, three hair colors, five skin tones,
-four outfits, and dog/cat/rabbit/no-pet choices. Facial features are fixed in this version.
+four outfits, and dog/cat/rabbit/no-pet choices. Facial features now include independent eye, nose, and expression choices.
 Appearance saves locally per account, separately from authentication. Demo social data still
 resets; saved appearance persists. There are no invented step counts or race results.
+
+The creator has Look/Face/Clothes/Pet sections. Eyes: 4; noses: 3; expressions: 5;
+shirt styles: 4; base gender/face/fit variants: Male, Female, Nonbinary. Choices remain
+independent, including shirt color versus style. Legacy saved looks migrate by adding
+default values for missing fields; existing choices are preserved.
