@@ -1,5 +1,5 @@
 import {writeFileSync,mkdirSync} from 'node:fs';
-import {trackSvg,characterLayers,portraitSvg,shirtSvg} from '../src/lib/character/artwork';
+import {trackSvg,characterLayers,portraitSvg,shirtSvg,featureSvg} from '../src/lib/character/artwork';
 import {defaultAppearance,eyeStyles,noseStyles,expressions,shirtStyles,genders,parseAppearance,type Appearance} from '../src/lib/character/catalog';
 const looks:Appearance[]=[defaultAppearance,
   {...defaultAppearance,hair:'ponytail',skin:'deep',outfit:'lilac',pet:'cat',gender:'female',eyes:'almond',nose:'curve',expression:'grin',shirt:'striped'},
@@ -14,9 +14,9 @@ const poses=`<svg xmlns="http://www.w3.org/2000/svg" width="640" height="440" vi
 writeFileSync('assets/characters/pose-sheet.svg',poses);
 
 const featureRows=[
-  eyeStyles.map(e=>({label:e.label,art:portraitSvg({...defaultAppearance,eyes:e.id})})),
-  noseStyles.map(n=>({label:n.label,art:portraitSvg({...defaultAppearance,nose:n.id})})),
-  expressions.map(e=>({label:e.label,art:portraitSvg({...defaultAppearance,expression:e.id})})),
+  eyeStyles.map(e=>({label:e.label,art:featureSvg({...defaultAppearance,eyes:e.id,expression:'calm'},'eyes')})),
+  noseStyles.map(n=>({label:n.label,art:featureSvg({...defaultAppearance,nose:n.id,expression:'calm'},'nose')})),
+  expressions.map(e=>({label:e.label,art:featureSvg({...defaultAppearance,expression:e.id},'expression')})),
   shirtStyles.map(s=>({label:s.label,art:shirtSvg({...defaultAppearance,shirt:s.id,gender:s.id==='striped'?'female':s.id==='raglan'?'male':'nonbinary'})})),
   genders.map(g=>({label:g.label,art:portraitSvg({...defaultAppearance,gender:g.id})})),
 ];

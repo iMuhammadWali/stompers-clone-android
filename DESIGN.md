@@ -209,10 +209,10 @@ have additional horizontal separation so they do not merge in the default pose.
 ## Expanded face and clothing system
 
 Eyes, nose profiles, eyebrows/mouth expressions, and shirt details are independent
-layers. Nose choice modifies the actual face silhouette. Expressions adjust eyebrows
+layers. Noses sit within a stable, smooth face silhouette. Expressions adjust eyebrows
 and mouths while retaining the selected eye style. Gender choices adjust the jaw and shirt fit. Catalog eligibility restricts Crop/Raglan
 to Male and Ponytail/Striped to Female; other hair/shirt choices are shared.
-Classic tees use the original lightning mark, striped tees use two light bands,
+Classic tees are plain, striped tees use two broad curved light bands,
 raglan shirts have contrast sleeves, and hoodies have a hood, long sleeves, drawstrings,
 and a pouch. Hands paint after all sleeves to avoid repeating the previous occlusion bug.
 All selections update the same rig used on the track. A generated features sheet records
@@ -220,9 +220,8 @@ the individual options. Four editor sections keep the longer catalog usable on p
 
 ## Nose simplification and inventory rules
 
-Noses now use a minimal dot, soft curve, or tiny wedge. Profile projections are shorter,
-with fewer interior marks and thinner lines, keeping the eyes and expression as the
-main facial focus. The chosen default is Soft curve. Legacy nose IDs migrate to the
+Noses use a minimal mark, softly shaded button, or interior bridge curve. The cheek
+outline stays smooth, keeping the eyes and expression as the main facial focus. The chosen default is Button nose. Legacy nose IDs migrate to the
 nearest new style. Choices were informed by Raquel Arellano and the Etherington Brothers:
 - https://www.clipstudio.net/how-to-draw/archives/160376
 - https://www.clipstudio.net/how-to-draw/archives/161019
@@ -230,3 +229,18 @@ nearest new style. Choices were informed by Raquel Arellano and the Etherington 
 These sources describe simplifying nose structure and varying the profile; the actual
 small-profile designs are an application-specific interpretation. Game catalog gender
 restrictions are specified by the user, not inferred rules about real-world fashion.
+
+
+### Face and clothing refinement
+Cartoon simplification references: Clip Studio Art Rocket,
+https://www.clipstudio.net/how-to-draw/archives/155423, and CrimsyCreates,
+https://tips.clip-studio.com/en-us/articles/4953. These inform compact facial marks
+and fewer, bolder clothing details; the SVG geometry is original.
+
+Minimal nose is a tiny shaded mark; Button nose uses soft volume and a short lower
+curve; Soft bridge uses a light interior contour. None interrupts the cheek outline.
+The tee is plain, stripes are broad curved bands clipped to the torso, raglan sleeves
+use seams, and the hoodie uses a tonal pocket. Details sit beneath arms and collar.
+Choices have no visible captions. Accessible labels remain, and selected tiles show
+a small check badge. Face thumbnails crop around the relevant feature. Five options
+wrap into two rows rather than squeezing five portraits onto one mobile row.

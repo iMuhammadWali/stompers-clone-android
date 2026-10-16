@@ -174,7 +174,7 @@ have additional horizontal separation so they do not merge in the default pose.
 ## Expanded creator
 
 The creator is grouped into Look, Face, Clothes, and Pet sections. New independent options:
-4 eyes (Round, Almond, Relaxed, Sparkle), 3 noses (Dot, Soft curve, Tiny wedge),
+4 eyes (Round, Almond, Relaxed, Sparkle), 3 noses (Minimal nose, Button nose, Soft bridge),
 5 expressions (Smile, Grin, Calm, Determined, Surprised), 4 shirt styles (Classic tee,
 Striped, Raglan, Hoodie), and Male/Female/Nonbinary base face and fit variants.
 Crop hair and Raglan shirts are male-only; Ponytail and Striped shirts are female-only.
@@ -190,3 +190,7 @@ those rules; parseAppearance applies the same rules to stored data. Switching ge
 falls back to Waves and Classic tee when a selected style becomes incompatible, and
 shows an inline explanation. Other selections stay unchanged. Legacy nose IDs map to
 Dot, Tiny wedge, and Soft curve respectively; Soft curve is the new default.
+
+Character choices use artwork-only tiles with accessible names and selection checks.
+Face previews zoom into the selected feature. Shirts use plain fabric, broad clipped
+stripes, raglan seams, or a tonal hoodie pocket.

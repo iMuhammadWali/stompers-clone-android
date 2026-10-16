@@ -49,7 +49,7 @@ it('combines gender, eye, nose, expression, and shirt choices without replacing 
   await fireEvent.press(view.getByLabelText('Female'));
   await fireEvent.press(view.getByText('Face'));
   await fireEvent.press(view.getByLabelText('Almond'));
-  await fireEvent.press(view.getByLabelText('Tiny wedge'));
+  await fireEvent.press(view.getByLabelText('Soft bridge'));
   await fireEvent.press(view.getByLabelText('Grin'));
   await fireEvent.press(view.getByText('Clothes'));
   await fireEvent.press(view.getByLabelText('Hoodie'));
@@ -82,4 +82,14 @@ it('filters gender-specific inventory and replaces incompatible selections on ge
   expect(view.getByLabelText('Classic tee').props.accessibilityState.selected).toBe(true);
   await fireEvent.press(view.getByText('Save look'));
   expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',hair:'waves',shirt:'tee'});
+});
+
+it('uses artwork-only choice tiles while retaining accessible names and selected state',async()=>{
+  const view=await screen();
+  await fireEvent.press(view.getByText('Face'));
+  expect(view.queryByText('Determined')).toBeNull();
+  expect(view.queryByText('Round')).toBeNull();
+  expect(view.queryByText('Button nose')).toBeNull();
+  await fireEvent.press(view.getByLabelText('Determined'));
+  expect(view.getByLabelText('Determined').props.accessibilityState.checked).toBe(true);
 });

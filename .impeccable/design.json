@@ -192,7 +192,7 @@
         "rabbit",
         "none"
       ],
-      "face": "4 eye styles, 3 compact noses (dot/curve/wedge), 5 independent expressions",
+      "face": "4 eye styles, 3 interior noses (minimal/button/soft bridge), 5 independent expressions",
       "storage": "Device-local, account-scoped",
       "motion": "Opt-in, reduced-motion-aware; stops on blur",
       "track": "Side-on orange dirt path with pale gold surface and grounded avatars; no live race data",

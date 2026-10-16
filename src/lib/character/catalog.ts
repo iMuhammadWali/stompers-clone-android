@@ -31,7 +31,7 @@ export const eyeStyles = [
   {id:'relaxed',label:'Relaxed'}, {id:'sparkle',label:'Sparkle'},
 ] as const;
 export const noseStyles = [
-  {id:'dot',label:'Dot'}, {id:'curve',label:'Soft curve'}, {id:'wedge',label:'Tiny wedge'},
+  {id:'dot',label:'Minimal nose'}, {id:'curve',label:'Button nose'}, {id:'wedge',label:'Soft bridge'},
 ] as const;
 export const expressions = [
   {id:'smile',label:'Smile'}, {id:'grin',label:'Grin'}, {id:'calm',label:'Calm'},

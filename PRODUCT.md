@@ -40,3 +40,6 @@ Gender-specific styles: Male → Crop/Raglan; Female → Ponytail/Striped.
 Shared → Waves/Curls and Classic tee/Hoodie. Nonbinary uses the shared inventory.
 Changing gender replaces incompatible hair/shirts with shared defaults and explains it.
 Noses use smaller cartoon marks and profiles: Dot, Soft curve, Tiny wedge.
+
+Character choice tiles are picture-only with accessible labels and selection badges.
+Face features use enlarged previews; shirt details are clipped to the garment.
