@@ -66,7 +66,7 @@ export const avatarColors = {
   ]
 };
 
-// One shared switch and finish settings for every enabled primary button.
+// One shared switch and finish settings for every enabled primary and tonal button.
 export const buttonFinish = {
   enabled: true,
   highlight: '#FFFFFF',

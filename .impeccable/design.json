@@ -175,7 +175,7 @@
       "lowerEdgeWidth": 3,
       "radius": 18,
       "implementation": "src/components/AppButton.tsx",
-      "scope": "Enabled contained buttons; tonal, text, and disabled controls stay flat."
+      "scope": "Enabled contained and tonal buttons; text, outlined, and disabled controls stay flat."
     }
   },
   "components": [

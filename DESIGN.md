@@ -159,8 +159,8 @@ inspection examples in this document are historical and are not part of the acti
 
 ### Primary button finish
 
-Enabled primary buttons share a static gloss: a white highlight fading down from the
-top, a small side glint, a darker lower edge, and a charcoal outline. Text, tonal,
+Enabled primary and tonal buttons share a static gloss: a white highlight fading down from the
+top, a small side glint, a darker lower edge, and a charcoal outline. Text, outlined,
 and disabled buttons stay flat. The decorative overlay ignores touch and is hidden
 from accessibility. Paper retains the actual press target, ripple, and loading state.
 `buttonFinish` in `src/lib/palette.ts` controls intensity, edges, corner radius, and

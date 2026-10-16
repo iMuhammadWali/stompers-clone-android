@@ -12,7 +12,7 @@ export function AppButton({mode='text',buttonColor,textColor,disabled,glossy=but
   const gradientId=`button-shine-${useId().replace(/[^a-zA-Z0-9-]/g,'')}`;
   const filled=mode==='contained';
   const tonal=mode==='contained-tonal';
-  const shine=filled&&!disabled&&glossy;
+  const shine=(filled||tonal)&&!disabled&&glossy;
   // Paper retains its native ripple, loading indicator and disabled styling.
   const background=disabled?undefined:filled?colors.primaryContainer:tonal?colors.secondaryContainer:undefined;
   const foreground=disabled?undefined:filled?colors.onPrimaryContainer:tonal?colors.onSecondaryContainer:colors.onSurface;
@@ -26,7 +26,7 @@ export function AppButton({mode='text',buttonColor,textColor,disabled,glossy=but
       style={[StyleSheet.absoluteFill,{borderRadius:buttonFinish.radius,overflow:'hidden'}]}>
       <Svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" accessible={false}>
         <Defs>
-          <LinearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+          <LinearGradient id={gradientId} x1="0%" y1="0%" x2="0%" y2="100%">
             <Stop offset="0" stopColor={buttonFinish.highlight} stopOpacity={buttonFinish.highlightOpacity}/>
             <Stop offset="0.46" stopColor={buttonFinish.highlight} stopOpacity="0"/>
             <Stop offset="0.72" stopColor={colors.onSurface} stopOpacity="0"/>
