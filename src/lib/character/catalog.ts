@@ -1,6 +1,10 @@
 export const hairstyles = [
-  {id:'crop',label:'Crop'}, {id:'waves',label:'Waves'},
-  {id:'curls',label:'Curls'}, {id:'ponytail',label:'Ponytail'},
+  {id:'crop',label:'Crop',gender:'male'}, {id:'waves',label:'Waves',gender:'male'},
+  {id:'curls',label:'Curls',gender:'male'}, {id:'quiff',label:'Quiff',gender:'male'},
+  {id:'sidepart',label:'Side part',gender:'male'}, {id:'spikes',label:'Spikes',gender:'male'},
+  {id:'ponytail',label:'Ponytail',gender:'female'}, {id:'bob',label:'Bob',gender:'female'},
+  {id:'bun',label:'Bun',gender:'female'}, {id:'braids',label:'Braids',gender:'female'},
+  {id:'longwaves',label:'Long waves',gender:'female'}, {id:'ringlets',label:'Ringlets',gender:'female'},
 ] as const;
 export const skinTones = [
   {id:'porcelain',label:'Porcelain',color:'#F8D6BA',shade:'#DFAB8B'},
@@ -24,12 +28,16 @@ export const pets = [
   {id:'dog',label:'Biscuit',species:'Dog',color:'#E6AE68'},
   {id:'cat',label:'Mochi',species:'Cat',color:'#A8ABBF'},
   {id:'rabbit',label:'Clover',species:'Rabbit',color:'#F5E7D4'},
+  {id:'fox',label:'Ember',species:'Fox',color:'#E99A57'},
+  {id:'dragon',label:'Sprout',species:'Dragon',color:'#A8CC82'},
+  {id:'spaceship',label:'Orbit',species:'Alien spaceship',color:'#B8CAD6'},
   {id:'none',label:'Just me',species:'No pet',color:'#E7E9F0'},
 ] as const;
 export const eyeStyles = [
   {id:'round',label:'Round'}, {id:'almond',label:'Almond'},
   {id:'relaxed',label:'Relaxed'}, {id:'sparkle',label:'Sparkle'},
 ] as const;
+export const eyewearStyles = [{id:'none',label:'No glasses'},{id:'sunglasses',label:'Sunglasses'}] as const;
 export const noseStyles = [
   {id:'dot',label:'Minimal nose'}, {id:'curve',label:'Button nose'}, {id:'wedge',label:'Soft bridge'},
 ] as const;
@@ -48,12 +56,12 @@ export type Appearance = {
   hair:typeof hairstyles[number]['id'];skin:typeof skinTones[number]['id'];
   hairColor:typeof hairColors[number]['id'];outfit:typeof outfits[number]['id'];
   pet:typeof pets[number]['id'];eyes:typeof eyeStyles[number]['id'];nose:typeof noseStyles[number]['id'];
-  expression:typeof expressions[number]['id'];shirt:typeof shirtStyles[number]['id'];gender:typeof genders[number]['id'];
+  expression:typeof expressions[number]['id'];eyewear:typeof eyewearStyles[number]['id'];shirt:typeof shirtStyles[number]['id'];gender:typeof genders[number]['id'];
 };
-export const defaultAppearance:Appearance={hair:'waves',skin:'warm',hairColor:'espresso',outfit:'lagoon',pet:'dog',eyes:'round',nose:'curve',expression:'smile',shirt:'tee',gender:'male'};
+export const defaultAppearance:Appearance={hair:'waves',skin:'sand',hairColor:'espresso',outfit:'lagoon',pet:'dog',eyes:'round',nose:'curve',expression:'smile',eyewear:'none',shirt:'tee',gender:'male'};
 /** Gender-specific inventory lives here, so UI and stored looks use identical rules. */
 export const styleAvailability:{hair:Partial<Record<Appearance['hair'],readonly Appearance['gender'][]>>;shirt:Partial<Record<Appearance['shirt'],readonly Appearance['gender'][]>>}={
-  hair:{crop:['male'],ponytail:['female']},
+  hair:Object.fromEntries(hairstyles.map(h=>[h.id,[h.gender]])),
   shirt:{raglan:['male'],striped:['female']},
 };
 export function isStyleAllowed(kind:'hair'|'shirt',id:string,gender:Appearance['gender']):boolean {
@@ -61,7 +69,8 @@ export function isStyleAllowed(kind:'hair'|'shirt',id:string,gender:Appearance['
   return !rules[id]||rules[id]!.includes(gender);
 }
 export function normalizeStyles(value:Appearance):Appearance {
-  return {...value,hair:isStyleAllowed('hair',value.hair,value.gender)?value.hair:'waves',shirt:isStyleAllowed('shirt',value.shirt,value.gender)?value.shirt:'tee'};
+  const fallbackHair=value.gender==='female'?(value.hair==='waves'?'longwaves':value.hair==='curls'?'ringlets':'ponytail'):'waves';
+  return {...value,hair:isStyleAllowed('hair',value.hair,value.gender)?value.hair:fallbackHair,shirt:isStyleAllowed('shirt',value.shirt,value.gender)?value.shirt:'tee'};
 }
 /** Storage is untrusted; unknown/missing options fall back independently. */
 export function parseAppearance(raw:string|null):Appearance {
@@ -70,9 +79,9 @@ export function parseAppearance(raw:string|null):Appearance {
   const legacyNoses:Record<string,string>={button:'dot',straight:'wedge',rounded:'curve'};
   if(typeof input.nose==='string')input.nose=legacyNoses[input.nose]??input.nose;
   // Preserve existing gender-specific inventory when migrating the retired third option.
-  if(input.gender==='nonbinary')input.gender=input.hair==='ponytail'||input.shirt==='striped'?'female':'male';
+  if(input.gender==='nonbinary')input.gender=hairstyles.some(h=>h.id===input.hair&&h.gender==='female')||input.shirt==='striped'?'female':'male';
   const result={...defaultAppearance};
-  const catalogs={hair:hairstyles,skin:skinTones,hairColor:hairColors,outfit:outfits,pet:pets,eyes:eyeStyles,nose:noseStyles,expression:expressions,shirt:shirtStyles,gender:genders};
+  const catalogs={hair:hairstyles,skin:skinTones,hairColor:hairColors,outfit:outfits,pet:pets,eyes:eyeStyles,eyewear:eyewearStyles,nose:noseStyles,expression:expressions,shirt:shirtStyles,gender:genders};
   for(const key of Object.keys(catalogs) as (keyof Appearance)[]) {
     if(catalogs[key].some(item=>item.id===input[key]))Object.assign(result,{[key]:input[key]});
   }

@@ -7,8 +7,7 @@ import {Page,styles,Notice} from '../components/ui';
 import {AppButton} from '../components/AppButton';
 import {TrackScene} from '../components/character/TrackScene';
 import {useAppearance} from '../lib/character/appearance';
-import {hairstyles,skinTones,hairColors,outfits,pets,eyeStyles,noseStyles,expressions,shirtStyles,genders,isStyleAllowed,parseAppearance,type Appearance} from '../lib/character/catalog';
-import {petSvg} from '../lib/character/artwork';
+import {hairstyles,skinTones,hairColors,outfits,pets,eyeStyles,noseStyles,expressions,shirtStyles,genders,eyewearStyles,isStyleAllowed,parseAppearance,type Appearance} from '../lib/character/catalog';
 import {choiceArtwork} from '../lib/character/previews';
 
 const ChoiceColumns=createContext(4);
@@ -22,12 +21,12 @@ function Choice({label,selected,onPress,children,caption=false}:{label:string;se
 }
 function ChoiceGroup({title,children}:{title:string;children:React.ReactNode}) {
   const count=React.Children.count(children),{width,fontScale}=useWindowDimensions();
-  const preferred=count===5?3:Math.min(count,4);
+  const preferred=count===5||count===6?3:Math.min(count,4);
   const columns=Math.max(1,Math.min(preferred,Math.floor((Math.min(width,600)-48+8)/(fontScale>1.3?140:72))));
   return <ChoiceColumns.Provider value={columns}><View style={{gap:12}}><Text variant="titleMedium" style={{fontWeight:'700'}}>{title}</Text><View accessibilityRole="radiogroup" accessibilityLabel={title} style={{flexDirection:'row',gap:8,flexWrap:'wrap'}}>{children}</View></View></ChoiceColumns.Provider>;
 }
 function Editor() {
-  const {appearance,save}=useAppearance(),theme=useTheme(),{width,fontScale}=useWindowDimensions();
+  const {appearance,save}=useAppearance(),theme=useTheme(),{width,height,fontScale}=useWindowDimensions();
   const [section,setSection]=useState('look');
   const [draft,setDraft]=useState<Appearance>(appearance),[busy,setBusy]=useState(false),[error,setError]=useState('');
   const [adjustment,setAdjustment]=useState('');
@@ -36,16 +35,17 @@ function Editor() {
   function choose<K extends keyof Appearance>(key:K,value:Appearance[K]) {
     const next=parseAppearance(JSON.stringify({...draft,[key]:value}));
     const adjusted=key==='gender'&&(next.hair!==draft.hair||next.shirt!==draft.shirt);
-    setDraft(next);setAdjustment(adjusted?'Unavailable styles were replaced with shared options. Your other choices are unchanged.':'');
+    setDraft(next);setAdjustment(adjusted?'Hairstyle and clothing were adjusted for this gender. Your other choices are unchanged.':'');
   }
   async function submit() {
     setBusy(true);setError('');
     try {await save(draft);router.replace('/(tabs)/track');}
     catch {setError('Your look could not be saved on this device. Please try again.');setBusy(false);}
   }
-  return <>
-    <View style={{gap:7}}><Text variant="headlineLarge" style={{fontWeight:'700',letterSpacing:-0.8}}>A look of your own.</Text><Text variant="bodyLarge" style={{color:theme.colors.onSurfaceVariant}}>Pick your style. Bring a little company.</Text></View>
-    <View testID="character-preview" style={{borderRadius:24,overflow:'hidden',borderWidth:1,borderColor:theme.colors.outlineVariant}}><TrackScene appearance={draft} compact/></View>
+  return <Page fixedHeader={<View style={{width:'100%',maxWidth:600,alignSelf:'center',paddingHorizontal:24,paddingBottom:12,gap:8}}>
+    <View style={{flexDirection:'row',alignItems:'center',gap:12}}><AppButton onPress={()=>router.canGoBack()?router.back():router.replace('/(tabs)/track')} contentStyle={{minHeight:48}}>Back</AppButton><Text variant="titleLarge" style={{fontWeight:'700',flex:1,flexShrink:1}}>Edit character</Text></View>
+    <View testID="character-preview" style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:theme.colors.outlineVariant,backgroundColor:theme.colors.background}}><TrackScene appearance={draft} compact height={Math.min(200,Math.max(72,Math.round(height*0.24)))}/></View>
+  </View>}>
     <View accessibilityRole="radiogroup" accessibilityLabel="Character category" style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>
       {[{id:'look',label:'Look'},{id:'face',label:'Face'},{id:'clothes',label:'Clothes'},{id:'pet',label:'Pet'}].map(item=><Pressable key={item.id} accessibilityRole="radio" accessibilityLabel={item.label} accessibilityState={{selected:section===item.id,checked:section===item.id}} onPress={()=>setSection(item.id)} android_ripple={{color:theme.colors.surfaceVariant}} style={{flexGrow:1,flexShrink:1,flexBasis:fontScale>1.3||width<360?'44%':'21%',minWidth:64,minHeight:48,paddingVertical:12,paddingHorizontal:8,borderRadius:12,borderWidth:section===item.id?2:1,borderColor:section===item.id?theme.colors.onSurface:theme.colors.outline,backgroundColor:section===item.id?theme.colors.secondaryContainer:theme.colors.surface,justifyContent:'center',alignItems:'center'}}><Text variant="labelLarge" style={{textAlign:'center',fontWeight:'700',flexShrink:1,color:theme.colors.onSurface}}>{item.label}</Text></Pressable>)}
     </View>
@@ -58,6 +58,7 @@ function Editor() {
     </>}
     {section==='face'&&<>
     <ChoiceGroup title="Eyes">{eyeStyles.map(e=><Choice key={e.id} label={e.label} selected={draft.eyes===e.id} onPress={()=>choose('eyes',e.id)}><SvgXml xml={choiceArtwork.eyes[e.id]} width="100%" height={68} accessible={false}/></Choice>)}</ChoiceGroup>
+    <ChoiceGroup title="Eyewear">{eyewearStyles.map(e=><Choice key={e.id} label={e.label} selected={draft.eyewear===e.id} onPress={()=>choose('eyewear',e.id)}><SvgXml xml={choiceArtwork.eyewear[e.id]} width="100%" height={68} accessible={false}/></Choice>)}</ChoiceGroup>
     <ChoiceGroup title="Nose">{noseStyles.map(n=><Choice key={n.id} label={n.label} selected={draft.nose===n.id} onPress={()=>choose('nose',n.id)}><SvgXml xml={choiceArtwork.nose[n.id]} width="100%" height={68} accessible={false}/></Choice>)}</ChoiceGroup>
     <ChoiceGroup title="Expression">{expressions.map(e=><Choice key={e.id} label={e.label} selected={draft.expression===e.id} onPress={()=>choose('expression',e.id)}><SvgXml xml={choiceArtwork.expression[e.id]} width="100%" height={68} accessible={false}/></Choice>)}</ChoiceGroup>
     </>}
@@ -66,7 +67,7 @@ function Editor() {
     <ChoiceGroup title="Outfit">{outfits.map(o=><Choice key={o.id} label={o.label} selected={draft.outfit===o.id} onPress={()=>choose('outfit',o.id)}><View style={{width:30,height:32,borderRadius:8,backgroundColor:o.color,borderWidth:1.5,borderColor:theme.colors.onSurface}}/></Choice>)}</ChoiceGroup>
     </>}
     {section==='pet'&&<>
-    <ChoiceGroup title="Walking buddy">{pets.map(p=><Choice key={p.id} label={p.id==='none'?p.label:`${p.label} · ${p.species}`} selected={draft.pet===p.id} onPress={()=>choose('pet',p.id)}>{p.id==='none'?<View style={{height:62,justifyContent:'center'}}><Text variant="headlineSmall">—</Text></View>:<SvgXml xml={petSvg(p.id)} width="100%" height={68} accessible={false}/>}</Choice>)}</ChoiceGroup>
+    <ChoiceGroup title="Walking buddy">{pets.map(p=><Choice key={p.id} label={p.id==='none'?p.label:`${p.label} · ${p.species}`} selected={draft.pet===p.id} onPress={()=>choose('pet',p.id)}>{p.id==='none'?<View style={{height:62,justifyContent:'center'}}><Text variant="headlineSmall">—</Text></View>:<SvgXml xml={choiceArtwork.pet[p.id]} width="100%" height={68} accessible={false}/>}</Choice>)}</ChoiceGroup>
     </>}
     <View style={{gap:8,borderTopWidth:1,borderColor:theme.colors.outlineVariant,paddingTop:16}}>
       <Text accessibilityLiveRegion="polite" variant="bodyMedium" style={{fontWeight:'600',color:theme.colors.onSurface}}>{dirty?'Unsaved changes':'Saved look'}</Text>
@@ -76,9 +77,9 @@ function Editor() {
     {!!adjustment&&<Text accessibilityLiveRegion="polite" variant="bodySmall" style={{color:theme.colors.onSurfaceVariant}}>{adjustment}</Text>}
     <Notice text={error}/>
     <AppButton mode="contained" disabled={busy||!dirty} loading={busy} onPress={()=>void submit()} contentStyle={styles.button}>Save look</AppButton>
-  </>;
+  </Page>;
 }
 export default function CharacterScreen() {
   const {ready}=useAppearance();
-  return <Page><View style={{alignItems:'flex-start'}}><AppButton onPress={()=>router.canGoBack()?router.back():router.replace('/(tabs)/track')}>Back</AppButton></View>{ready?<Editor/>:<ActivityIndicator accessibilityLabel="Loading your saved look"/>}</Page>;
+  return ready?<Editor/>:<Page><View style={{alignItems:'flex-start'}}><AppButton onPress={()=>router.canGoBack()?router.back():router.replace('/(tabs)/track')}>Back</AppButton></View><ActivityIndicator accessibilityLabel="Loading your saved look"/></Page>;
 }

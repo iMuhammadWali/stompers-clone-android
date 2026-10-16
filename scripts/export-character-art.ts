@@ -1,6 +1,7 @@
+import {choiceArtwork} from '../src/lib/character/previews';
 import {writeFileSync,mkdirSync} from 'node:fs';
-import {trackSvg,characterLayers,portraitSvg,shirtSvg,featureSvg,genderSvg} from '../src/lib/character/artwork';
-import {defaultAppearance,eyeStyles,noseStyles,expressions,shirtStyles,genders,parseAppearance,type Appearance} from '../src/lib/character/catalog';
+import {trackSvg,characterLayers,shirtSvg,featureSvg,genderSvg} from '../src/lib/character/artwork';
+import {defaultAppearance,eyeStyles,noseStyles,expressions,shirtStyles,genders,hairstyles,pets,eyewearStyles,parseAppearance,type Appearance} from '../src/lib/character/catalog';
 const looks:Appearance[]=[defaultAppearance,
   {...defaultAppearance,hair:'ponytail',skin:'deep',outfit:'lilac',pet:'cat',gender:'female',eyes:'almond',nose:'curve',expression:'grin',shirt:'striped'},
   {...defaultAppearance,hair:'curls',hairColor:'honey',skin:'sand',outfit:'tangerine',pet:'rabbit',gender:'male',eyes:'relaxed',nose:'wedge',expression:'calm',shirt:'hoodie'},
@@ -22,3 +23,10 @@ const featureRows=[
 ];
 const features=`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="650" viewBox="0 0 600 650"><rect width="600" height="650" fill="#F5F6F8"/>${featureRows.map((row,y)=>row.map((f,x)=>`<g transform="translate(${x*120+10} ${y*130+5})">${f.art}<text x="50" y="116" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#343239">${f.label}</text></g>`).join('')).join('')}</svg>`;
 writeFileSync('assets/characters/features-sheet.svg',features);
+
+const catalogItems=[
+  ...hairstyles.map(h=>({label:h.label,art:choiceArtwork.hair[h.id]})),
+  ...pets.map(p=>({label:p.species,art:choiceArtwork.pet[p.id]})),
+  ...eyewearStyles.map(e=>({label:e.label,art:choiceArtwork.eyewear[e.id]})),
+];
+writeFileSync('assets/characters/catalog-sheet.svg',`<svg xmlns="http://www.w3.org/2000/svg" width="720" height="560" viewBox="0 0 720 560"><rect width="720" height="560" fill="#F5F6F8"/>${catalogItems.map((c,i)=>`<g transform="translate(${i%6*120+10} ${Math.floor(i/6)*140+5})">${c.art}<text x="50" y="120" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#343239">${c.label}</text></g>`).join('')}</svg>`);

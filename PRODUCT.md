@@ -26,19 +26,19 @@ Use code-led design. Continue autonomously using the agreed scope and working na
 the user is travelling and has asked not to block work with setup questions.
 
 Characters and pets: the new Home tab shows the current avatar and companion on a side-on
-orange walking track. The creator has four hairstyles, three hair colors, five skin tones,
-four outfits, and dog/cat/rabbit/no-pet choices. Facial features now include independent eye, nose, and expression choices.
+orange walking track. The creator has twelve hairstyles (six per gender), three hair colors, five skin tones,
+four outfits, and dog/cat/rabbit/fox/dragon/alien-spaceship/no-pet choices. Facial features now include independent eye, nose, and expression choices.
 Appearance saves locally per account, separately from authentication. Demo social data still
 resets; saved appearance persists. There are no invented step counts or race results.
 
 The creator has Look/Face/Clothes/Pet sections. Eyes: 4; noses: 3; expressions: 5;
-shirt styles: 4; base gender/face/fit variants: Male and Female. Face choices and colors remain independent. Hair and shirt inventory includes shared
+shirt styles: 4; base gender/face/fit variants: Male and Female. Face choices and colors remain independent. Hairstyle catalogs are disjoint; shirt inventory includes shared
 and gender-specific styles. Legacy saved looks migrate by adding
 default values for missing fields; existing choices are preserved.
 
-Gender-specific styles: Male → Crop/Raglan; Female → Ponytail/Striped.
-Shared → Waves/Curls and Classic tee/Hoodie.
-Changing gender replaces incompatible hair/shirts with shared defaults and explains it.
+Male hair: Crop, Waves, Curls, Quiff, Side part, Spikes. Female hair: Ponytail, Bob, Bun,
+Braids, Long waves, Ringlets. Raglan is male-only; Striped is female-only; Classic tee/Hoodie
+are shared. Changing gender selects an eligible hairstyle and adjusts incompatible clothing.
 Noses use interior marks: Minimal nose, Button nose, Soft bridge.
 
 Character choice tiles are picture-only with accessible labels and selection badges, except gender cards which visibly label Male and Female.
@@ -49,3 +49,8 @@ The creator uses a compact track preview, wrapping category controls, and explic
 Catalog thumbnails are fixed samples, independent of the current draft. Hair, eyes,
 nose, expression, shirt and gender artwork are generated once from a standard sample
 appearance. Only the main track preview reflects current character selections.
+
+The editor preview and Back control stay pinned above the scrolling options. Preview
+height adapts to the window so options retain space. The new default skin is Sand;
+persisted skin remains a user choice. Sunglasses are an independent removable accessory.
+New companions have original artwork; the spaceship has a visible alien pilot and hovers.

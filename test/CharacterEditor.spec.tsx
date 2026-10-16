@@ -56,7 +56,7 @@ it('combines gender, eye, nose, expression, and shirt choices without replacing 
   await fireEvent.press(view.getByLabelText('Hoodie'));
   await fireEvent.press(view.getByLabelText('Lilac'));
   await fireEvent.press(view.getByText('Save look'));
-  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',eyes:'almond',nose:'wedge',expression:'grin',shirt:'hoodie',outfit:'lilac'});
+  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',hair:'longwaves',eyes:'almond',nose:'wedge',expression:'grin',shirt:'hoodie',outfit:'lilac'});
 });
 
 it('filters gender-specific inventory and replaces incompatible selections on gender change',async()=>{
@@ -75,14 +75,14 @@ it('filters gender-specific inventory and replaces incompatible selections on ge
   await fireEvent.press(view.getByText('Look'));
   await fireEvent.press(view.getByLabelText('Female'));
   expect(view.queryByLabelText('Crop')).toBeNull();
-  expect(view.getByLabelText('Waves').props.accessibilityState.selected).toBe(true);
+  expect(view.getByLabelText('Ponytail').props.accessibilityState.selected).toBe(true);
   expect(view.getByLabelText('Ponytail')).toBeTruthy();
   await fireEvent.press(view.getByText('Clothes'));
   expect(view.queryByLabelText('Raglan')).toBeNull();
   expect(view.getByLabelText('Striped')).toBeTruthy();
   expect(view.getByLabelText('Classic tee').props.accessibilityState.selected).toBe(true);
   await fireEvent.press(view.getByText('Save look'));
-  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',hair:'waves',shirt:'tee'});
+  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',hair:'ponytail',shirt:'tee'});
 });
 
 it('uses artwork-only choice tiles while retaining accessible names and selected state',async()=>{
@@ -131,4 +131,30 @@ it('keeps catalog images fixed while changes update the character draft',async()
   expect((view.getByLabelText('Round').children[0] as TestInstance).toJSON()).toEqual(eyeBefore);
   await fireEvent.press(view.getByText('Save look'));
   expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,hairColor:'honey',skin:'deep',hair:'curls',expression:'grin',nose:'wedge'});
+});
+
+it('keeps the changing character preview outside the scrollable options',async()=>{
+  const view=await screen();
+  const fixed=view.getByTestId('fixed-page-header'),preview=view.getByTestId('character-preview');
+  function hasAncestor(node:TestInstance,target:TestInstance):boolean {
+    for(let parent=node.parent;parent;parent=parent.parent)if(parent===target)return true;
+    return false;
+  }
+  expect(hasAncestor(preview,fixed)).toBe(true);
+  expect(hasAncestor(view.getByLabelText('Curls'),fixed)).toBe(false);
+  await fireEvent.press(view.getByLabelText('Quiff'));
+  expect(view.getByLabelText(/Your character wearing lagoon tee, with quiff hair/)).toBeTruthy();
+});
+it('offers separate hairstyle catalogs and saves sunglasses and an alien spaceship together',async()=>{
+  mockSave.mockResolvedValue(undefined);const view=await screen();
+  expect(view.getByLabelText('Spikes')).toBeTruthy();expect(view.queryByLabelText('Braids')).toBeNull();
+  await fireEvent.press(view.getByLabelText('Female'));
+  expect(view.queryByLabelText('Spikes')).toBeNull();expect(view.queryByLabelText('Curls')).toBeNull();
+  await fireEvent.press(view.getByLabelText('Braids'));
+  await fireEvent.press(view.getByText('Face'));await fireEvent.press(view.getByLabelText('Sunglasses'));
+  expect(view.getByLabelText(/wearing sunglasses/)).toBeTruthy();
+  await fireEvent.press(view.getByText('Pet'));await fireEvent.press(view.getByLabelText('Orbit · Alien spaceship'));
+  expect(view.getByLabelText(/and a spaceship/)).toBeTruthy();
+  await fireEvent.press(view.getByText('Save look'));
+  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',hair:'braids',eyewear:'sunglasses',pet:'spaceship'});
 });

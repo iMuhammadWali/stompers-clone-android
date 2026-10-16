@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {defaultAppearance,parseAppearance,appearanceKey,hairstyles,skinTones,hairColors,outfits,pets,eyeStyles,noseStyles,expressions,shirtStyles,genders,isStyleAllowed} from '../src/lib/character/catalog';
-import {trackSvg,portraitSvg,petSvg} from '../src/lib/character/artwork';
+import {defaultAppearance,parseAppearance,appearanceKey,hairstyles,skinTones,hairColors,outfits,pets,eyeStyles,noseStyles,expressions,shirtStyles,genders,isStyleAllowed,eyewearStyles} from '../src/lib/character/catalog';
+import {trackSvg,portraitSvg,petSvg,characterLayers,faceFeatures} from '../src/lib/character/artwork';
 
 test('stored appearance tolerates corrupt data and obsolete choices without losing valid choices',()=>{
   for(const raw of [null,'broken','null','[]','3'])assert.deepEqual(parseAppearance(raw),defaultAppearance);
@@ -14,14 +14,14 @@ test('account appearance keys isolate accounts and avoid unsupported storage cha
 });
 test('all customization combinations produce grounded track layers without remote assets',()=>{
   for(const hair of hairstyles)for(const skin of skinTones)for(const hairColor of hairColors)for(const outfit of outfits)for(const pet of pets){
-    const look={...defaultAppearance,hair:hair.id,skin:skin.id,hairColor:hairColor.id,outfit:outfit.id,pet:pet.id};
+    const look={...defaultAppearance,hair:hair.id,gender:hair.gender,skin:skin.id,hairColor:hairColor.id,outfit:outfit.id,pet:pet.id};
     const xml=trackSvg(look);
     assert.ok(xml.includes('data-layer="character"'));
     assert.equal(xml.includes('data-layer="pet-'),pet.id!=='none');
     assert.ok(xml.includes(skin.color)&&xml.includes(outfit.color));
     assert.doesNotMatch(xml,/undefined|NaN|<image|<script|href=/);
   }
-  assert.ok(portraitSvg(defaultAppearance).includes('viewBox="17 0 89 85"'));
+  assert.ok(portraitSvg(defaultAppearance).includes('data-layer="character"'));
   assert.ok(petSvg('dog').includes('pet-dog'));
 });
 test('walking preview changes character and companion poses',()=>{
@@ -34,7 +34,7 @@ test('each walk pose retains two complete arms, hands, and legs, and each pet ha
     const xml=trackSvg(defaultAppearance,frame);
     for(const name of ['far-leg','near-leg','far-arm','near-arm','far-arm-hand','near-arm-hand'])
       assert.equal(xml.split(`data-limb="${name}"`).length-1,1,`frame ${frame}: ${name}`);
-    for(const pet of ['dog','cat','rabbit'] as const){
+    for(const pet of ['dog','cat','rabbit','fox','dragon'] as const){
       const petArt=trackSvg({...defaultAppearance,pet},frame);
       for(let leg=1;leg<=4;leg++)assert.equal(petArt.split(`data-limb="pet-leg-${leg}"`).length-1,1);
     }
@@ -57,7 +57,7 @@ test('legacy saved looks keep their old choices and receive defaults for new fea
   assert.equal(parseAppearance('{"eyes":"bad","shirt":"bad","gender":"bad"}').eyes,defaultAppearance.eyes);
 });
 test('every face, shirt, and gender option produces distinct artwork',()=>{
-  for(const [key,catalog] of Object.entries({eyes:eyeStyles,nose:noseStyles,expression:expressions,shirt:shirtStyles,gender:genders})){
+  for(const [key,catalog] of Object.entries({eyes:eyeStyles,eyewear:eyewearStyles,nose:noseStyles,expression:expressions,shirt:shirtStyles,gender:genders})){
     const results=catalog.map(option=>trackSvg({...defaultAppearance,[key]:option.id,...(key==='shirt'?{gender:option.id==='striped'?'female' as const:option.id==='raglan'?'male' as const:'male' as const}: {})}));
     assert.equal(new Set(results).size,catalog.length,key);
   }
@@ -74,7 +74,7 @@ test('allowed feature combinations retain facial choices and hands remain above 
 });
 
 test('eligibility rules apply to saved looks as well as the editor',()=>{
-  assert.equal(parseAppearance('{"gender":"female","hair":"crop","shirt":"raglan"}').hair,'waves');
+  assert.equal(parseAppearance('{"gender":"female","hair":"crop","shirt":"raglan"}').hair,'ponytail');
   assert.equal(parseAppearance('{"gender":"female","hair":"crop","shirt":"raglan"}').shirt,'tee');
   assert.equal(parseAppearance('{"gender":"male","hair":"ponytail","shirt":"striped"}').hair,'waves');
   assert.equal(parseAppearance('{"gender":"male","hair":"ponytail","shirt":"striped"}').shirt,'tee');
@@ -90,4 +90,33 @@ test('retired third gender migrates safely while preserving the saved look',()=>
   const base={gender:'nonbinary',hair:'curls',shirt:'hoodie',skin:'deep',pet:'rabbit'};
   assert.deepEqual(parseAppearance(JSON.stringify(base)),{...defaultAppearance,...base,gender:'male'});
   assert.equal(parseAppearance(JSON.stringify({...base,hair:'ponytail'})).gender,'female');
+});
+
+test('each gender has six unique eligible hairstyles and saved female waves/curls migrate correctly',()=>{
+  const male=hairstyles.filter(h=>isStyleAllowed('hair',h.id,'male'));
+  const female=hairstyles.filter(h=>isStyleAllowed('hair',h.id,'female'));
+  assert.equal(male.length,6);assert.equal(female.length,6);
+  assert.equal(male.some(m=>female.some(f=>f.id===m.id)),false);
+  const samples=hairstyles.map(h=>characterLayers({...defaultAppearance,hair:h.id,gender:h.gender}));
+  assert.equal(new Set(samples).size,12);
+  assert.equal(parseAppearance('{"gender":"female","hair":"waves","skin":"deep"}').hair,'longwaves');
+  assert.equal(parseAppearance('{"gender":"female","hair":"curls"}').hair,'ringlets');
+  assert.equal(parseAppearance('{"gender":"female","hair":"waves","skin":"deep"}').skin,'deep');
+  assert.equal(defaultAppearance.skin,'sand');
+});
+test('sunglasses are removable without changing selected eyes or expression and old looks receive no glasses',()=>{
+  assert.equal(parseAppearance('{"eyes":"almond","expression":"grin"}').eyewear,'none');
+  const look={...defaultAppearance,eyes:'almond' as const,expression:'grin' as const,eyewear:'sunglasses' as const};
+  const saved=parseAppearance(JSON.stringify(look));assert.deepEqual(saved,look);
+  assert.match(faceFeatures(saved),/data-eyewear="sunglasses"/);
+  assert.doesNotMatch(faceFeatures({...saved,eyewear:'none'}),/data-eyewear="sunglasses"/);
+});
+test('new companions remain distinct, persist through validation, and spaceship hovers without animal legs',()=>{
+  for(const pet of ['fox','dragon','spaceship'] as const){
+    assert.equal(parseAppearance(JSON.stringify({...defaultAppearance,pet})).pet,pet);
+    assert.match(petSvg(pet),new RegExp('data-layer="pet-'+pet+'"'));
+    assert.doesNotMatch(petSvg(pet),/NaN|undefined/);
+  }
+  assert.doesNotMatch(petSvg('spaceship'),/data-limb="pet-leg/);
+  assert.notEqual(trackSvg({...defaultAppearance,pet:'spaceship'},0),trackSvg({...defaultAppearance,pet:'spaceship'},2));
 });

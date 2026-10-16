@@ -171,7 +171,7 @@ Changing `brandColors.action` still recolors every primary button, including glo
 
 Original outlined 2D art uses a shared 120×190 character rig: oversized expressive head,
 soft angular hair silhouettes, bright tee, dark shorts, and pale sneakers. Separate layers
-hold skin, back/front limbs, clothing, face, and hair. Four hair silhouettes, three hair
+hold skin, back/front limbs, clothing, face, and hair. Twelve hair silhouettes, three hair
 colors, five skin tones, and four outfits combine on the shared body rig.
 Dog, cat, and rabbit companions share a consistent outline, scale, and ground plane.
 
@@ -210,8 +210,8 @@ have additional horizontal separation so they do not merge in the default pose.
 
 Eyes, nose profiles, eyebrows/mouth expressions, and shirt details are independent
 layers. Noses sit within a stable, smooth face silhouette. Expressions adjust eyebrows
-and mouths while retaining the selected eye style. Gender choices adjust the jaw and shirt fit. Catalog eligibility restricts Crop/Raglan
-to Male and Ponytail/Striped to Female; other hair/shirt choices are shared.
+and mouths while retaining the selected eye style. Gender choices adjust the jaw and shirt fit. Catalog eligibility provides six disjoint hairstyles per gender. Raglan is male-only
+and Striped female-only; Classic tee and Hoodie remain shared.
 Classic tees are plain, striped tees use two broad curved light bands,
 raglan shirts have contrast sleeves, and hoodies have a hood, long sleeves, drawstrings,
 and a pouch. Hands paint after all sleeves to avoid repeating the previous occlusion bug.
@@ -283,3 +283,30 @@ remain unverified; no browser login was requested again after the user's refusal
 Catalog thumbnails are fixed samples, independent of the current draft. Hair, eyes,
 nose, expression, shirt and gender artwork are generated once from a standard sample
 appearance. Only the main track preview reflects current character selections.
+
+
+## Pinned creator preview and expanded options
+The creator's header is a sibling of the options ScrollView, never a child or an absolute
+overlay. Back and the live character remain visible while all choices and save controls
+scroll beneath them. Header content stays in the 600-unit centered column; the preview
+uses 24% of window height clamped to 72–200 units. This limits fixed-area space on short
+windows. Title text has flexible width and no line limit; existing wrapping category
+controls and picture-only option tiles remain. Gender labels are the explicit exception.
+
+Sand is the default skin for new looks and static catalog samples. Stored user skin tones
+are preserved. Twelve authored hairstyle silhouettes form separate male/female catalogs:
+Crop, Waves, Curls, Quiff, Side part, Spikes; Ponytail, Bob, Bun, Braids, Long waves, Ringlets.
+Female legacy Waves/Curls map to Long waves/Ringlets. Layered rear hair keeps long styles
+behind the head and body. Sunglasses paint over the eyes, below hair; selected eye style
+is retained in appearance data and returns when eyewear is removed.
+
+New companions follow the existing outline and palette: Ember the fox, Sprout the dragon,
+and Orbit the saucer with a green pilot. Animal companions keep four leg layers. Orbit
+has no legs and floats above its ground shadow, with subtle motion during walk preview.
+All choice thumbnails remain fixed samples; only the main track reflects the draft.
+
+Verification: 27 unit tests and 19 UI tests pass. Added checks cover disjoint catalogs,
+legacy migration, glasses removal, new companion validation, fixed header ancestry,
+combined selections, and actual appearance-store restoration after remount. Original
+SVG catalog and track renders were visually inspected. Native phone layout remains
+subject to the user's screenshot review.

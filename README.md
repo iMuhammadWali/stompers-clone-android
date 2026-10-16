@@ -156,7 +156,7 @@ loop; Pause and leaving the screen stop it. Reduced-motion preferences keep the 
 
 The artwork is authored in code; it uses no extracted Stompers assets or remote image URLs.
 Separate hair, skin, clothing, face, limbs, and pet layers support independent customization.
-This version uses one shared animated rig with interchangeable facial features and three base face/fit variants. Pets are visual companions; there is no pet
+This version uses one shared animated rig with interchangeable facial features and two base face/fit variants. Pets are visual companions; there is no pet
 inventory, gameplay, real step tracking, or server appearance sync yet. Cosmetic choices
 persist in browser localStorage for the preview and SecureStore on native devices, keyed
 by account. Authentication tokens keep their existing separate storage behavior.
@@ -164,7 +164,7 @@ by account. Authentication tokens keep their existing separate storage behavior.
 The character defaults to a walking contact pose with explicit hands, elbows, and
 separated feet. `assets/characters/pose-sheet.svg` shows all eight walk poses and is
 regenerated alongside the track design sheet by the existing export-character-art script.
-Each pet has four offset leg and paw layers.
+Each animal companion has four offset leg and paw layers; the saucer hovers.
 
 Layering correction: both leg layers render before the shorts, so the near thigh cannot
 erase its trouser leg. Sleeves attach along each upper arm. The resting stride is narrower,
@@ -177,8 +177,8 @@ The creator is grouped into Look, Face, Clothes, and Pet sections. New independe
 4 eyes (Round, Almond, Relaxed, Sparkle), 3 noses (Minimal nose, Button nose, Soft bridge),
 5 expressions (Smile, Grin, Calm, Determined, Surprised), 4 shirt styles (Classic tee,
 Striped, Raglan, Hoodie), and Male/Female base face and fit variants.
-Crop hair and Raglan shirts are male-only; Ponytail and Striped shirts are female-only.
-Waves, Curls, Classic tee, and Hoodie are shared. Colors,
+Hairstyles are separate catalogs with six styles per gender. Raglan shirts are male-only;
+Striped shirts are female-only. Classic tee and Hoodie are shared. Colors,
 eyes, noses, expressions, and pets remain available to everyone.
 Shirt style and outfit color are separate choices; hoodie sleeves are drawn before hands.
 Old appearance records receive defaults for missing fields without losing their saved choices.
@@ -187,9 +187,9 @@ The same device-local storage key is retained, with no backend migration require
 
 Gender eligibility is centralized in `styleAvailability` in catalog.ts. The UI filters by
 those rules; parseAppearance applies the same rules to stored data. Switching gender
-falls back to Waves and Classic tee when a selected style becomes incompatible, and
+selects an eligible hairstyle and Classic tee when a style becomes incompatible, and
 shows an inline explanation. Other selections stay unchanged. Legacy nose IDs map to
-Dot, Tiny wedge, and Soft curve respectively; Soft curve is the new default.
+Minimal nose, Soft bridge, and Button nose respectively; Button nose is the default.
 
 Character choices use artwork-only tiles with accessible names and selection checks.
 Face previews zoom into the selected feature. Shirts use plain fabric, broad clipped
@@ -209,3 +209,22 @@ HCI rationale and verification limits are recorded in DESIGN.md.
 Catalog thumbnails are fixed samples, independent of the current draft. Hair, eyes,
 nose, expression, shirt and gender artwork are generated once from a standard sample
 appearance. Only the main track preview reflects current character selections.
+
+### Pinned preview and expanded catalog
+The creator passes a fixed header to Page: Back and the track preview sit outside the
+options ScrollView, so neither scrolls away. Preview height follows the available window
+height, clamped to 72–200 logical units. Only options and the save controls scroll.
+Default skin is Sand; existing saved skin tones are preserved.
+
+Male hair: Crop, Waves, Curls, Quiff, Side part, Spikes. Female hair: Ponytail, Bob, Bun,
+Braids, Long waves, Ringlets. Catalogs do not overlap. Older female Waves/Curls looks
+migrate to Long waves/Ringlets; other incompatible styles use an eligible default.
+Sunglasses are independent of eyes and expression; removing them restores the selected eyes.
+Companions: Biscuit (dog), Mochi (cat), Clover (rabbit), Ember (fox), Sprout (dragon),
+Orbit (alien spaceship), or no companion. The saucer hovers; animal pets walk.
+
+Fixed catalog samples include eyewear and companions.
+`assets/characters/catalog-sheet.svg` records all hair, companion, and eyewear options
+from the same artwork used in the UI. Tests cover fixed-preview structure, the combined
+new look, legacy migration, and restoration after reopening. Native layout still needs
+phone verification; no emulator or device screenshots are claimed.

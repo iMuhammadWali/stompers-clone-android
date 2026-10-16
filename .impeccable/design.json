@@ -182,7 +182,7 @@
       "catalog": "src/lib/character/catalog.ts",
       "designSheet": "assets/characters/design-sheet.svg",
       "provenance": "Original layered SVG artwork; no extracted game assets.",
-      "hairStyles": 4,
+      "hairStyles": 12,
       "hairColors": 3,
       "skinTones": 5,
       "outfits": 4,
@@ -190,6 +190,9 @@
         "dog",
         "cat",
         "rabbit",
+        "fox",
+        "dragon",
+        "spaceship",
         "none"
       ],
       "face": "4 eye styles, 3 interior noses (minimal/button/soft bridge), 5 independent expressions",
@@ -197,7 +200,7 @@
       "motion": "Opt-in, reduced-motion-aware; stops on blur",
       "track": "Side-on orange dirt path with pale gold surface and grounded avatars; no live race data",
       "poseSheet": "assets/characters/pose-sheet.svg",
-      "pose": "Readable walking contact pose; explicit hands and opposing arm swing; four pet legs",
+      "pose": "Readable contact pose, complete hands and animal legs; saucer hovers",
       "shirtStyles": [
         "tee",
         "striped",
@@ -209,7 +212,7 @@
         "female"
       ],
       "featuresSheet": "assets/characters/features-sheet.svg",
-      "migration": "Legacy nose IDs mapped to compact replacements; incompatible hair/shirts replaced with shared defaults",
+      "migration": "Preserve saved skin; female Waves/Curls map to Long waves/Ringlets; unknown eyewear defaults to none",
       "editorSections": [
         "Look",
         "Face",
@@ -217,23 +220,39 @@
         "Pet"
       ],
       "genderInventory": {
-        "maleOnly": [
+        "maleHair": [
           "crop",
+          "waves",
+          "curls",
+          "quiff",
+          "sidepart",
+          "spikes"
+        ],
+        "femaleHair": [
+          "ponytail",
+          "bob",
+          "bun",
+          "braids",
+          "longwaves",
+          "ringlets"
+        ],
+        "maleShirts": [
           "raglan"
         ],
-        "femaleOnly": [
-          "ponytail",
+        "femaleShirts": [
           "striped"
-        ],
-        "sharedHair": [
-          "waves",
-          "curls"
         ],
         "sharedShirts": [
           "tee",
           "hoodie"
         ]
-      }
+      },
+      "eyewear": [
+        "none",
+        "sunglasses"
+      ],
+      "defaultSkin": "sand",
+      "catalogSheet": "assets/characters/catalog-sheet.svg"
     }
   },
   "components": [
@@ -338,9 +357,9 @@
     ],
     "genderLabels": "Visible, wrapping captions with distinct representative portraits",
     "selection": "Border and check badge",
-    "preview": "Compact crop in editor; full scene on Home",
+    "preview": "Pinned outside options ScrollView; height clamped to 72\u2013200",
     "reflow": "Reduce columns on narrow windows or large system text",
     "status": "Saved look / Unsaved changes and Reset changes",
-    "verification": "40 automated tests and SVG inspection; phone text layout pending user review"
+    "verification": "46 automated tests; inspected SVG catalog and track renders; phone layout pending user review"
   }
 }
