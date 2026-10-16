@@ -104,3 +104,29 @@ is not confirmed. No unverified engine binary was executed or included in this a
 
 The app intentionally ignores system dark mode. Expo userInterfaceStyle is light, the Paper
 provider always uses MD3LightTheme, and status bar content is dark.
+
+## Theme editing
+
+`src/lib/palette.ts` is the single source for application colors. Change
+`brandColors.action` to recolor every primary button, `actionText` for its labels,
+`selection` / `selectionText` for tonal buttons, and `ink` for main text and quiet actions.
+Other shared surfaces, outlines, errors, and avatars are defined in the same file.
+The root PaperProvider applies this palette across all screens; appearance stays light.
+
+Every application button uses `src/components/AppButton.tsx`. This shared component
+maps existing button modes to theme roles and leaves layout, loading, accessibility,
+and disabled behavior with Paper. Screens should not repeat default button colors.
+For an intentional one-off exception, pass `buttonColor` and `textColor` to AppButton;
+it will not change other buttons. For example:
+
+```tsx
+// Change all primary buttons in palette.ts:
+export const brandColors = { action: '#FFAD1F', /* other existing values */ };
+
+// One exceptional button, using another shared palette role:
+<AppButton mode="contained" buttonColor={theme.colors.tertiaryContainer}
+  textColor={theme.colors.onTertiaryContainer}>Special action</AppButton>
+```
+
+When changing colors, run `npm test` for contrast checks and `npm run test:ui`
+for shared theme propagation and password visibility checks.

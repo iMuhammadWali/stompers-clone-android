@@ -14,7 +14,7 @@ Real credentials are never sent to demo mode. Demo data is synthetic and resets 
 Real mode uses the existing API v1 contract with refresh tokens in SecureStore.
 
 Design direction: preserve the approved UI and follow the supplied Stompers screenshots
-for color balance: cool light gray canvas, white surfaces, charcoal text, cyan actions,
+for color balance: cool light gray canvas, white surfaces, charcoal text, orange actions,
 peach selections, and golden avatar accents. Dark mode remains removed. Color is
 concentrated in controls and small accents rather than the full background.
 Preserve flat people lists, the existing account flows, and the original footprint mark.

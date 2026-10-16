@@ -35,8 +35,8 @@ and game content. The approved layout is preserved; this revision changes colors
 | Surfaces | White #FFFFFF |
 | Text | Charcoal #292A31 |
 | Search fields | Cool gray #E7E9F0 |
-| Contained actions | Cyan #24DDD5 with dark #173436 text |
-| Text actions and focus | Dark teal #00666B |
+| Contained actions | Orange #FFAD1F with dark #292A31 text |
+| Text actions and focus | Charcoal #292A31 |
 | Selections and invitations | Peach #FFD0A3 with dark text |
 | People | Mint, peach, gray, and golden yellow |
 

@@ -1,6 +1,7 @@
+import {AppButton as Button} from '../components/AppButton';
 import React,{useState} from 'react';
 import {View,KeyboardAvoidingView,Platform} from 'react-native';
-import {Text,TextInput,Button,useTheme,ActivityIndicator} from 'react-native-paper';
+import {Text,TextInput,useTheme,ActivityIndicator} from 'react-native-paper';
 import {Redirect} from 'expo-router';
 import {Page,Mark,Notice,styles} from '../components/ui';
 import {useSession,message} from '../lib/session';
@@ -32,7 +33,7 @@ export default function AuthScreen() {
         <TextInput mode="outlined" label="Email address" accessibilityLabel="Email address" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoCorrect={false} autoComplete="email" disabled={busy}/>
         <PasswordField value={password} onChangeText={setPassword} signup={signup} disabled={busy}/>
         <Notice text={error}/>
-        <Button mode="contained" buttonColor={theme.colors.primaryContainer} textColor={theme.colors.onPrimaryContainer} loading={busy} disabled={busy||!session.configured} onPress={()=>void submit()} contentStyle={styles.button}>{signup?'Create account':'Sign in'}</Button>
+        <Button mode="contained" loading={busy} disabled={busy||!session.configured} onPress={()=>void submit()} contentStyle={styles.button}>{signup?'Create account':'Sign in'}</Button>
       </View>
       {!session.configured&&<Text variant="bodyMedium" style={{color:theme.colors.onSurfaceVariant}}>Account access will be available when the backend is connected.</Text>}
       <Button mode="outlined" onPress={session.startDemo} disabled={busy} contentStyle={styles.button}>Explore the demo</Button>

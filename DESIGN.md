@@ -2,10 +2,10 @@
 name: "Stride (working name)"
 description: "Playful social walking app; physical-device validation remains pending."
 colors:
-  light-primary: "#00666B"
+  light-primary: "#292A31"
   light-onPrimary: "#FFFFFF"
-  light-primaryContainer: "#24DDD5"
-  light-onPrimaryContainer: "#173436"
+  light-primaryContainer: "#FFAD1F"
+  light-onPrimaryContainer: "#292A31"
   light-secondary: "#875000"
   light-onSecondary: "#FFFFFF"
   light-secondaryContainer: "#FFD0A3"
@@ -39,12 +39,12 @@ colors:
 
 **Creative North Star: "A walking club’s people directory"**
 
-This is a source-derived record of the implemented account, friends, requests, invitation, and profile interface. Cool light gray, charcoal ink, cyan actions, multicolor initials, and divided people lists give the application a friendly club character. Stride is a working name, not an approved brand identity. No approved visual comp exists.
+This is a source-derived record of the implemented account, friends, requests, invitation, and profile interface. Cool light gray, charcoal ink, orange actions, multicolor initials, and divided people lists give the application a friendly club character. Stride is a working name, not an approved brand identity. No approved visual comp exists.
 
 The implementation uses React Native Paper Material 3 with platform system typography. This is an Android-native interface; web renders are surrogates. Android-device validation remains outstanding. Native screenshots were unavailable, so the reviewer requires recapture rather than granting native approval. No detector ran for the native target; the optional helper engine refused an unverifiable download. This document records implementation, not release readiness.
 
 **Key Characteristics:**
-- Always-light neutral surfaces with cyan, peach, and golden accents.
+- Always-light neutral surfaces with orange, peach, and golden accents.
 - Flat, readable people lists and explicit invitation states.
 - Platform typography, outlined fields, and restrained primary actions.
 - A small original geometric footprint mark.
@@ -54,10 +54,10 @@ The implementation uses React Native Paper Material 3 with platform system typog
 The user-supplied Stompers screenshots establish the color direction. Preserve the
 approved layout and typography. Use a cool gray canvas (#F5F6F8), white surfaces,
 charcoal text (#292A31), cool gray search fields (#E7E9F0), peach selections (#FFD0A3),
-and cyan contained actions (#24DDD5) with dark text (#173436). Golden yellow is a small
-avatar accent. Text actions and focus indicators use dark teal (#00666B) for contrast.
+and orange contained actions (#FFAD1F) with dark text (#292A31). Golden yellow is a small
+avatar accent. Text actions and focus indicators use charcoal (#292A31) for contrast.
 Dark mode is removed. Semantic foreground/container pairs are defined in src/lib/palette.ts.
-Contained buttons explicitly use primaryContainer/onPrimaryContainer; other controls
+All buttons use AppButton, which applies primaryContainer/onPrimaryContainer to primary actions; other controls
 retain their existing modes and geometry. Native-device validation remains outstanding.
 
 ## Typography

@@ -1,6 +1,7 @@
+import {AppButton as Button} from './AppButton';
 import React from 'react';
 import {ScrollView,View,StyleSheet,RefreshControl} from 'react-native';
-import {Text,Button,Avatar,useTheme,Banner} from 'react-native-paper';
+import {Text,Avatar,useTheme,Banner} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Svg,{Path,Ellipse} from 'react-native-svg';
 import {useSession} from '../lib/session';

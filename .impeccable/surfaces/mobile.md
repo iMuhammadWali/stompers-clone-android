@@ -9,7 +9,7 @@ with existing friends through exact usernames. All sample people are explicitly 
 THESIS: A walking club's people directory. Friends and invitations lead the app;
 no fabricated step metrics or dashboard furniture.
 
-OWN-WORLD: Cool light gray canvas, white surfaces, charcoal ink, cyan contained actions, peach
+OWN-WORLD: Cool light gray canvas, white surfaces, charcoal ink, orange contained actions, peach
 selection surfaces, and mint, peach, gray, and yellow avatar containers, flat divided lists, themed Material 3 inputs and buttons. System
 sans through a consistent type scale; one small geometric footprint mark.
 
