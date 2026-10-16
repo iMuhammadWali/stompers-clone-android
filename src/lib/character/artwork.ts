@@ -22,7 +22,8 @@ export function faceFeatures(a:Appearance):string {
     determined:'<path d="M76 64 Q81 61 86 63" fill="none" stroke="#343239" stroke-width="2" stroke-linecap="round"/>',
     surprised:'<ellipse cx="81" cy="64" rx="3.2" ry="4.5" fill="#63363E" stroke="#343239" stroke-width="1.4"/>',
   };
-  return `<g data-face="${a.eyes}-${a.nose}-${a.expression}"><g transform="${surprised?'translate(-5 -4) scale(1.07)':'translate(0 0)'}">${eyes[a.eyes]}</g><path d="${brows[a.expression]}" fill="none" stroke="#343239" stroke-width="1.8" stroke-linecap="round"/>${mouths[a.expression]}</g>`;
+  const noseMarks={dot:'<circle cx="85" cy="54" r="1.1" fill="#343239"/>',curve:'<path d="M84 50 Q88 53 84 55" fill="none" stroke="#343239" stroke-width="1.3" stroke-linecap="round"/>',wedge:'<path d="M84 50 L87 54 L84 55" fill="none" stroke="#343239" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>'};
+  return `<g data-face="${a.eyes}-${a.nose}-${a.expression}"><g transform="${surprised?'translate(-5 -4) scale(1.07)':'translate(0 0)'}">${eyes[a.eyes]}</g><path d="${brows[a.expression]}" fill="none" stroke="#343239" stroke-width="1.8" stroke-linecap="round"/>${noseMarks[a.nose]}${mouths[a.expression]}</g>`;
 }
 export function characterLayers(value:Appearance,frame=0):string {
   const a=parseAppearance(JSON.stringify(value));
@@ -50,7 +51,7 @@ export function characterLayers(value:Appearance,frame=0):string {
       `<g data-limb="${name}-hand"><ellipse cx="${hand.x}" cy="${hand.y}" rx="5.8" ry="7" fill="${color}" ${stroke}/>`+
       `<path d="M${hand.x+3} ${hand.y-3} Q${hand.x+8} ${hand.y-4} ${hand.x+6} ${hand.y+1}" fill="${color}" stroke="#343239" stroke-width="1.5" stroke-linecap="round"/></g></g>`;
   };
-  const noseOutline={button:'L88 48 Q98 51 89 56',straight:'L88 45 L98 54 Q97 57 88 57',rounded:'L88 47 Q104 55 88 59'};
+  const noseOutline={dot:'L88 48 Q89 52 88 57',curve:'L88 48 Q93 51 89 55 L88 57',wedge:'L88 48 L93 53 L88 56'};
   const jaw=a.gender==='male'?'Q84 73 70 75 L54 71 Q41 66 36 58':a.gender==='female'?'Q85 70 69 74 Q45 75 36 58':'Q85 75 66 75 Q43 73 36 58';
   const shirtBody=a.gender==='female'?'M49 70 Q58 77 71 70 L82 79 L82 96 L76 95 Q71 104 77 115 Q60 122 40 113 Q46 104 42 96 L35 93 L36 80 Z':a.gender==='male'?'M49 70 Q58 77 71 70 L84 79 L84 96 L77 95 L78 115 Q60 122 39 113 L41 96 L34 93 L35 80 Z':'M49 70 Q58 77 71 70 L82 79 L82 96 L76 95 L77 115 Q60 122 40 113 L42 96 L35 93 L36 80 Z';
   const shirtDetail=a.shirt==='striped'?'<path d="M44 91 H74 M44 101 H74" stroke="#FFFFFF" stroke-width="4.5" opacity="0.85"/>':a.shirt==='hoodie'?'<path d="M54 79 L53 91 M67 79 L69 91 M51 103 Q61 97 71 103 L70 111 H51 Z" fill="none" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round"/>':a.shirt==='raglan'?`<path d="M48 75 L42 94 M72 75 L78 94" stroke="${outfit.shade}" stroke-width="2"/>`:'<path d="M62 95 L67 89 L64 96 L69 96 L60 104 L62 98 L58 98 Z" fill="#FFFFFF" opacity="0.85"/>';
@@ -73,7 +74,7 @@ export function characterLayers(value:Appearance,frame=0):string {
     '<path d="M48 73 Q58 82 72 74" fill="none" stroke="#343239" stroke-width="2.1"/>'+
     arm(43,42-swing*15,nearHand,skin.color,'near-arm')+
     path(`M34 34 Q39 15 61 17 Q84 17 88 38 ${noseOutline[a.nose]} ${jaw} Q25 59 26 49 Q27 42 34 45 Z`,skin.color)+
-    `<path d="M36 50 Q31 46 31 53 M81 55 L85 57" fill="none" stroke="${skin.shade}" stroke-width="2.2"/>`+
+    `<path d="M36 50 Q31 46 31 53" fill="none" stroke="${skin.shade}" stroke-width="2.2"/>`+
     faceFeatures(a)+
     path(hairShapes[a.hair],hair.color)+
     `<path d="M37 22 Q49 12 62 15" fill="none" stroke="${hair.shine}" stroke-width="4" stroke-linecap="round"/>`+

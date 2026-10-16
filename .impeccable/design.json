@@ -192,7 +192,7 @@
         "rabbit",
         "none"
       ],
-      "face": "4 eye styles, 3 noses, 5 independent expressions",
+      "face": "4 eye styles, 3 compact noses (dot/curve/wedge), 5 independent expressions",
       "storage": "Device-local, account-scoped",
       "motion": "Opt-in, reduced-motion-aware; stops on blur",
       "track": "Side-on orange dirt path with pale gold surface and grounded avatars; no live race data",
@@ -210,13 +210,32 @@
         "nonbinary"
       ],
       "featuresSheet": "assets/characters/features-sheet.svg",
-      "migration": "Missing fields receive defaults; old appearance choices preserved",
+      "migration": "Legacy nose IDs mapped to compact replacements; incompatible hair/shirts replaced with shared defaults",
       "editorSections": [
         "Look",
         "Face",
         "Clothes",
         "Pet"
-      ]
+      ],
+      "genderInventory": {
+        "maleOnly": [
+          "crop",
+          "raglan"
+        ],
+        "femaleOnly": [
+          "ponytail",
+          "striped"
+        ],
+        "sharedHair": [
+          "waves",
+          "curls"
+        ],
+        "sharedShirts": [
+          "tee",
+          "hoodie"
+        ],
+        "nonbinary": "shared inventory"
+      }
     }
   },
   "components": [

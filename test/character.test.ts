@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {defaultAppearance,parseAppearance,appearanceKey,hairstyles,skinTones,hairColors,outfits,pets,eyeStyles,noseStyles,expressions,shirtStyles,genders} from '../src/lib/character/catalog';
+import {defaultAppearance,parseAppearance,appearanceKey,hairstyles,skinTones,hairColors,outfits,pets,eyeStyles,noseStyles,expressions,shirtStyles,genders,isStyleAllowed} from '../src/lib/character/catalog';
 import {trackSvg,portraitSvg,petSvg} from '../src/lib/character/artwork';
 
 test('stored appearance tolerates corrupt data and obsolete choices without losing valid choices',()=>{
@@ -53,21 +53,34 @@ test('shorts cover both upper-leg layers in every pose instead of being erased b
 
 
 test('legacy saved looks keep their old choices and receive defaults for new features',()=>{
-  assert.deepEqual(parseAppearance('{"hair":"ponytail","skin":"deep","hairColor":"honey","outfit":"lilac","pet":"cat"}'),{...defaultAppearance,hair:'ponytail',skin:'deep',hairColor:'honey',outfit:'lilac',pet:'cat'});
+  assert.deepEqual(parseAppearance('{"gender":"female","hair":"ponytail","skin":"deep","hairColor":"honey","outfit":"lilac","pet":"cat"}'),{...defaultAppearance,gender:'female',hair:'ponytail',skin:'deep',hairColor:'honey',outfit:'lilac',pet:'cat'});
   assert.equal(parseAppearance('{"eyes":"bad","shirt":"bad","gender":"bad"}').eyes,defaultAppearance.eyes);
 });
 test('every face, shirt, and gender option produces distinct artwork',()=>{
   for(const [key,catalog] of Object.entries({eyes:eyeStyles,nose:noseStyles,expression:expressions,shirt:shirtStyles,gender:genders})){
-    const results=catalog.map(option=>trackSvg({...defaultAppearance,[key]:option.id}));
+    const results=catalog.map(option=>trackSvg({...defaultAppearance,[key]:option.id,...(key==='shirt'?{gender:option.id==='striped'?'female' as const:option.id==='raglan'?'male' as const:'nonbinary' as const}: {})}));
     assert.equal(new Set(results).size,catalog.length,key);
   }
 });
-test('new features combine freely and long sleeves never paint over hands',()=>{
+test('allowed feature combinations retain facial choices and hands remain above sleeves',()=>{
   for(const eyes of eyeStyles)for(const nose of noseStyles)for(const expression of expressions)for(const shirt of shirtStyles)for(const gender of genders){
+    if(!isStyleAllowed('shirt',shirt.id,gender.id))continue;
     const xml=trackSvg({...defaultAppearance,eyes:eyes.id,nose:nose.id,expression:expression.id,shirt:shirt.id,gender:gender.id});
     assert.doesNotMatch(xml,/undefined|NaN/);
     assert.ok(xml.includes(`data-face="${eyes.id}-${nose.id}-${expression.id}"`));
     assert.ok(xml.indexOf('data-limb="near-arm-hand"')>xml.indexOf('data-clothing="near-arm-sleeve"'));
     assert.ok(xml.indexOf('data-limb="far-arm-hand"')>xml.indexOf('data-clothing="far-arm-sleeve"'));
   }
+});
+
+test('eligibility rules apply to saved looks as well as the editor',()=>{
+  assert.equal(parseAppearance('{"gender":"female","hair":"crop","shirt":"raglan"}').hair,'waves');
+  assert.equal(parseAppearance('{"gender":"female","hair":"crop","shirt":"raglan"}').shirt,'tee');
+  assert.equal(parseAppearance('{"gender":"male","hair":"ponytail","shirt":"striped"}').hair,'waves');
+  assert.equal(parseAppearance('{"gender":"male","hair":"ponytail","shirt":"striped"}').shirt,'tee');
+  assert.equal(parseAppearance('{"gender":"female","hair":"ponytail","shirt":"striped"}').shirt,'striped');
+  assert.equal(parseAppearance('{"gender":"male","hair":"crop","shirt":"raglan"}').hair,'crop');
+  assert.equal(parseAppearance('{"nose":"button"}').nose,'dot');
+  assert.equal(parseAppearance('{"nose":"straight"}').nose,'wedge');
+  assert.equal(parseAppearance('{"nose":"rounded"}').nose,'curve');
 });

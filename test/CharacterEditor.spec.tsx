@@ -36,6 +36,7 @@ it('keeps the edited look and shows an error if device storage fails',async()=>{
 });
 it('leaving the editor discards unsaved selections',async()=>{
   const view=await screen();
+  await fireEvent.press(view.getByLabelText('Female'));
   await fireEvent.press(view.getByLabelText('Ponytail'));
   await fireEvent.press(view.getByText('Back'));
   expect(router.back).toHaveBeenCalled();
@@ -48,11 +49,37 @@ it('combines gender, eye, nose, expression, and shirt choices without replacing 
   await fireEvent.press(view.getByLabelText('Female'));
   await fireEvent.press(view.getByText('Face'));
   await fireEvent.press(view.getByLabelText('Almond'));
-  await fireEvent.press(view.getByLabelText('Straight'));
+  await fireEvent.press(view.getByLabelText('Tiny wedge'));
   await fireEvent.press(view.getByLabelText('Grin'));
   await fireEvent.press(view.getByText('Clothes'));
   await fireEvent.press(view.getByLabelText('Hoodie'));
   await fireEvent.press(view.getByLabelText('Lilac'));
   await fireEvent.press(view.getByText('Save look'));
-  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',eyes:'almond',nose:'straight',expression:'grin',shirt:'hoodie',outfit:'lilac'});
+  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',eyes:'almond',nose:'wedge',expression:'grin',shirt:'hoodie',outfit:'lilac'});
+});
+
+it('filters gender-specific inventory and replaces incompatible selections on gender change',async()=>{
+  mockSave.mockResolvedValue(undefined);
+  const view=await screen();
+  expect(view.queryByLabelText('Crop')).toBeNull();
+  expect(view.queryByLabelText('Ponytail')).toBeNull();
+  await fireEvent.press(view.getByLabelText('Male'));
+  expect(view.getByLabelText('Crop')).toBeTruthy();
+  expect(view.queryByLabelText('Ponytail')).toBeNull();
+  await fireEvent.press(view.getByLabelText('Crop'));
+  await fireEvent.press(view.getByText('Clothes'));
+  expect(view.getByLabelText('Raglan')).toBeTruthy();
+  expect(view.queryByLabelText('Striped')).toBeNull();
+  await fireEvent.press(view.getByLabelText('Raglan'));
+  await fireEvent.press(view.getByText('Look'));
+  await fireEvent.press(view.getByLabelText('Female'));
+  expect(view.queryByLabelText('Crop')).toBeNull();
+  expect(view.getByLabelText('Waves').props.accessibilityState.selected).toBe(true);
+  expect(view.getByLabelText('Ponytail')).toBeTruthy();
+  await fireEvent.press(view.getByText('Clothes'));
+  expect(view.queryByLabelText('Raglan')).toBeNull();
+  expect(view.getByLabelText('Striped')).toBeTruthy();
+  expect(view.getByLabelText('Classic tee').props.accessibilityState.selected).toBe(true);
+  await fireEvent.press(view.getByText('Save look'));
+  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',hair:'waves',shirt:'tee'});
 });

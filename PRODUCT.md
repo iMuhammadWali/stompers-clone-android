@@ -32,6 +32,11 @@ Appearance saves locally per account, separately from authentication. Demo socia
 resets; saved appearance persists. There are no invented step counts or race results.
 
 The creator has Look/Face/Clothes/Pet sections. Eyes: 4; noses: 3; expressions: 5;
-shirt styles: 4; base gender/face/fit variants: Male, Female, Nonbinary. Choices remain
-independent, including shirt color versus style. Legacy saved looks migrate by adding
+shirt styles: 4; base gender/face/fit variants: Male, Female, Nonbinary. Face choices and colors remain independent. Hair and shirt inventory includes shared
+and gender-specific styles. Legacy saved looks migrate by adding
 default values for missing fields; existing choices are preserved.
+
+Gender-specific styles: Male → Crop/Raglan; Female → Ponytail/Striped.
+Shared → Waves/Curls and Classic tee/Hoodie. Nonbinary uses the shared inventory.
+Changing gender replaces incompatible hair/shirts with shared defaults and explains it.
+Noses use smaller cartoon marks and profiles: Dot, Soft curve, Tiny wedge.

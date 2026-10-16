@@ -31,7 +31,7 @@ export const eyeStyles = [
   {id:'relaxed',label:'Relaxed'}, {id:'sparkle',label:'Sparkle'},
 ] as const;
 export const noseStyles = [
-  {id:'button',label:'Button'}, {id:'straight',label:'Straight'}, {id:'rounded',label:'Rounded'},
+  {id:'dot',label:'Dot'}, {id:'curve',label:'Soft curve'}, {id:'wedge',label:'Tiny wedge'},
 ] as const;
 export const expressions = [
   {id:'smile',label:'Smile'}, {id:'grin',label:'Grin'}, {id:'calm',label:'Calm'},
@@ -50,16 +50,30 @@ export type Appearance = {
   pet:typeof pets[number]['id'];eyes:typeof eyeStyles[number]['id'];nose:typeof noseStyles[number]['id'];
   expression:typeof expressions[number]['id'];shirt:typeof shirtStyles[number]['id'];gender:typeof genders[number]['id'];
 };
-export const defaultAppearance:Appearance={hair:'waves',skin:'warm',hairColor:'espresso',outfit:'lagoon',pet:'dog',eyes:'round',nose:'button',expression:'smile',shirt:'tee',gender:'nonbinary'};
+export const defaultAppearance:Appearance={hair:'waves',skin:'warm',hairColor:'espresso',outfit:'lagoon',pet:'dog',eyes:'round',nose:'curve',expression:'smile',shirt:'tee',gender:'nonbinary'};
+/** Gender-specific inventory lives here, so UI and stored looks use identical rules. */
+export const styleAvailability:{hair:Partial<Record<Appearance['hair'],readonly Appearance['gender'][]>>;shirt:Partial<Record<Appearance['shirt'],readonly Appearance['gender'][]>>}={
+  hair:{crop:['male'],ponytail:['female']},
+  shirt:{raglan:['male'],striped:['female']},
+};
+export function isStyleAllowed(kind:'hair'|'shirt',id:string,gender:Appearance['gender']):boolean {
+  const rules:Record<string,readonly Appearance['gender'][]|undefined>=styleAvailability[kind];
+  return !rules[id]||rules[id]!.includes(gender);
+}
+export function normalizeStyles(value:Appearance):Appearance {
+  return {...value,hair:isStyleAllowed('hair',value.hair,value.gender)?value.hair:'waves',shirt:isStyleAllowed('shirt',value.shirt,value.gender)?value.shirt:'tee'};
+}
 /** Storage is untrusted; unknown/missing options fall back independently. */
 export function parseAppearance(raw:string|null):Appearance {
   let input:Record<string,unknown>={};
   try {const data=JSON.parse(raw??'{}');if(data&&typeof data==='object'&&!Array.isArray(data))input=data;}catch{}
+  const legacyNoses:Record<string,string>={button:'dot',straight:'wedge',rounded:'curve'};
+  if(typeof input.nose==='string')input.nose=legacyNoses[input.nose]??input.nose;
   const result={...defaultAppearance};
   const catalogs={hair:hairstyles,skin:skinTones,hairColor:hairColors,outfit:outfits,pet:pets,eyes:eyeStyles,nose:noseStyles,expression:expressions,shirt:shirtStyles,gender:genders};
   for(const key of Object.keys(catalogs) as (keyof Appearance)[]) {
     if(catalogs[key].some(item=>item.id===input[key]))Object.assign(result,{[key]:input[key]});
   }
-  return result;
+  return normalizeStyles(result);
 }
 export function appearanceKey(account:string) {return 'stride.appearance.v1.'+Array.from(account).map(c=>c.codePointAt(0)!.toString(16)).join('-');}

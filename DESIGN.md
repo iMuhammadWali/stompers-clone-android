@@ -210,10 +210,23 @@ have additional horizontal separation so they do not merge in the default pose.
 
 Eyes, nose profiles, eyebrows/mouth expressions, and shirt details are independent
 layers. Nose choice modifies the actual face silhouette. Expressions adjust eyebrows
-and mouths while retaining the selected eye style. Gender choices adjust the jaw and
-shirt fit without forcing a hairstyle, color, face expression, or wardrobe.
+and mouths while retaining the selected eye style. Gender choices adjust the jaw and shirt fit. Catalog eligibility restricts Crop/Raglan
+to Male and Ponytail/Striped to Female; other hair/shirt choices are shared.
 Classic tees use the original lightning mark, striped tees use two light bands,
 raglan shirts have contrast sleeves, and hoodies have a hood, long sleeves, drawstrings,
 and a pouch. Hands paint after all sleeves to avoid repeating the previous occlusion bug.
 All selections update the same rig used on the track. A generated features sheet records
 the individual options. Four editor sections keep the longer catalog usable on phones.
+
+## Nose simplification and inventory rules
+
+Noses now use a minimal dot, soft curve, or tiny wedge. Profile projections are shorter,
+with fewer interior marks and thinner lines, keeping the eyes and expression as the
+main facial focus. The chosen default is Soft curve. Legacy nose IDs migrate to the
+nearest new style. Choices were informed by Raquel Arellano and the Etherington Brothers:
+- https://www.clipstudio.net/how-to-draw/archives/160376
+- https://www.clipstudio.net/how-to-draw/archives/161019
+
+These sources describe simplifying nose structure and varying the profile; the actual
+small-profile designs are an application-specific interpretation. Game catalog gender
+restrictions are specified by the user, not inferred rules about real-world fashion.
