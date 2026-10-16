@@ -28,3 +28,15 @@ test('walking preview changes character and companion poses',()=>{
   assert.notEqual(trackSvg(defaultAppearance,0),trackSvg(defaultAppearance,2));
   assert.notEqual(trackSvg(defaultAppearance,2),trackSvg(defaultAppearance,6));
 });
+
+test('each walk pose retains two complete arms, hands, and legs, and each pet has four legs',()=>{
+  for(let frame=0;frame<8;frame++){
+    const xml=trackSvg(defaultAppearance,frame);
+    for(const name of ['far-leg','near-leg','far-arm','near-arm','far-arm-hand','near-arm-hand'])
+      assert.equal(xml.split(`data-limb="${name}"`).length-1,1,`frame ${frame}: ${name}`);
+    for(const pet of ['dog','cat','rabbit'] as const){
+      const petArt=trackSvg({...defaultAppearance,pet},frame);
+      for(let leg=1;leg<=4;leg++)assert.equal(petArt.split(`data-limb="pet-leg-${leg}"`).length-1,1);
+    }
+  }
+});

@@ -195,7 +195,9 @@
       "face": "Single fixed face",
       "storage": "Device-local, account-scoped",
       "motion": "Opt-in, reduced-motion-aware; stops on blur",
-      "track": "Side-on orange dirt path with pale gold surface and grounded avatars; no live race data"
+      "track": "Side-on orange dirt path with pale gold surface and grounded avatars; no live race data",
+      "poseSheet": "assets/characters/pose-sheet.svg",
+      "pose": "Readable walking contact pose; explicit hands and opposing arm swing; four pet legs"
     }
   },
   "components": [

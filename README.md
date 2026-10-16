@@ -160,3 +160,8 @@ This version uses a single face and body rig. Pets are visual companions; there 
 inventory, gameplay, real step tracking, or server appearance sync yet. Cosmetic choices
 persist in browser localStorage for the preview and SecureStore on native devices, keyed
 by account. Authentication tokens keep their existing separate storage behavior.
+
+The character defaults to a walking contact pose with explicit hands, elbows, and
+separated feet. `assets/characters/pose-sheet.svg` shows all eight walk poses and is
+regenerated alongside the track design sheet by the existing export-character-art script.
+Each pet has four offset leg and paw layers.

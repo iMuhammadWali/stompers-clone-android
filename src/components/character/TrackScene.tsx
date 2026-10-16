@@ -17,7 +17,7 @@ export function TrackScene({appearance,walking=false}:{appearance:Appearance;wal
     const timer=setInterval(()=>setFrame(f=>(f+1)%8),140);
     return ()=>clearInterval(timer);
   },[walking,reduceMotion]);
-  return <View accessible accessibilityRole="image" accessibilityLabel={`Your character wearing ${appearance.outfit}, with ${appearance.hair} hair${appearance.pet==='none'?'':` and a ${appearance.pet}`}, standing on the orange walking track`} style={{width:'100%',aspectRatio:390/420}}>
+  return <View accessible accessibilityRole="image" accessibilityLabel={`Your character wearing ${appearance.outfit}, with ${appearance.hair} hair${appearance.pet==='none'?'':` and a ${appearance.pet}`}, on the orange walking track`} style={{width:'100%',aspectRatio:390/420}}>
     <SvgXml xml={trackSvg(appearance,walking&&!reduceMotion?frame:0)} width="100%" height="100%" accessible={false}/>
   </View>;
 }

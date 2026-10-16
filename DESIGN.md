@@ -181,3 +181,22 @@ and soft contact shadows give depth. No map, leaderboard, or real race position 
 The 390×420 scene is shared between Home and the live creator preview. Walking is opt-in,
 pauses on blur, and respects reduced motion. Persisted appearance is device-local per account.
 The supplied Stompers screenshot is a direction reference; no game assets are copied.
+
+### Walk-pose revision
+
+Default to the contact/stride pose, with feet separated, rear heel raised, front foot
+reaching forward, and opposing arm swing. Draw explicit elbows, wrists, and mitten-shaped
+hands. Darker far limbs and correct back-to-front drawing order clarify overlap. Keep both
+hands outside the torso silhouette in the default pose. Four offset pet legs have small
+paw shapes; they are not represented by a single two-leg stroke.
+
+The eight-pose sheet (`assets/characters/pose-sheet.svg`) is generated from the same rig
+used by the app and inspected alongside the track design sheet. Normal overlap occurs in
+passing poses; the default contact pose is selected for clear reading at phone size.
+
+References studied:
+- Animation Mentor, “Animating a Basic Human Walk Cycle”: https://www.animationmentor.com/blog/tutorial-animating-human-walk-cycle/
+- Animation Mentor / Anthony Wong, “Building Appealing Character Poses for Animation”: https://www.animationmentor.com/blog/tutorial-building-appealing-character-poses-for-animation/
+
+Design inference: the app's main idle image should communicate an easy walk. A contact
+pose gives a clearer small silhouette than overlapping feet or a raised, waving forearm.

@@ -9,34 +9,40 @@ export function characterLayers(value:Appearance,frame=0):string {
   const skin=skinTones.find(x=>x.id===a.skin)!;
   const hair=hairColors.find(x=>x.id===a.hairColor)!;
   const outfit=outfits.find(x=>x.id===a.outfit)!;
-  // Eight-pose cycle with planted feet, alternating knees, and opposite arm swing.
-  const phase=Math.sin((frame%8)/8*Math.PI*2),lift=Math.abs(phase)*3;
-  const backX=48-phase*18,backY=171-Math.max(-phase,0)*9;
-  const frontX=65+phase*18,frontY=171-Math.max(phase,0)*9;
-  const backLeg=`M51 125 Q${50-phase*12} ${147-Math.max(-phase,0)*10} ${backX} ${backY}`;
-  const frontLeg=`M69 126 Q${70+phase*14} ${147-Math.max(phase,0)*10} ${frontX} ${frontY}`;
-  const shoe=(x:number,y:number)=>`M${x-5} ${y-4} L${x+5} ${y-4} L${x+13} ${y+5} Q${x+15} ${y+10} ${x+6} ${y+10} L${x-11} ${y+10} Q${x-15} ${y+7} ${x-9} ${y+2} Z`;
+  // Contact → down → passing → up → opposite contact. Frame zero is a readable stride.
+  const angle=((frame%8+8)%8)/8*Math.PI*2;
+  const swing=Math.cos(angle),passing=Math.sin(angle);
+  const frontLift=Math.max(0,passing)*14,backLift=Math.max(0,-passing)*14;
+  const backX=60-swing*25,backY=171-backLift;
+  const frontX=60+swing*25,frontY=171-frontLift;
+  const backLeg=`M51 123 Q${54-swing*12} ${148-backLift*1.3} ${backX} ${backY}`;
+  const frontLeg=`M68 123 Q${65+swing*12} ${148-frontLift*1.3} ${frontX} ${frontY}`;
+  const shoe=(x:number,y:number)=>`M${x-5} ${y-3} L${x+5} ${y-3} L${x+13} ${y+5} Q${x+15} ${y+10} ${x+6} ${y+10} L${x-10} ${y+10} Q${x-13} ${y+7} ${x-8} ${y+2} Z`;
   const backShoe=shoe(backX,backY),frontShoe=shoe(frontX,frontY);
-  const backArm='M43 80 Q30 96 28 110 Q29 116 35 112 L48 97';
-  const frontArm='M78 80 Q88 95 98 96 L104 87 Q109 86 108 93 L103 104 Q100 108 94 105 L75 96';
+  const farHand={x:78+swing*23,y:116-Math.max(swing,0)*19};
+  const nearHand={x:43-swing*25,y:117-Math.max(-swing,0)*5};
+  const arm=(shoulderX:number,elbowX:number,hand:{x:number;y:number},color:string,name:string)=>`<g data-limb="${name}">`+
+    `<path d="M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-3}" fill="none" stroke="#343239" stroke-width="13" stroke-linecap="round"/>`+
+    `<path d="M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-3}" fill="none" stroke="${color}" stroke-width="8.5" stroke-linecap="round"/>`+
+    `<g data-limb="${name}-hand"><ellipse cx="${hand.x}" cy="${hand.y}" rx="5.8" ry="7" fill="${color}" ${stroke}/>`+
+    `<path d="M${hand.x+3} ${hand.y-3} Q${hand.x+8} ${hand.y-4} ${hand.x+6} ${hand.y+1}" fill="${color}" stroke="#343239" stroke-width="1.5" stroke-linecap="round"/></g></g>`;
   const hairShapes={
     crop:'M34 45 Q24 19 43 13 Q65 1 84 20 L88 35 Q71 35 63 26 Q50 42 34 45 Z',
     waves:'M32 48 Q23 38 29 28 Q22 17 38 15 Q37 3 51 8 Q64 -1 73 12 Q87 6 90 23 Q99 32 87 41 L78 30 Q67 35 59 24 Q50 43 36 40 Z',
     curls:'M32 49 Q22 44 26 34 Q17 23 30 18 Q26 6 41 8 Q45 -4 57 5 Q69 -2 77 9 Q93 6 92 21 Q104 30 92 39 L83 41 Q76 29 66 31 Q55 42 46 33 L38 49 Z',
     ponytail:'M32 49 Q22 34 32 19 Q48 0 70 10 Q90 12 91 35 L80 39 Q66 28 62 23 Q51 41 37 43 Z',
   };
-  return `<g data-layer="character" transform="translate(0 ${-lift})">`+
+  return `<g data-layer="character" transform="translate(0 0)">`+
     (a.hair==='ponytail'?path('M32 25 Q8 14 9 38 Q2 61 20 66 Q13 42 33 42 Z',hair.color):'')+
-    limb(backLeg,skin.shade)+path(backShoe,'#F7F6F1')+
-    `<g transform="rotate(${phase*24} 43 80)">${path(backArm,skin.shade)}</g>`+
+    `<g data-limb="far-leg">${limb(backLeg,skin.shade)}<g transform="rotate(${Math.max(swing,0)*16} ${backX+12} ${backY+9})">${path(backShoe,'#E1E1DD')}</g></g>`+
+    arm(78,83+swing*5,farHand,skin.shade,'far-arm')+
     path('M44 107 L74 107 L81 133 L65 138 L59 125 L53 138 L36 131 Z',outfit.shorts)+
-    limb(frontLeg,skin.color)+path(frontShoe,'#F7F6F1')+
-    `<path d="M${frontX-10} ${frontY+7} H${frontX+12} M${backX-10} ${backY+7} H${backX+12}" fill="none" stroke="#343239" stroke-width="2"/>`+
+    `<g data-limb="near-leg">${limb(frontLeg,skin.color)}<g transform="rotate(${-Math.max(swing,0)*7} ${frontX-10} ${frontY+9})">${path(frontShoe,'#F7F6F1')}</g></g>`+
     path('M50 61 L51 77 L69 78 L69 60 Z',skin.shade)+
     path('M49 70 Q58 77 71 70 L82 79 L82 96 L76 95 L77 115 Q60 122 40 113 L42 96 L35 93 L36 80 Z',outfit.color)+
     `<path d="M72 76 L75 111 Q61 116 43 110" fill="none" stroke="${outfit.shade}" stroke-width="5"/>`+
     '<path d="M48 73 Q58 82 72 74" fill="none" stroke="#343239" stroke-width="2.1"/>'+
-    `<g transform="rotate(${-phase*24} 78 80)">${path(frontArm,skin.color)}</g>`+
+    arm(43,42-swing*15,nearHand,skin.color,'near-arm')+
     path('M34 34 Q39 15 61 17 Q84 17 88 38 L89 48 L94 53 Q96 57 88 58 Q85 75 66 75 Q43 73 36 58 Q25 59 26 49 Q27 42 34 45 Z',skin.color)+
     `<path d="M36 50 Q31 46 31 53 M81 55 L85 57" fill="none" stroke="${skin.shade}" stroke-width="2.2"/>`+
     '<ellipse cx="71" cy="44" rx="5" ry="6" fill="#FFFFFF"/><ellipse cx="84" cy="44" rx="3.4" ry="5" fill="#FFFFFF"/>'+
@@ -50,7 +56,11 @@ export function characterLayers(value:Appearance,frame=0):string {
 export function petLayers(pet:Appearance['pet'],frame=0):string {
   if(pet==='none')return '';
   const hop=Math.abs(Math.sin(frame/8*Math.PI*2))*2;
-  const legs=`<path d="M30 50 L${frame%8<4?27:34} 68 M53 52 L${frame%8<4?59:48} 68" fill="none" stroke="#343239" stroke-width="8" stroke-linecap="round"/>`;
+  const step=Math.cos(frame/8*Math.PI*2)*3;
+  const legs=[{x:29,y:48,end:26-step,far:true},{x:53,y:49,end:57+step,far:true},
+    {x:36,y:51,end:34+step,far:false},{x:62,y:50,end:66-step,far:false}].map((leg,i)=>
+    `<g data-limb="pet-leg-${i+1}"><path d="M${leg.x} ${leg.y} L${leg.end} ${leg.far?66:69}" fill="none" stroke="${leg.far?'#64606A':'#343239'}" stroke-width="5.5" stroke-linecap="round"/>`+
+    `<ellipse cx="${leg.end+1}" cy="${leg.far?66:69}" rx="3.5" ry="2.4" fill="${leg.far?'#64606A':'#343239'}"/></g>`).join('');
   if(pet==='dog')return `<g data-layer="pet-dog" transform="translate(0 ${-hop})">`+
     path('M24 43 Q9 42 10 28 Q16 28 19 36 L30 36','#E6AE68')+legs+
     `<ellipse cx="42" cy="46" rx="24" ry="18" fill="#E6AE68" ${stroke}/>`+
