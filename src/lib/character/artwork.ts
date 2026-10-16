@@ -47,19 +47,25 @@ export function characterLayers(value:Appearance,frame=0):string {
   const shoe=(x:number,y:number)=>`M${x-5} ${y-3} L${x+5} ${y-3} L${x+13} ${y+5} Q${x+15} ${y+10} ${x+6} ${y+10} L${x-10} ${y+10} Q${x-13} ${y+7} ${x-8} ${y+2} Z`;
   const backShoe=shoe(backX,backY),frontShoe=shoe(frontX,frontY);
   const farHand={x:78+swing*23,y:116-Math.max(swing,0)*19};
-  const nearHand={x:43-swing*25,y:117-Math.max(-swing,0)*5};
+  const nearHand={x:43-swing*21,y:120-Math.max(-swing,0)*12};
   const arm=(shoulderX:number,elbowX:number,hand:{x:number;y:number},color:string,name:string)=>{
-    const sleeve=a.shirt==='hoodie'?`M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-11}`:`M${shoulderX} 85 L${shoulderX+(elbowX-shoulderX)*0.4} 92`;
+    // Cuff and wrist share the forearm direction; no vertical hook above the hand.
+    const dx=hand.x-elbowX,dy=hand.y-103,length=Math.hypot(dx,dy);
+    const ux=dx/length,uy=dy/length;
+    const wrist={x:hand.x-ux*4,y:hand.y-uy*4};
+    const cuff={x:hand.x-ux*9,y:hand.y-uy*9};
+    const sleeve=a.shirt==='hoodie'?`M${shoulderX} 85 L${elbowX} 103 L${cuff.x} ${cuff.y}`:`M${shoulderX} 85 L${shoulderX+(elbowX-shoulderX)*0.4} 92`;
+    const handAngle=Math.atan2(dy,dx)*180/Math.PI-90;
     return `<g data-limb="${name}">`+
-      `<path d="M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-3}" fill="none" stroke="#343239" stroke-width="13" stroke-linecap="round"/>`+
-      `<path d="M${shoulderX} 85 L${elbowX} 103 L${hand.x} ${hand.y-3}" fill="none" stroke="${color}" stroke-width="8.5" stroke-linecap="round"/>`+
-      `<g data-clothing="${name}-sleeve"><path d="${sleeve}" fill="none" stroke="#343239" stroke-width="17" stroke-linecap="round"/><path d="${sleeve}" fill="none" stroke="${a.shirt==='raglan'?outfit.shade:outfit.color}" stroke-width="12.5" stroke-linecap="round"/></g>`+
-      `<g data-limb="${name}-hand"><ellipse cx="${hand.x}" cy="${hand.y}" rx="5.8" ry="7" fill="${color}" ${stroke}/>`+
-      `<path d="M${hand.x+3} ${hand.y-3} Q${hand.x+8} ${hand.y-4} ${hand.x+6} ${hand.y+1}" fill="${color}" stroke="#343239" stroke-width="1.5" stroke-linecap="round"/></g></g>`;
+      `<path d="M${shoulderX} 85 L${elbowX} 103 L${wrist.x} ${wrist.y}" fill="none" stroke="#343239" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>`+
+      `<path d="M${shoulderX} 85 L${elbowX} 103 L${wrist.x} ${wrist.y}" fill="none" stroke="${color}" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>`+
+      `<g data-clothing="${name}-sleeve"><path d="${sleeve}" fill="none" stroke="#343239" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/><path d="${sleeve}" fill="none" stroke="${a.shirt==='raglan'?outfit.shade:outfit.color}" stroke-width="12.5" stroke-linecap="round" stroke-linejoin="round"/></g>`+
+      `<g data-limb="${name}-hand" transform="translate(${hand.x} ${hand.y}) rotate(${handAngle})"><ellipse cx="0" cy="0" rx="5.5" ry="6.5" fill="${color}" ${stroke}/>`+
+      `<path d="M3 -3 Q6 -4 5 0" fill="none" stroke="#343239" stroke-width="1.3" stroke-linecap="round"/></g></g>`;
   };
   const cheek='L88 45 Q91 54 86 63';
-  const jaw=a.gender==='male'?'Q84 73 70 75 L54 71 Q41 66 36 58':a.gender==='female'?'Q85 70 69 74 Q45 75 36 58':'Q85 75 66 75 Q43 73 36 58';
-  const shirtBody=a.gender==='female'?'M49 70 Q58 77 71 70 L82 79 L82 96 L76 95 Q71 104 77 115 Q60 122 40 113 Q46 104 42 96 L35 93 L36 80 Z':a.gender==='male'?'M49 70 Q58 77 71 70 L84 79 L84 96 L77 95 L78 115 Q60 122 39 113 L41 96 L34 93 L35 80 Z':'M49 70 Q58 77 71 70 L82 79 L82 96 L76 95 L77 115 Q60 122 40 113 L42 96 L35 93 L36 80 Z';
+  const jaw=a.gender==='male'?'Q84 73 70 75 L54 71 Q41 66 36 58':'Q85 70 69 74 Q45 75 36 58';
+  const shirtBody=a.gender==='female'?'M49 70 Q58 77 71 70 L82 79 L82 96 L76 95 Q71 104 77 115 Q60 122 40 113 Q46 104 42 96 L35 93 L36 80 Z':'M49 70 Q58 77 71 70 L84 79 L84 96 L77 95 L78 115 Q60 122 39 113 L41 96 L34 93 L35 80 Z';
   const shirtClip=`shirt-${a.gender}-${a.shirt}-${a.outfit}`;
   const shirtDetail=a.shirt==='striped'?'<path d="M30 87 Q59 93 90 87 L90 92 Q59 98 30 92 Z M30 99 Q59 105 90 99 L90 104 Q59 110 30 104 Z" fill="#FFF8E8"/>':a.shirt==='hoodie'?`<path d="M54 80 L53 94 M67 80 L69 93" fill="none" stroke="#FFF8E8" stroke-width="1.5" stroke-linecap="round"/><path d="M52 103 Q61 99 70 103 L71 110 Q61 113 50 109 Z" fill="${outfit.shade}" opacity="0.55"/><path d="M52 103 L51 107 M69 103 L70 107" stroke="${outfit.shade}" stroke-width="1.2"/>`:a.shirt==='raglan'?`<path d="M49 75 Q47 86 42 94 M71 75 Q75 85 78 94" stroke="${outfit.shade}" stroke-width="1.2" fill="none"/>`:'';
   const garmentDetails=`<defs><clipPath id="${shirtClip}"><path d="${shirtBody}"/></clipPath></defs><g data-shirt-detail="${a.shirt}" clip-path="url(#${shirtClip})">${shirtDetail}<path d="M72 76 Q72 98 77 118 L85 118 V76 Z" fill="${outfit.shade}" opacity="0.25"/><path d="M42 111 Q59 118 77 113" stroke="${outfit.shade}" stroke-width="1.2" fill="none"/></g><path d="${shirtBody}" fill="none" ${stroke}/>`;
@@ -152,4 +158,9 @@ export function featureSvg(value:Appearance,feature:'eyes'|'nose'|'expression'):
   const a=parseAppearance(JSON.stringify(value));
   const viewBox=feature==='eyes'?'61 28 32 25':feature==='nose'?'63 36 32 31':'51 26 46 50';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="100" height="100">${characterLayers(a)}</svg>`;
+}
+
+/** Stable representative portraits make gender options distinguishable before selection. */
+export function genderSvg(a:Appearance):string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -4 106 82" width="106" height="82">${characterLayers({...a,hair:a.gender==='female'?'ponytail':'crop',shirt:'tee',expression:'smile'})}</svg>`;
 }

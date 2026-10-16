@@ -58,7 +58,7 @@ test('legacy saved looks keep their old choices and receive defaults for new fea
 });
 test('every face, shirt, and gender option produces distinct artwork',()=>{
   for(const [key,catalog] of Object.entries({eyes:eyeStyles,nose:noseStyles,expression:expressions,shirt:shirtStyles,gender:genders})){
-    const results=catalog.map(option=>trackSvg({...defaultAppearance,[key]:option.id,...(key==='shirt'?{gender:option.id==='striped'?'female' as const:option.id==='raglan'?'male' as const:'nonbinary' as const}: {})}));
+    const results=catalog.map(option=>trackSvg({...defaultAppearance,[key]:option.id,...(key==='shirt'?{gender:option.id==='striped'?'female' as const:option.id==='raglan'?'male' as const:'male' as const}: {})}));
     assert.equal(new Set(results).size,catalog.length,key);
   }
 });
@@ -83,4 +83,11 @@ test('eligibility rules apply to saved looks as well as the editor',()=>{
   assert.equal(parseAppearance('{"nose":"button"}').nose,'dot');
   assert.equal(parseAppearance('{"nose":"straight"}').nose,'wedge');
   assert.equal(parseAppearance('{"nose":"rounded"}').nose,'curve');
+});
+
+test('retired third gender migrates safely while preserving the saved look',()=>{
+  assert.deepEqual(genders.map(g=>g.id),['male','female']);
+  const base={gender:'nonbinary',hair:'curls',shirt:'hoodie',skin:'deep',pet:'rabbit'};
+  assert.deepEqual(parseAppearance(JSON.stringify(base)),{...defaultAppearance,...base,gender:'male'});
+  assert.equal(parseAppearance(JSON.stringify({...base,hair:'ponytail'})).gender,'female');
 });

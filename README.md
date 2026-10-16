@@ -176,9 +176,9 @@ have additional horizontal separation so they do not merge in the default pose.
 The creator is grouped into Look, Face, Clothes, and Pet sections. New independent options:
 4 eyes (Round, Almond, Relaxed, Sparkle), 3 noses (Minimal nose, Button nose, Soft bridge),
 5 expressions (Smile, Grin, Calm, Determined, Surprised), 4 shirt styles (Classic tee,
-Striped, Raglan, Hoodie), and Male/Female/Nonbinary base face and fit variants.
+Striped, Raglan, Hoodie), and Male/Female base face and fit variants.
 Crop hair and Raglan shirts are male-only; Ponytail and Striped shirts are female-only.
-Waves, Curls, Classic tee, and Hoodie are shared, including for Nonbinary. Colors,
+Waves, Curls, Classic tee, and Hoodie are shared. Colors,
 eyes, noses, expressions, and pets remain available to everyone.
 Shirt style and outfit color are separate choices; hoodie sleeves are drawn before hands.
 Old appearance records receive defaults for missing fields without losing their saved choices.
@@ -194,3 +194,18 @@ Dot, Tiny wedge, and Soft curve respectively; Soft curve is the new default.
 Character choices use artwork-only tiles with accessible names and selection checks.
 Face previews zoom into the selected feature. Shirts use plain fabric, broad clipped
 stripes, raglan seams, or a tonal hoodie pocket.
+
+### Creator usability refinement
+Only Male and Female are offered; both have visible labels and distinct representative
+portraits. Old records with the retired third option migrate to Male by default, or
+Female if a saved female-specific style is present, keeping other valid choices.
+The editor preview crops empty sky without changing the Home track. Category controls
+wrap at narrow widths or larger system text sizes; gender labels can wrap and grow their
+cards. Selection uses both a border and check, not color alone. Save is enabled only
+for changes; Reset changes restores the saved look.
+
+HCI rationale and verification limits are recorded in DESIGN.md.
+
+Catalog thumbnails are fixed samples, independent of the current draft. Hair, eyes,
+nose, expression, shirt and gender artwork are generated once from a standard sample
+appearance. Only the main track preview reflects current character selections.

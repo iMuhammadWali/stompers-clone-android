@@ -241,6 +241,45 @@ Minimal nose is a tiny shaded mark; Button nose uses soft volume and a short low
 curve; Soft bridge uses a light interior contour. None interrupts the cheek outline.
 The tee is plain, stripes are broad curved bands clipped to the torso, raglan sleeves
 use seams, and the hoodie uses a tonal pocket. Details sit beneath arms and collar.
-Choices have no visible captions. Accessible labels remain, and selected tiles show
+Visual feature choices have no visible captions; gender cards explicitly label Male and Female. Accessible labels remain, and selected tiles show
 a small check badge. Face thumbnails crop around the relevant feature. Five options
 wrap into two rows rather than squeezing five portraits onto one mobile row.
+
+
+## Creator HCI refinement (16 October 2026)
+Impeccable polish/adapt guidance was read from the upstream skill. Its launcher is
+unavailable in this environment; the existing PRODUCT.md and DESIGN.md provided context.
+The user-approved illustration style, light palette, and glossy primary action remain.
+
+- Recognition rather than recall: visible Male/Female labels, representative crop/ponytail
+  portraits, enlarged feature previews, and familiar category names. Gender previews are
+  representative; compatible saved hair is preserved on selection.
+- Visibility of status: border plus check for selected choices, live character preview,
+  explicit Saved look/Unsaved changes state, and disabled Save when unchanged.
+- User control: Reset changes restores the persisted appearance without leaving the editor.
+- Grouping and space: compact editor track crops unused sky, consistent section gaps,
+  and separate wrapping category buttons bring choices closer to the preview.
+- Target size and reflow: category targets have a 48-unit minimum; choice tiles have an
+  88-unit minimum. Category rows switch to two columns on narrow windows/large text;
+  choice columns reduce with available width and font scaling. Gender cards have a
+  minimum height, not fixed height; captions wrap without a line limit. Check badges
+  occupy a corner with caption padding. No captions were added to expression tiles.
+
+Pose correction: the near hand hangs slightly lower and closer to its elbow. Forearm
+direction determines both wrist and cuff endpoints and the hand rotation. Round joins
+remove the angular sleeve hooks seen in the supplied hoodie screenshot.
+
+Sources used as design guidance (not claims of certified compliance):
+- Nielsen Norman Group, 10 Usability Heuristics: https://www.nngroup.com/articles/ten-usability-heuristics/
+- W3C Reflow: https://www.w3.org/WAI/WCAG22/Understanding/reflow.html
+- W3C Target Size: https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
+- Impeccable: https://github.com/pbakaus/impeccable/blob/main/skill/SKILL.src.md
+
+Verification: unit/UI checks exercise migration, inventory, selection, reset and save
+behavior; SVG renders inspect the altered hands and representative portraits. The user
+is checking phone screenshots. Automated text layout and native-device visual approval
+remain unverified; no browser login was requested again after the user's refusal.
+
+Catalog thumbnails are fixed samples, independent of the current draft. Hair, eyes,
+nose, expression, shirt and gender artwork are generated once from a standard sample
+appearance. Only the main track preview reflects current character selections.

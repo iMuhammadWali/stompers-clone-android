@@ -42,7 +42,7 @@ export const shirtStyles = [
   {id:'raglan',label:'Raglan'}, {id:'hoodie',label:'Hoodie'},
 ] as const;
 export const genders = [
-  {id:'male',label:'Male'}, {id:'female',label:'Female'}, {id:'nonbinary',label:'Nonbinary'},
+  {id:'male',label:'Male'}, {id:'female',label:'Female'},
 ] as const;
 export type Appearance = {
   hair:typeof hairstyles[number]['id'];skin:typeof skinTones[number]['id'];
@@ -50,7 +50,7 @@ export type Appearance = {
   pet:typeof pets[number]['id'];eyes:typeof eyeStyles[number]['id'];nose:typeof noseStyles[number]['id'];
   expression:typeof expressions[number]['id'];shirt:typeof shirtStyles[number]['id'];gender:typeof genders[number]['id'];
 };
-export const defaultAppearance:Appearance={hair:'waves',skin:'warm',hairColor:'espresso',outfit:'lagoon',pet:'dog',eyes:'round',nose:'curve',expression:'smile',shirt:'tee',gender:'nonbinary'};
+export const defaultAppearance:Appearance={hair:'waves',skin:'warm',hairColor:'espresso',outfit:'lagoon',pet:'dog',eyes:'round',nose:'curve',expression:'smile',shirt:'tee',gender:'male'};
 /** Gender-specific inventory lives here, so UI and stored looks use identical rules. */
 export const styleAvailability:{hair:Partial<Record<Appearance['hair'],readonly Appearance['gender'][]>>;shirt:Partial<Record<Appearance['shirt'],readonly Appearance['gender'][]>>}={
   hair:{crop:['male'],ponytail:['female']},
@@ -69,6 +69,8 @@ export function parseAppearance(raw:string|null):Appearance {
   try {const data=JSON.parse(raw??'{}');if(data&&typeof data==='object'&&!Array.isArray(data))input=data;}catch{}
   const legacyNoses:Record<string,string>={button:'dot',straight:'wedge',rounded:'curve'};
   if(typeof input.nose==='string')input.nose=legacyNoses[input.nose]??input.nose;
+  // Preserve existing gender-specific inventory when migrating the retired third option.
+  if(input.gender==='nonbinary')input.gender=input.hair==='ponytail'||input.shirt==='striped'?'female':'male';
   const result={...defaultAppearance};
   const catalogs={hair:hairstyles,skin:skinTones,hairColor:hairColors,outfit:outfits,pet:pets,eyes:eyeStyles,nose:noseStyles,expression:expressions,shirt:shirtStyles,gender:genders};
   for(const key of Object.keys(catalogs) as (keyof Appearance)[]) {

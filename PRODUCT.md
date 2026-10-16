@@ -32,14 +32,20 @@ Appearance saves locally per account, separately from authentication. Demo socia
 resets; saved appearance persists. There are no invented step counts or race results.
 
 The creator has Look/Face/Clothes/Pet sections. Eyes: 4; noses: 3; expressions: 5;
-shirt styles: 4; base gender/face/fit variants: Male, Female, Nonbinary. Face choices and colors remain independent. Hair and shirt inventory includes shared
+shirt styles: 4; base gender/face/fit variants: Male and Female. Face choices and colors remain independent. Hair and shirt inventory includes shared
 and gender-specific styles. Legacy saved looks migrate by adding
 default values for missing fields; existing choices are preserved.
 
 Gender-specific styles: Male → Crop/Raglan; Female → Ponytail/Striped.
-Shared → Waves/Curls and Classic tee/Hoodie. Nonbinary uses the shared inventory.
+Shared → Waves/Curls and Classic tee/Hoodie.
 Changing gender replaces incompatible hair/shirts with shared defaults and explains it.
-Noses use smaller cartoon marks and profiles: Dot, Soft curve, Tiny wedge.
+Noses use interior marks: Minimal nose, Button nose, Soft bridge.
 
-Character choice tiles are picture-only with accessible labels and selection badges.
+Character choice tiles are picture-only with accessible labels and selection badges, except gender cards which visibly label Male and Female.
 Face features use enlarged previews; shirt details are clipped to the garment.
+
+The creator uses a compact track preview, wrapping category controls, and explicit saved/unsaved feedback with Reset changes. Gender portraits use distinct representative hair silhouettes; choosing gender does not overwrite compatible hairstyle choices.
+
+Catalog thumbnails are fixed samples, independent of the current draft. Hair, eyes,
+nose, expression, shirt and gender artwork are generated once from a standard sample
+appearance. Only the main track preview reflects current character selections.

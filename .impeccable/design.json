@@ -206,8 +206,7 @@
       ],
       "genderOptions": [
         "male",
-        "female",
-        "nonbinary"
+        "female"
       ],
       "featuresSheet": "assets/characters/features-sheet.svg",
       "migration": "Legacy nose IDs mapped to compact replacements; incompatible hair/shirts replaced with shared defaults",
@@ -233,8 +232,7 @@
         "sharedShirts": [
           "tee",
           "hoodie"
-        ],
-        "nonbinary": "shared inventory"
+        ]
       }
     }
   },
@@ -332,5 +330,17 @@
       "**Don't** invent walking statistics or dashboard components absent from this implementation.",
       "**Don't** treat Stride or the footprint as an approved final identity."
     ]
+  },
+  "creatorUsability": {
+    "genderOptions": [
+      "Male",
+      "Female"
+    ],
+    "genderLabels": "Visible, wrapping captions with distinct representative portraits",
+    "selection": "Border and check badge",
+    "preview": "Compact crop in editor; full scene on Home",
+    "reflow": "Reduce columns on narrow windows or large system text",
+    "status": "Saved look / Unsaved changes and Reset changes",
+    "verification": "40 automated tests and SVG inspection; phone text layout pending user review"
   }
 }
