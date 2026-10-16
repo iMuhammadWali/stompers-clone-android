@@ -4,7 +4,7 @@ import {SvgXml} from 'react-native-svg';
 import {trackSvg} from '../../lib/character/artwork';
 import type {Appearance} from '../../lib/character/catalog';
 
-export function TrackScene({appearance,walking=false,compact=false,height}:{appearance:Appearance;walking?:boolean;compact?:boolean;height?:number}) {
+export function TrackScene({appearance,walking=false,compact=false,height,stepCount}:{appearance:Appearance;walking?:boolean;compact?:boolean;height?:number;stepCount?:number|null}) {
   const [frame,setFrame]=useState(0),[reduceMotion,setReduceMotion]=useState(true);
   useEffect(()=>{
     let active=true;
@@ -18,6 +18,6 @@ export function TrackScene({appearance,walking=false,compact=false,height}:{appe
     return ()=>clearInterval(timer);
   },[walking,reduceMotion]);
   return <View accessible accessibilityRole="image" accessibilityLabel={`Your character wearing ${appearance.outfit} ${appearance.shirt}, with ${appearance.hair} hair${appearance.pet==='none'?'':` and a ${appearance.pet}`}, on the orange walking track. ${appearance.eyes} eyes, ${appearance.nose} nose, ${appearance.expression} expression${appearance.eyewear==='sunglasses'?', wearing sunglasses':''}`} style={[{width:'100%'},height?{height}:{aspectRatio:compact?390/280:390/420}]}>
-    <SvgXml xml={compact?trackSvg(appearance,walking&&!reduceMotion?frame:0).replace('viewBox="0 0 390 420"','viewBox="0 140 390 280"'):trackSvg(appearance,walking&&!reduceMotion?frame:0)} width="100%" height="100%" accessible={false}/>
+    <SvgXml xml={compact?trackSvg(appearance,walking&&!reduceMotion?frame:0,stepCount).replace('viewBox="0 0 390 420"','viewBox="0 140 390 280"'):trackSvg(appearance,walking&&!reduceMotion?frame:0,stepCount)} width="100%" height="100%" accessible={false}/>
   </View>;
 }

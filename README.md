@@ -231,3 +231,9 @@ phone verification; no emulator or device screenshots are claimed.
 
 The Look/Face/Clothes/Pet category controls are pinned directly below the preview.
 Switching category resets only the options scroll position; draft selections are retained.
+
+## Health Connect personal race
+Home now reads today's Steps from Android Health Connect with explicit read permission,
+and shows the saved character and companion on a personal track. No competitors or fake
+step totals are shown. Only local health data is read; step totals are not uploaded.
+See HEALTH-CONNECT.md for setup, tested cases, permission behavior, and native build steps.

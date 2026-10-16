@@ -313,3 +313,7 @@ subject to the user's screenshot review.
 
 The Look/Face/Clothes/Pet category controls are pinned directly below the preview.
 Switching category resets only the options scroll position; draft selections are retained.
+
+
+## Personal Health Connect race
+Home pairs a large today-step counter with the saved character and companion on the track. Only the device user appears. Unknown steps use a dash; zero appears only after a successful read. Native permission/update/error/empty states have explicit actions. Source and update time identify the data. Read-only step use is explained before connecting. The counter and track step bubble use the same aggregate.

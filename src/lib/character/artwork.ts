@@ -169,7 +169,7 @@ export function petLayers(pet:Appearance['pet'],frame=0):string {
 
 }
 const bush=(x:number,y:number,scale:number)=>`<g transform="translate(${x} ${y}) scale(${scale})"><path d="M-21 0 Q-34 -16 -18 -21 Q-22 -41 -5 -37 Q4 -58 16 -39 Q37 -43 32 -22 Q50 -11 29 1 Z" fill="${sceneColors.tree}"/><path d="M-2 -21 L3 5 M3 -10 L18 -20" stroke="${sceneColors.trunk}" stroke-width="4" stroke-linecap="round"/></g>`;
-export function trackSvg(a:Appearance,frame=0):string {
+export function trackSvg(a:Appearance,frame=0,steps?:number|null):string {
   const c=sceneColors;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 420" width="390" height="420">`+
     `<rect width="390" height="420" fill="${c.sky}"/>`+
@@ -185,6 +185,7 @@ export function trackSvg(a:Appearance,frame=0):string {
     `<path d="M8 298 L15 286 L29 289 L34 298 Z" fill="${c.stone}" stroke="#87765F" stroke-width="1.5"/>`+
     '<ellipse cx="192" cy="369" rx="42" ry="7" fill="#94643B" opacity="0.17"/>'+
     (a.pet!=='none'?'<ellipse cx="298" cy="365" rx="30" ry="5" fill="#94643B" opacity="0.14"/>':'')+
+    (typeof steps==='number'&&Number.isSafeInteger(steps)&&steps>=0?`<g data-race-steps="${steps}"><rect x="145" y="129" width="99" height="27" rx="10" fill="#FFFFFF" stroke="#343239" stroke-width="2"/><path d="M188 156 L194 162 L199 156" fill="#FFFFFF" stroke="#343239" stroke-width="2"/><text x="194" y="147" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#343239">${steps.toLocaleString()} steps</text></g>`:'')+
     `<g transform="translate(124 166) scale(1.12)">${characterLayers(a,frame)}</g>`+
     `<g transform="translate(258 310) scale(0.8)">${petLayers(a.pet,frame)}</g>`+
     '</svg>';

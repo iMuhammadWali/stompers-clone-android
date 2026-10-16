@@ -3,7 +3,7 @@
 Working product name for an Android social walking app. Current scope is the API v1
 companion: sign up, sign in, manage friends, handle requests, and edit your display name.
 A local character creator, pet selection, and illustrated track preview are implemented.
-No walking data, live competitions, items, rankings, or group functionality is implemented yet.
+Health Connect now supplies today's step total for a personal race. Live competitions, items, rankings and group functionality are not implemented.
 
 People use this on a phone, often one-handed. Primary tasks are finding an exact username,
 accepting incoming requests, and seeing who is already a friend. Navigation must match
@@ -54,3 +54,5 @@ The editor preview and Back control stay pinned above the scrolling options. Pre
 height adapts to the window so options retain space. The new default skin is Sand;
 persisted skin remains a user choice. Sunglasses are an independent removable accessory.
 New companions have original artwork; the spaceship has a visible alien pilot and hovers.
+
+Health Connect: native Android only, read-only Steps permission, aggregate from local midnight to now. Permission is requested explicitly. Health totals stay on-device and are not stored or uploaded. Web shows an unsupported state.
