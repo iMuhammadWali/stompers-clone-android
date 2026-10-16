@@ -1,148 +1,66 @@
 ---
 name: "Stride (working name)"
-description: "Implemented Android walking-club account and people directory; native validation pending."
+description: "Playful social walking app; physical-device validation remains pending."
 colors:
-  light-primary: "#A63D19"
-  light-on-primary: "#FFFFFF"
-  light-primary-container: "#FFDBCC"
-  light-on-primary-container: "#3C1000"
-  light-background: "#FAF7F0"
-  light-surface: "#FAF7F0"
-  light-surface-variant: "#F0E8DD"
-  light-on-surface: "#252820"
-  light-on-surface-variant: "#625C51"
-  light-secondary-container: "#E6E9D8"
-  light-on-secondary-container: "#3A4326"
-  light-outline: "#81796D"
-  light-outline-variant: "rgba(202, 196, 208, 1)"
-  light-error: "rgba(179, 38, 30, 1)"
-  dark-primary: "#FFB599"
-  dark-on-primary: "#411500"
-  dark-primary-container: "#60301C"
-  dark-on-primary-container: "#FFDBCC"
-  dark-background: "#1B1917"
-  dark-surface: "#1B1917"
-  dark-surface-variant: "#3A332E"
-  dark-on-surface: "#F3EDE6"
-  dark-on-surface-variant: "#D6C5B7"
-  dark-secondary-container: "#3D4030"
-  dark-on-secondary-container: "#E2E6C8"
-  dark-outline: "#A79789"
-  dark-outline-variant: "rgba(73, 69, 79, 1)"
-  dark-error: "rgba(242, 184, 181, 1)"
-typography:
-  display-small:
-    fontFamily: "sans-serif"
-    fontSize: "36px"
-    fontWeight: 700
-    lineHeight: "44px"
-    letterSpacing: "-1.1px"
-  headline-large:
-    fontFamily: "sans-serif"
-    fontSize: "32px"
-    fontWeight: 700
-    lineHeight: "40px"
-    letterSpacing: "-0.8px"
-  title-large:
-    fontFamily: "sans-serif"
-    fontSize: "22px"
-    fontWeight: 400
-    lineHeight: "28px"
-    letterSpacing: "0px"
-  brand-large:
-    fontFamily: "sans-serif"
-    fontSize: "22px"
-    fontWeight: 800
-    lineHeight: "28px"
-    letterSpacing: "-0.6px"
-  brand-medium:
-    fontFamily: "sans-serif-medium"
-    fontSize: "16px"
-    fontWeight: 800
-    lineHeight: "24px"
-    letterSpacing: "0.15px"
-  title-medium:
-    fontFamily: "sans-serif-medium"
-    fontSize: "16px"
-    fontWeight: 500
-    lineHeight: "24px"
-    letterSpacing: "0.15px"
-  body-large:
-    fontFamily: "sans-serif"
-    fontSize: "16px"
-    fontWeight: 400
-    lineHeight: "24px"
-    letterSpacing: "0.15px"
-  body-medium:
-    fontFamily: "sans-serif"
-    fontSize: "14px"
-    fontWeight: 400
-    lineHeight: "20px"
-    letterSpacing: "0.25px"
-  body-small:
-    fontFamily: "sans-serif"
-    fontSize: "12px"
-    fontWeight: 400
-    lineHeight: "16px"
-    letterSpacing: "0.4px"
-  label-large:
-    fontFamily: "sans-serif-medium"
-    fontSize: "14px"
-    fontWeight: 500
-    lineHeight: "20px"
-    letterSpacing: "0.1px"
-  label-medium:
-    fontFamily: "sans-serif-medium"
-    fontSize: "12px"
-    fontWeight: 500
-    lineHeight: "16px"
-    letterSpacing: "0.5px"
-rounded:
-  field: "3px"
-  button: "15px"
-  search: "21px"
-  avatar: "50%"
-spacing:
-  step-4: "4px"
-  step-8: "8px"
-  step-10: "10px"
-  step-12: "12px"
-  step-16: "16px"
-  step-18: "18px"
-  step-20: "20px"
-  step-24: "24px"
-  step-36: "36px"
-  step-40: "40px"
-components:
-  button-primary-light:
-    backgroundColor: "{colors.light-primary}"
-    textColor: "{colors.light-on-primary}"
-    typography: "{typography.label-large}"
-    rounded: "{rounded.button}"
-    height: "52px"
-  button-tonal-light:
-    backgroundColor: "{colors.light-secondary-container}"
-    textColor: "{colors.light-on-secondary-container}"
-    typography: "{typography.label-large}"
-    rounded: "{rounded.button}"
-    height: "52px"
-  button-primary-dark:
-    backgroundColor: "{colors.dark-primary}"
-    textColor: "{colors.dark-on-primary}"
-    typography: "{typography.label-large}"
-    rounded: "{rounded.button}"
-    height: "52px"
-  button-tonal-dark:
-    backgroundColor: "{colors.dark-secondary-container}"
-    textColor: "{colors.dark-on-secondary-container}"
-    typography: "{typography.label-large}"
-    rounded: "{rounded.button}"
-    height: "52px"
-  person-avatar-light:
-    backgroundColor: "{colors.light-secondary-container}"
-    textColor: "{colors.light-on-secondary-container}"
-    rounded: "{rounded.avatar}"
-    size: "52px"
+  light-primary: "#2546D8"
+  light-onPrimary: "#FFFFFF"
+  light-primaryContainer: "#DCE6FF"
+  light-onPrimaryContainer: "#142657"
+  light-secondary: "#5B4800"
+  light-onSecondary: "#FFFFFF"
+  light-secondaryContainer: "#FFE36A"
+  light-onSecondaryContainer: "#26314B"
+  light-tertiary: "#9B3E1D"
+  light-onTertiary: "#FFFFFF"
+  light-tertiaryContainer: "#FFD9CA"
+  light-onTertiaryContainer: "#43180B"
+  light-background: "#FFF5BF"
+  light-onBackground: "#192744"
+  light-surface: "#FFFDF4"
+  light-onSurface: "#192744"
+  light-surfaceVariant: "#FFF0A0"
+  light-onSurfaceVariant: "#4B5262"
+  light-surfaceDisabled: "#E5DFBE"
+  light-onSurfaceDisabled: "#6A6B64"
+  light-outline: "#687086"
+  light-outlineVariant: "#D3CA91"
+  light-error: "#AC2430"
+  light-onError: "#FFFFFF"
+  light-errorContainer: "#FFE0E1"
+  light-onErrorContainer: "#6C1420"
+  light-inverseSurface: "#1A2947"
+  light-inverseOnSurface: "#FFFFFF"
+  light-inversePrimary: "#B4C5FF"
+  dark-primary: "#B4C5FF"
+  dark-onPrimary: "#102464"
+  dark-primaryContainer: "#2D4593"
+  dark-onPrimaryContainer: "#E4EBFF"
+  dark-secondary: "#FFE683"
+  dark-onSecondary: "#3B2E00"
+  dark-secondaryContainer: "#5B4710"
+  dark-onSecondaryContainer: "#FFF0B4"
+  dark-tertiary: "#FFC2AA"
+  dark-onTertiary: "#50200D"
+  dark-tertiaryContainer: "#713720"
+  dark-onTertiaryContainer: "#FFE3D8"
+  dark-background: "#101A33"
+  dark-onBackground: "#F0F3FF"
+  dark-surface: "#162341"
+  dark-onSurface: "#F0F3FF"
+  dark-surfaceVariant: "#263653"
+  dark-onSurfaceVariant: "#C4CEE5"
+  dark-surfaceDisabled: "#303B51"
+  dark-onSurfaceDisabled: "#A8B1C6"
+  dark-outline: "#9BAAC9"
+  dark-outlineVariant: "#435477"
+  dark-error: "#FFB3BC"
+  dark-onError: "#570C20"
+  dark-errorContainer: "#7D2333"
+  dark-onErrorContainer: "#FFE2E5"
+  dark-inverseSurface: "#E6EDFF"
+  dark-inverseOnSurface: "#182644"
+  dark-inversePrimary: "#2546D8"
+
 ---
 # Design System: Stride (working name)
 
@@ -150,12 +68,12 @@ components:
 
 **Creative North Star: "A walking club’s people directory"**
 
-This is a source-derived record of the implemented account, friends, requests, invitation, and profile interface. Warm paper, ink, burnt orange, olive initials, and divided people lists give the application a friendly club character. Stride is a working name, not an approved brand identity. No approved visual comp exists.
+This is a source-derived record of the implemented account, friends, requests, invitation, and profile interface. Sunshine yellow, navy ink, cobalt actions, multicolor initials, and divided people lists give the application a friendly club character. Stride is a working name, not an approved brand identity. No approved visual comp exists.
 
 The implementation uses React Native Paper Material 3 with platform system typography. This is an Android-native interface; web renders are surrogates. Android-device validation remains outstanding. Native screenshots were unavailable, so the reviewer requires recapture rather than granting native approval. No detector ran for the native target; the optional helper engine refused an unverifiable download. This document records implementation, not release readiness.
 
 **Key Characteristics:**
-- Warm light and ink-dark system themes.
+- Sunny light and navy-dark system themes.
 - Flat, readable people lists and explicit invitation states.
 - Platform typography, outlined fields, and restrained primary actions.
 - A small original geometric footprint mark.
@@ -259,3 +177,11 @@ Notice uses the Paper error role with a polite accessibility live region. A retr
 - **Don't** promote inherited lavender elevation tones or unmeasured default action sizes into brand rules.
 - **Don't** invent walking statistics or dashboard components absent from this implementation.
 - **Don't** treat Stride or the footprint as an approved final identity.
+
+## Palette revision
+
+The user requested a more playful visual character. The source of truth is src/lib/palette.ts;
+all elevation, outline, inverse, error, and selection roles are explicit in both themes.
+Avatar containers vary deterministically between mint, coral, lilac, and yellow.
+Research, application limits, and color rationale are in COLOR-RATIONALE.md.
+The password toggle uses SVG paths, independent of font loading.

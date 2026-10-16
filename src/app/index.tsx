@@ -4,11 +4,12 @@ import {Text,TextInput,Button,useTheme,ActivityIndicator} from 'react-native-pap
 import {Redirect} from 'expo-router';
 import {Page,Mark,Notice,styles} from '../components/ui';
 import {useSession,message} from '../lib/session';
+import {PasswordField} from '../components/PasswordField';
 
 export default function AuthScreen() {
   const session=useSession(),theme=useTheme();
   const [signup,setSignup]=useState(false),[email,setEmail]=useState(''),[password,setPassword]=useState('');
-  const [username,setUsername]=useState(''),[name,setName]=useState(''),[showPassword,setShowPassword]=useState(false);
+  const [username,setUsername]=useState(''),[name,setName]=useState('');
   const [busy,setBusy]=useState(false),[error,setError]=useState('');
   if(session.user) return <Redirect href="/(tabs)/friends"/>;
   async function submit() {
@@ -23,13 +24,13 @@ export default function AuthScreen() {
   return <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS==='ios'?'padding':'height'}><Page>
     <View style={[styles.brand,{marginTop:20}]}><Mark/><Text variant="titleLarge" style={{fontWeight:'800',letterSpacing:-0.6}}>stride</Text></View>
     <View style={{gap:18,paddingVertical:22}}><Text variant="displaySmall" style={{fontWeight:'700',letterSpacing:-1.1}}>Good company.{`\n`}More movement.</Text><Text variant="bodyLarge" style={{color:theme.colors.onSurfaceVariant,lineHeight:26}}>A place for your walking people.{`\n`}Find a friend. Take it from there.</Text></View>
-    <View style={[styles.actions,{marginBottom:4}]}><Button mode={signup?'text':'contained-tonal'} onPress={()=>{setSignup(false);setError('');}} disabled={busy}>Sign in</Button><Button mode={signup?'contained-tonal':'text'} onPress={()=>{setSignup(true);setError('');}} disabled={busy}>Create account</Button></View>
+    <View style={[styles.actions,{marginBottom:4}]}><Button mode={signup?'text':'contained-tonal'} onPress={()=>{setSignup(false);setError('');}} disabled={busy} contentStyle={{minHeight:48}}>Sign in</Button><Button mode={signup?'contained-tonal':'text'} onPress={()=>{setSignup(true);setError('');}} disabled={busy} contentStyle={{minHeight:48}}>Create account</Button></View>
     {session.booting?<ActivityIndicator accessibilityLabel="Restoring your session"/>:<>
       {session.restoringError&&<><Notice text={session.restoringError}/><Button onPress={()=>void session.retryRestore()}>Retry connection</Button></>}
       <View style={styles.form}>
         {signup&&<><TextInput mode="outlined" label="Display name (optional)" accessibilityLabel="Display name (optional)" value={name} onChangeText={setName} maxLength={60} autoComplete="name" disabled={busy}/><TextInput mode="outlined" label="Username" accessibilityLabel="Username" value={username} onChangeText={setUsername} autoCapitalize="none" autoCorrect={false} maxLength={30} disabled={busy}/></>}
         <TextInput mode="outlined" label="Email address" accessibilityLabel="Email address" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoCorrect={false} autoComplete="email" disabled={busy}/>
-        <TextInput mode="outlined" label="Password" accessibilityLabel="Password" value={password} onChangeText={setPassword} secureTextEntry={!showPassword} autoCapitalize="none" autoComplete={signup?'new-password':'current-password'} maxLength={128} right={<TextInput.Icon icon={showPassword?'eye-off':'eye'} onPress={()=>setShowPassword(!showPassword)} accessibilityLabel={showPassword?'Hide password':'Show password'}/>} disabled={busy}/>
+        <PasswordField value={password} onChangeText={setPassword} signup={signup} disabled={busy}/>
         <Notice text={error}/>
         <Button mode="contained" loading={busy} disabled={busy||!session.configured} onPress={()=>void submit()} contentStyle={styles.button}>{signup?'Create account':'Sign in'}</Button>
       </View>

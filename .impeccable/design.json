@@ -1,402 +1,8 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-16T00:00:00Z",
+  "generatedAt": "2026-10-16T03:27:07.884Z",
   "title": "Design System: Stride (working name)",
   "extensions": {
-    "colorMeta": {
-      "light-primary": {
-        "role": "primary",
-        "displayName": "Light Primary",
-        "tonalRamp": [
-          "oklch(15.00% 0.14642 38.01)",
-          "oklch(26.43% 0.14642 38.01)",
-          "oklch(37.86% 0.14642 38.01)",
-          "oklch(49.29% 0.14642 38.01)",
-          "oklch(60.71% 0.14642 38.01)",
-          "oklch(72.14% 0.14642 38.01)",
-          "oklch(83.57% 0.14642 38.01)",
-          "oklch(95.00% 0.14642 38.01)"
-        ]
-      },
-      "light-on-primary": {
-        "role": "primary",
-        "displayName": "Light On Primary",
-        "tonalRamp": [
-          "oklch(15.00% 0.00000 89.88)",
-          "oklch(26.43% 0.00000 89.88)",
-          "oklch(37.86% 0.00000 89.88)",
-          "oklch(49.29% 0.00000 89.88)",
-          "oklch(60.71% 0.00000 89.88)",
-          "oklch(72.14% 0.00000 89.88)",
-          "oklch(83.57% 0.00000 89.88)",
-          "oklch(95.00% 0.00000 89.88)"
-        ]
-      },
-      "light-primary-container": {
-        "role": "primary",
-        "displayName": "Light Primary Container",
-        "tonalRamp": [
-          "oklch(15.00% 0.04510 43.92)",
-          "oklch(26.43% 0.04510 43.92)",
-          "oklch(37.86% 0.04510 43.92)",
-          "oklch(49.29% 0.04510 43.92)",
-          "oklch(60.71% 0.04510 43.92)",
-          "oklch(72.14% 0.04510 43.92)",
-          "oklch(83.57% 0.04510 43.92)",
-          "oklch(95.00% 0.04510 43.92)"
-        ]
-      },
-      "light-on-primary-container": {
-        "role": "primary",
-        "displayName": "Light On Primary Container",
-        "tonalRamp": [
-          "oklch(15.00% 0.07466 41.45)",
-          "oklch(26.43% 0.07466 41.45)",
-          "oklch(37.86% 0.07466 41.45)",
-          "oklch(49.29% 0.07466 41.45)",
-          "oklch(60.71% 0.07466 41.45)",
-          "oklch(72.14% 0.07466 41.45)",
-          "oklch(83.57% 0.07466 41.45)",
-          "oklch(95.00% 0.07466 41.45)"
-        ]
-      },
-      "light-background": {
-        "role": "neutral",
-        "displayName": "Light Background",
-        "tonalRamp": [
-          "oklch(15.00% 0.00980 87.47)",
-          "oklch(26.43% 0.00980 87.47)",
-          "oklch(37.86% 0.00980 87.47)",
-          "oklch(49.29% 0.00980 87.47)",
-          "oklch(60.71% 0.00980 87.47)",
-          "oklch(72.14% 0.00980 87.47)",
-          "oklch(83.57% 0.00980 87.47)",
-          "oklch(95.00% 0.00980 87.47)"
-        ]
-      },
-      "light-surface": {
-        "role": "neutral",
-        "displayName": "Light Surface",
-        "tonalRamp": [
-          "oklch(15.00% 0.00980 87.47)",
-          "oklch(26.43% 0.00980 87.47)",
-          "oklch(37.86% 0.00980 87.47)",
-          "oklch(49.29% 0.00980 87.47)",
-          "oklch(60.71% 0.00980 87.47)",
-          "oklch(72.14% 0.00980 87.47)",
-          "oklch(83.57% 0.00980 87.47)",
-          "oklch(95.00% 0.00980 87.47)"
-        ]
-      },
-      "light-surface-variant": {
-        "role": "neutral",
-        "displayName": "Light Surface Variant",
-        "tonalRamp": [
-          "oklch(15.00% 0.01708 76.11)",
-          "oklch(26.43% 0.01708 76.11)",
-          "oklch(37.86% 0.01708 76.11)",
-          "oklch(49.29% 0.01708 76.11)",
-          "oklch(60.71% 0.01708 76.11)",
-          "oklch(72.14% 0.01708 76.11)",
-          "oklch(83.57% 0.01708 76.11)",
-          "oklch(95.00% 0.01708 76.11)"
-        ]
-      },
-      "light-on-surface": {
-        "role": "neutral",
-        "displayName": "Light On Surface",
-        "tonalRamp": [
-          "oklch(15.00% 0.01502 124.13)",
-          "oklch(26.43% 0.01502 124.13)",
-          "oklch(37.86% 0.01502 124.13)",
-          "oklch(49.29% 0.01502 124.13)",
-          "oklch(60.71% 0.01502 124.13)",
-          "oklch(72.14% 0.01502 124.13)",
-          "oklch(83.57% 0.01502 124.13)",
-          "oklch(95.00% 0.01502 124.13)"
-        ]
-      },
-      "light-on-surface-variant": {
-        "role": "neutral",
-        "displayName": "Light On Surface Variant",
-        "tonalRamp": [
-          "oklch(15.00% 0.01883 82.75)",
-          "oklch(26.43% 0.01883 82.75)",
-          "oklch(37.86% 0.01883 82.75)",
-          "oklch(49.29% 0.01883 82.75)",
-          "oklch(60.71% 0.01883 82.75)",
-          "oklch(72.14% 0.01883 82.75)",
-          "oklch(83.57% 0.01883 82.75)",
-          "oklch(95.00% 0.01883 82.75)"
-        ]
-      },
-      "light-secondary-container": {
-        "role": "secondary",
-        "displayName": "Light Secondary Container",
-        "tonalRamp": [
-          "oklch(15.00% 0.02283 114.97)",
-          "oklch(26.43% 0.02283 114.97)",
-          "oklch(37.86% 0.02283 114.97)",
-          "oklch(49.29% 0.02283 114.97)",
-          "oklch(60.71% 0.02283 114.97)",
-          "oklch(72.14% 0.02283 114.97)",
-          "oklch(83.57% 0.02283 114.97)",
-          "oklch(95.00% 0.02283 114.97)"
-        ]
-      },
-      "light-on-secondary-container": {
-        "role": "secondary",
-        "displayName": "Light On Secondary Container",
-        "tonalRamp": [
-          "oklch(15.00% 0.04794 122.82)",
-          "oklch(26.43% 0.04794 122.82)",
-          "oklch(37.86% 0.04794 122.82)",
-          "oklch(49.29% 0.04794 122.82)",
-          "oklch(60.71% 0.04794 122.82)",
-          "oklch(72.14% 0.04794 122.82)",
-          "oklch(83.57% 0.04794 122.82)",
-          "oklch(95.00% 0.04794 122.82)"
-        ]
-      },
-      "light-outline": {
-        "role": "neutral",
-        "displayName": "Light Outline",
-        "tonalRamp": [
-          "oklch(15.00% 0.02042 78.15)",
-          "oklch(26.43% 0.02042 78.15)",
-          "oklch(37.86% 0.02042 78.15)",
-          "oklch(49.29% 0.02042 78.15)",
-          "oklch(60.71% 0.02042 78.15)",
-          "oklch(72.14% 0.02042 78.15)",
-          "oklch(83.57% 0.02042 78.15)",
-          "oklch(95.00% 0.02042 78.15)"
-        ]
-      },
-      "light-outline-variant": {
-        "role": "neutral",
-        "displayName": "Light Outline Variant",
-        "tonalRamp": [
-          "oklch(15.00% 0.01776 308.22)",
-          "oklch(26.43% 0.01776 308.22)",
-          "oklch(37.86% 0.01776 308.22)",
-          "oklch(49.29% 0.01776 308.22)",
-          "oklch(60.71% 0.01776 308.22)",
-          "oklch(72.14% 0.01776 308.22)",
-          "oklch(83.57% 0.01776 308.22)",
-          "oklch(95.00% 0.01776 308.22)"
-        ]
-      },
-      "light-error": {
-        "role": "neutral",
-        "displayName": "Light Error",
-        "tonalRamp": [
-          "oklch(15.00% 0.17832 28.70)",
-          "oklch(26.43% 0.17832 28.70)",
-          "oklch(37.86% 0.17832 28.70)",
-          "oklch(49.29% 0.17832 28.70)",
-          "oklch(60.71% 0.17832 28.70)",
-          "oklch(72.14% 0.17832 28.70)",
-          "oklch(83.57% 0.17832 28.70)",
-          "oklch(95.00% 0.17832 28.70)"
-        ]
-      },
-      "dark-primary": {
-        "role": "primary",
-        "displayName": "Dark Primary",
-        "tonalRamp": [
-          "oklch(15.00% 0.09492 41.58)",
-          "oklch(26.43% 0.09492 41.58)",
-          "oklch(37.86% 0.09492 41.58)",
-          "oklch(49.29% 0.09492 41.58)",
-          "oklch(60.71% 0.09492 41.58)",
-          "oklch(72.14% 0.09492 41.58)",
-          "oklch(83.57% 0.09492 41.58)",
-          "oklch(95.00% 0.09492 41.58)"
-        ]
-      },
-      "dark-on-primary": {
-        "role": "primary",
-        "displayName": "Dark On Primary",
-        "tonalRamp": [
-          "oklch(15.00% 0.07573 44.51)",
-          "oklch(26.43% 0.07573 44.51)",
-          "oklch(37.86% 0.07573 44.51)",
-          "oklch(49.29% 0.07573 44.51)",
-          "oklch(60.71% 0.07573 44.51)",
-          "oklch(72.14% 0.07573 44.51)",
-          "oklch(83.57% 0.07573 44.51)",
-          "oklch(95.00% 0.07573 44.51)"
-        ]
-      },
-      "dark-primary-container": {
-        "role": "primary",
-        "displayName": "Dark Primary Container",
-        "tonalRamp": [
-          "oklch(15.00% 0.07639 42.59)",
-          "oklch(26.43% 0.07639 42.59)",
-          "oklch(37.86% 0.07639 42.59)",
-          "oklch(49.29% 0.07639 42.59)",
-          "oklch(60.71% 0.07639 42.59)",
-          "oklch(72.14% 0.07639 42.59)",
-          "oklch(83.57% 0.07639 42.59)",
-          "oklch(95.00% 0.07639 42.59)"
-        ]
-      },
-      "dark-on-primary-container": {
-        "role": "primary",
-        "displayName": "Dark On Primary Container",
-        "tonalRamp": [
-          "oklch(15.00% 0.04510 43.92)",
-          "oklch(26.43% 0.04510 43.92)",
-          "oklch(37.86% 0.04510 43.92)",
-          "oklch(49.29% 0.04510 43.92)",
-          "oklch(60.71% 0.04510 43.92)",
-          "oklch(72.14% 0.04510 43.92)",
-          "oklch(83.57% 0.04510 43.92)",
-          "oklch(95.00% 0.04510 43.92)"
-        ]
-      },
-      "dark-background": {
-        "role": "neutral",
-        "displayName": "Dark Background",
-        "tonalRamp": [
-          "oklch(15.00% 0.00498 67.56)",
-          "oklch(26.43% 0.00498 67.56)",
-          "oklch(37.86% 0.00498 67.56)",
-          "oklch(49.29% 0.00498 67.56)",
-          "oklch(60.71% 0.00498 67.56)",
-          "oklch(72.14% 0.00498 67.56)",
-          "oklch(83.57% 0.00498 67.56)",
-          "oklch(95.00% 0.00498 67.56)"
-        ]
-      },
-      "dark-surface": {
-        "role": "neutral",
-        "displayName": "Dark Surface",
-        "tonalRamp": [
-          "oklch(15.00% 0.00498 67.56)",
-          "oklch(26.43% 0.00498 67.56)",
-          "oklch(37.86% 0.00498 67.56)",
-          "oklch(49.29% 0.00498 67.56)",
-          "oklch(60.71% 0.00498 67.56)",
-          "oklch(72.14% 0.00498 67.56)",
-          "oklch(83.57% 0.00498 67.56)",
-          "oklch(95.00% 0.00498 67.56)"
-        ]
-      },
-      "dark-surface-variant": {
-        "role": "neutral",
-        "displayName": "Dark Surface Variant",
-        "tonalRamp": [
-          "oklch(15.00% 0.01327 57.80)",
-          "oklch(26.43% 0.01327 57.80)",
-          "oklch(37.86% 0.01327 57.80)",
-          "oklch(49.29% 0.01327 57.80)",
-          "oklch(60.71% 0.01327 57.80)",
-          "oklch(72.14% 0.01327 57.80)",
-          "oklch(83.57% 0.01327 57.80)",
-          "oklch(95.00% 0.01327 57.80)"
-        ]
-      },
-      "dark-on-surface": {
-        "role": "neutral",
-        "displayName": "Dark On Surface",
-        "tonalRamp": [
-          "oklch(15.00% 0.01138 71.90)",
-          "oklch(26.43% 0.01138 71.90)",
-          "oklch(37.86% 0.01138 71.90)",
-          "oklch(49.29% 0.01138 71.90)",
-          "oklch(60.71% 0.01138 71.90)",
-          "oklch(72.14% 0.01138 71.90)",
-          "oklch(83.57% 0.01138 71.90)",
-          "oklch(95.00% 0.01138 71.90)"
-        ]
-      },
-      "dark-on-surface-variant": {
-        "role": "neutral",
-        "displayName": "Dark On Surface Variant",
-        "tonalRamp": [
-          "oklch(15.00% 0.02717 61.94)",
-          "oklch(26.43% 0.02717 61.94)",
-          "oklch(37.86% 0.02717 61.94)",
-          "oklch(49.29% 0.02717 61.94)",
-          "oklch(60.71% 0.02717 61.94)",
-          "oklch(72.14% 0.02717 61.94)",
-          "oklch(83.57% 0.02717 61.94)",
-          "oklch(95.00% 0.02717 61.94)"
-        ]
-      },
-      "dark-secondary-container": {
-        "role": "secondary",
-        "displayName": "Dark Secondary Container",
-        "tonalRamp": [
-          "oklch(15.00% 0.02670 116.37)",
-          "oklch(26.43% 0.02670 116.37)",
-          "oklch(37.86% 0.02670 116.37)",
-          "oklch(49.29% 0.02670 116.37)",
-          "oklch(60.71% 0.02670 116.37)",
-          "oklch(72.14% 0.02670 116.37)",
-          "oklch(83.57% 0.02670 116.37)",
-          "oklch(95.00% 0.02670 116.37)"
-        ]
-      },
-      "dark-on-secondary-container": {
-        "role": "secondary",
-        "displayName": "Dark On Secondary Container",
-        "tonalRamp": [
-          "oklch(15.00% 0.03999 113.36)",
-          "oklch(26.43% 0.03999 113.36)",
-          "oklch(37.86% 0.03999 113.36)",
-          "oklch(49.29% 0.03999 113.36)",
-          "oklch(60.71% 0.03999 113.36)",
-          "oklch(72.14% 0.03999 113.36)",
-          "oklch(83.57% 0.03999 113.36)",
-          "oklch(95.00% 0.03999 113.36)"
-        ]
-      },
-      "dark-outline": {
-        "role": "neutral",
-        "displayName": "Dark Outline",
-        "tonalRamp": [
-          "oklch(15.00% 0.02767 63.55)",
-          "oklch(26.43% 0.02767 63.55)",
-          "oklch(37.86% 0.02767 63.55)",
-          "oklch(49.29% 0.02767 63.55)",
-          "oklch(60.71% 0.02767 63.55)",
-          "oklch(72.14% 0.02767 63.55)",
-          "oklch(83.57% 0.02767 63.55)",
-          "oklch(95.00% 0.02767 63.55)"
-        ]
-      },
-      "dark-outline-variant": {
-        "role": "neutral",
-        "displayName": "Dark Outline Variant",
-        "tonalRamp": [
-          "oklch(15.00% 0.01736 303.72)",
-          "oklch(26.43% 0.01736 303.72)",
-          "oklch(37.86% 0.01736 303.72)",
-          "oklch(49.29% 0.01736 303.72)",
-          "oklch(60.71% 0.01736 303.72)",
-          "oklch(72.14% 0.01736 303.72)",
-          "oklch(83.57% 0.01736 303.72)",
-          "oklch(95.00% 0.01736 303.72)"
-        ]
-      },
-      "dark-error": {
-        "role": "neutral",
-        "displayName": "Dark Error",
-        "tonalRamp": [
-          "oklch(15.00% 0.06771 22.01)",
-          "oklch(26.43% 0.06771 22.01)",
-          "oklch(37.86% 0.06771 22.01)",
-          "oklch(49.29% 0.06771 22.01)",
-          "oklch(60.71% 0.06771 22.01)",
-          "oklch(72.14% 0.06771 22.01)",
-          "oklch(83.57% 0.06771 22.01)",
-          "oklch(95.00% 0.06771 22.01)"
-        ]
-      }
-    },
     "typographyMeta": {
       "display-small": {
         "displayName": "Display Small",
@@ -494,6 +100,124 @@
       ],
       "rasterSource": "assets/stride-mark.svg",
       "identityStatus": "Working name and identity; no final brand approval."
+    },
+    "palette": {
+      "light": {
+        "primary": "#2546D8",
+        "onPrimary": "#FFFFFF",
+        "primaryContainer": "#DCE6FF",
+        "onPrimaryContainer": "#142657",
+        "secondary": "#5B4800",
+        "onSecondary": "#FFFFFF",
+        "secondaryContainer": "#FFE36A",
+        "onSecondaryContainer": "#26314B",
+        "tertiary": "#9B3E1D",
+        "onTertiary": "#FFFFFF",
+        "tertiaryContainer": "#FFD9CA",
+        "onTertiaryContainer": "#43180B",
+        "background": "#FFF5BF",
+        "onBackground": "#192744",
+        "surface": "#FFFDF4",
+        "onSurface": "#192744",
+        "surfaceVariant": "#FFF0A0",
+        "onSurfaceVariant": "#4B5262",
+        "surfaceDisabled": "#E5DFBE",
+        "onSurfaceDisabled": "#6A6B64",
+        "outline": "#687086",
+        "outlineVariant": "#D3CA91",
+        "error": "#AC2430",
+        "onError": "#FFFFFF",
+        "errorContainer": "#FFE0E1",
+        "onErrorContainer": "#6C1420",
+        "inverseSurface": "#1A2947",
+        "inverseOnSurface": "#FFFFFF",
+        "inversePrimary": "#B4C5FF",
+        "elevation": {
+          "level0": "transparent",
+          "level1": "#FFFCED",
+          "level2": "#FFF9DF",
+          "level3": "#FFF7D4",
+          "level4": "#FFF4C9",
+          "level5": "#FFF0B4"
+        }
+      },
+      "dark": {
+        "primary": "#B4C5FF",
+        "onPrimary": "#102464",
+        "primaryContainer": "#2D4593",
+        "onPrimaryContainer": "#E4EBFF",
+        "secondary": "#FFE683",
+        "onSecondary": "#3B2E00",
+        "secondaryContainer": "#5B4710",
+        "onSecondaryContainer": "#FFF0B4",
+        "tertiary": "#FFC2AA",
+        "onTertiary": "#50200D",
+        "tertiaryContainer": "#713720",
+        "onTertiaryContainer": "#FFE3D8",
+        "background": "#101A33",
+        "onBackground": "#F0F3FF",
+        "surface": "#162341",
+        "onSurface": "#F0F3FF",
+        "surfaceVariant": "#263653",
+        "onSurfaceVariant": "#C4CEE5",
+        "surfaceDisabled": "#303B51",
+        "onSurfaceDisabled": "#A8B1C6",
+        "outline": "#9BAAC9",
+        "outlineVariant": "#435477",
+        "error": "#FFB3BC",
+        "onError": "#570C20",
+        "errorContainer": "#7D2333",
+        "onErrorContainer": "#FFE2E5",
+        "inverseSurface": "#E6EDFF",
+        "inverseOnSurface": "#182644",
+        "inversePrimary": "#2546D8",
+        "elevation": {
+          "level0": "transparent",
+          "level1": "#1A2949",
+          "level2": "#203051",
+          "level3": "#253657",
+          "level4": "#293B5E",
+          "level5": "#2D4065"
+        }
+      },
+      "avatars": {
+        "light": [
+          [
+            "#B5F0EA",
+            "#163D40"
+          ],
+          [
+            "#FFD0BE",
+            "#542414"
+          ],
+          [
+            "#E0D5FF",
+            "#352653"
+          ],
+          [
+            "#FFE368",
+            "#3D310C"
+          ]
+        ],
+        "dark": [
+          [
+            "#244C4D",
+            "#BAFFF5"
+          ],
+          [
+            "#603629",
+            "#FFD5C2"
+          ],
+          [
+            "#42335F",
+            "#EBDDFF"
+          ],
+          [
+            "#58460D",
+            "#FFE786"
+          ]
+        ]
+      }
     }
   },
   "components": [
@@ -502,7 +226,7 @@
       "kind": "button",
       "description": "Light-mode HTML inspection translation of the native Paper action; actual native states are library-controlled.",
       "html": "<button class=\"ds-button-contained\">Send friend request</button>",
-      "css": ".ds-button-contained { background:#A63D19; color:#FFFFFF; border:none; border-radius:15px; min-height:52px; padding:0 24px; font:500 14px/20px sans-serif; letter-spacing:.1px; cursor:pointer; } .ds-button-contained:hover { filter:brightness(.97); } .ds-button-contained:focus-visible { outline:2px solid #A63D19; outline-offset:3px; } .ds-button-contained:active { filter:brightness(.93); } .ds-button-contained:disabled { opacity:.38; cursor:default; }",
+      "css": ".ds-button-contained { background:#2546D8; color:#FFFFFF; border:none; border-radius:15px; min-height:52px; padding:0 24px; font:500 14px/20px sans-serif; letter-spacing:.1px; cursor:pointer; } .ds-button-contained:hover { filter:brightness(.97); } .ds-button-contained:focus-visible { outline:2px solid #2546D8; outline-offset:3px; } .ds-button-contained:active { filter:brightness(.93); } .ds-button-contained:disabled { opacity:.38; cursor:default; }",
       "refersTo": "button-primary-light"
     },
     {
@@ -510,7 +234,7 @@
       "kind": "button",
       "description": "Light-mode HTML inspection translation of the native Paper action; actual native states are library-controlled.",
       "html": "<button class=\"ds-button-tonal\">Add friend</button>",
-      "css": ".ds-button-tonal { background:#E6E9D8; color:#3A4326; border:none; border-radius:15px; min-height:52px; padding:0 24px; font:500 14px/20px sans-serif; letter-spacing:.1px; cursor:pointer; } .ds-button-tonal:hover { filter:brightness(.97); } .ds-button-tonal:focus-visible { outline:2px solid #A63D19; outline-offset:3px; } .ds-button-tonal:active { filter:brightness(.93); } .ds-button-tonal:disabled { opacity:.38; cursor:default; }",
+      "css": ".ds-button-tonal { background:#FFE36A; color:#26314B; border:none; border-radius:15px; min-height:52px; padding:0 24px; font:500 14px/20px sans-serif; letter-spacing:.1px; cursor:pointer; } .ds-button-tonal:hover { filter:brightness(.97); } .ds-button-tonal:focus-visible { outline:2px solid #2546D8; outline-offset:3px; } .ds-button-tonal:active { filter:brightness(.93); } .ds-button-tonal:disabled { opacity:.38; cursor:default; }",
       "refersTo": "button-tonal-light"
     },
     {
@@ -518,49 +242,49 @@
       "kind": "button",
       "description": "Light-mode HTML inspection translation of the native Paper action; actual native states are library-controlled.",
       "html": "<button class=\"ds-button-outlined\">Add friend</button>",
-      "css": ".ds-button-outlined { background:#FAF7F0; color:#A63D19; border:1px solid #81796D; border-radius:15px; min-height:52px; padding:0 24px; font:500 14px/20px sans-serif; letter-spacing:.1px; cursor:pointer; } .ds-button-outlined:hover { filter:brightness(.97); } .ds-button-outlined:focus-visible { outline:2px solid #A63D19; outline-offset:3px; } .ds-button-outlined:active { filter:brightness(.93); } .ds-button-outlined:disabled { opacity:.38; cursor:default; }"
+      "css": ".ds-button-outlined { background:#FFF5BF; color:#2546D8; border:1px solid #687086; border-radius:15px; min-height:52px; padding:0 24px; font:500 14px/20px sans-serif; letter-spacing:.1px; cursor:pointer; } .ds-button-outlined:hover { filter:brightness(.97); } .ds-button-outlined:focus-visible { outline:2px solid #2546D8; outline-offset:3px; } .ds-button-outlined:active { filter:brightness(.93); } .ds-button-outlined:disabled { opacity:.38; cursor:default; }"
     },
     {
       "name": "Text action",
       "kind": "button",
       "description": "Light-mode HTML inspection translation of the native Paper action; actual native states are library-controlled.",
       "html": "<button class=\"ds-button-text\">Add friend</button>",
-      "css": ".ds-button-text { background:transparent; color:#A63D19; border:none; border-radius:15px; min-height:52px; padding:0 24px; font:500 14px/20px sans-serif; letter-spacing:.1px; cursor:pointer; } .ds-button-text:hover { filter:brightness(.97); } .ds-button-text:focus-visible { outline:2px solid #A63D19; outline-offset:3px; } .ds-button-text:active { filter:brightness(.93); } .ds-button-text:disabled { opacity:.38; cursor:default; }"
+      "css": ".ds-button-text { background:transparent; color:#2546D8; border:none; border-radius:15px; min-height:52px; padding:0 24px; font:500 14px/20px sans-serif; letter-spacing:.1px; cursor:pointer; } .ds-button-text:hover { filter:brightness(.97); } .ds-button-text:focus-visible { outline:2px solid #2546D8; outline-offset:3px; } .ds-button-text:active { filter:brightness(.93); } .ds-button-text:disabled { opacity:.38; cursor:default; }"
     },
     {
       "name": "Outlined username field",
       "kind": "input",
       "description": "Portable inspection translation; floating-label animation and native keyboard behavior are not reproduced.",
       "html": "<label class=\"ds-field\">Their username<input aria-label=\"Their username\" placeholder=\"@ username\" /></label>",
-      "css": ".ds-field { display:flex; flex-direction:column; gap:4px; font:400 12px/16px sans-serif; color:#625C51; } .ds-field input { min-height:56px; padding:0 16px; border:1px solid #81796D; border-radius:3px; background:#FAF7F0; color:#252820; font:400 16px/24px sans-serif; } .ds-field input:hover { border-color:#252820; } .ds-field input:focus-visible { outline:2px solid #A63D19; outline-offset:-2px; }"
+      "css": ".ds-field { display:flex; flex-direction:column; gap:4px; font:400 12px/16px sans-serif; color:#4B5262; } .ds-field input { min-height:56px; padding:0 16px; border:1px solid #687086; border-radius:3px; background:#FFF5BF; color:#192744; font:400 16px/24px sans-serif; } .ds-field input:hover { border-color:#192744; } .ds-field input:focus-visible { outline:2px solid #2546D8; outline-offset:-2px; }"
     },
     {
       "name": "Search field",
       "kind": "input",
       "description": "Rounded people-list search; native clear/search controls remain Paper-owned.",
       "html": "<input class=\"ds-search\" aria-label=\"Find a friend in your list\" placeholder=\"Find a friend in your list\" />",
-      "css": ".ds-search { min-height:56px; padding:0 16px; border:0; border-radius:21px; background:#F0E8DD; color:#252820; font:400 16px/24px sans-serif; } .ds-search:hover { filter:brightness(.98); } .ds-search:focus-visible { outline:2px solid #A63D19; outline-offset:2px; }"
+      "css": ".ds-search { min-height:56px; padding:0 16px; border:0; border-radius:21px; background:#FFF0A0; color:#192744; font:400 16px/24px sans-serif; } .ds-search:hover { filter:brightness(.98); } .ds-search:focus-visible { outline:2px solid #2546D8; outline-offset:2px; }"
     },
     {
       "name": "Person row",
       "kind": "custom",
       "description": "Flat divided row with an olive initials avatar; no card enclosure.",
       "html": "<div class=\"ds-person\"><span class=\"ds-avatar\">AL</span><div class=\"ds-identity\"><strong>Alex Lane</strong><span>@alex_lane</span></div><button class=\"ds-manage\">Manage</button></div>",
-      "css": ".ds-person { display:flex; align-items:center; gap:16px; padding:18px 0; border-bottom:1px solid rgba(202,196,208,1); color:#252820; background:#FAF7F0; font:400 14px/20px sans-serif; } .ds-avatar { display:grid; place-items:center; height:52px; width:52px; flex-shrink:0; border-radius:50%; background:#E6E9D8; color:#3A4326; } .ds-identity { display:flex; flex:1; flex-direction:column; gap:4px; } .ds-identity strong { font:500 16px/24px sans-serif; } .ds-identity span { color:#625C51; } .ds-manage { min-height:48px; padding:0 12px; border:0; border-radius:15px; background:transparent; color:#A63D19; font:500 14px/20px sans-serif; } .ds-manage:hover { background:#F0E8DD; } .ds-manage:focus-visible { outline:2px solid #A63D19; } .ds-manage:active { background:#FFDBCC; }"
+      "css": ".ds-person { display:flex; align-items:center; gap:16px; padding:18px 0; border-bottom:1px solid rgba(202,196,208,1); color:#192744; background:#FFF5BF; font:400 14px/20px sans-serif; } .ds-avatar { display:grid; place-items:center; height:52px; width:52px; flex-shrink:0; border-radius:50%; background:#FFE36A; color:#26314B; } .ds-identity { display:flex; flex:1; flex-direction:column; gap:4px; } .ds-identity strong { font:500 16px/24px sans-serif; } .ds-identity span { color:#4B5262; } .ds-manage { min-height:48px; padding:0 12px; border:0; border-radius:15px; background:transparent; color:#2546D8; font:500 14px/20px sans-serif; } .ds-manage:hover { background:#FFF0A0; } .ds-manage:focus-visible { outline:2px solid #2546D8; } .ds-manage:active { background:#DCE6FF; }"
     },
     {
       "name": "Bottom navigation",
       "kind": "nav",
       "description": "HTML inspection translation of the three native tab destinations; no router behavior or request badge simulation.",
       "html": "<nav class=\"ds-tabs\"><button aria-current=\"page\">Friends</button><button>Requests</button><button>You</button></nav>",
-      "css": ".ds-tabs { display:flex; min-height:72px; padding:10px 0; border-top:1px solid rgba(202,196,208,1); background:#FAF7F0; } .ds-tabs button { flex:1; min-height:48px; border:0; background:transparent; color:#625C51; font:600 12px/16px sans-serif; } .ds-tabs button[aria-current] { color:#A63D19; } .ds-tabs button:hover { background:#F0E8DD; } .ds-tabs button:focus-visible { outline:2px solid #A63D19; outline-offset:-3px; } .ds-tabs button:active { background:#E6E9D8; }"
+      "css": ".ds-tabs { display:flex; min-height:72px; padding:10px 0; border-top:1px solid rgba(202,196,208,1); background:#FFF5BF; } .ds-tabs button { flex:1; min-height:48px; border:0; background:transparent; color:#4B5262; font:600 12px/16px sans-serif; } .ds-tabs button[aria-current] { color:#2546D8; } .ds-tabs button:hover { background:#FFF0A0; } .ds-tabs button:focus-visible { outline:2px solid #2546D8; outline-offset:-3px; } .ds-tabs button:active { background:#FFE36A; }"
     }
   ],
   "narrative": {
     "northStar": "A walking club’s people directory",
-    "overview": "This is a source-derived record of the implemented account, friends, requests, invitation, and profile interface. Warm paper, ink, burnt orange, olive initials, and divided people lists give the application a friendly club character. Stride is a working name, not an approved brand identity. No approved visual comp exists.\n\nThe implementation uses React Native Paper Material 3 with platform system typography. This is an Android-native interface; web renders are surrogates. Android-device validation remains outstanding. Native screenshots were unavailable, so the reviewer requires recapture rather than granting native approval. No detector ran for the native target; the optional helper engine refused an unverifiable download. This document records implementation, not release readiness.",
+    "overview": "The implemented palette is sunshine yellow, navy text, cobalt actions, and varied avatar colors. See COLOR-RATIONALE.md for research and limits. Android physical-device validation remains outstanding.",
     "keyCharacteristics": [
-      "Warm light and ink-dark system themes.",
+      "Sunny light and navy-dark system themes.",
       "Flat, readable people lists and explicit invitation states.",
       "Platform typography, outlined fields, and restrained primary actions.",
       "A small original geometric footprint mark."

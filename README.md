@@ -55,9 +55,14 @@ was made to the backend merely to support the demo preview.
 npm run typecheck
 npm run lint
 npm test
+npm run test:ui
 npx expo export --platform android
 npm run export:web
 ```
+
+Color rationale and cited research are in COLOR-RATIONALE.md. The password eye is SVG-based
+and has component tests for both masking directions. Palette tests check foreground/background
+contrast in both themes.
 
 The client tests exercise storage, shared refresh, invalid sessions, offline refresh, logout,
 pagination, API errors, health, and demo friendship state. Export verifies JavaScript bundling;

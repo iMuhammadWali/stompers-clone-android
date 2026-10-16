@@ -4,6 +4,7 @@ import {Text,Button,Avatar,useTheme,Banner} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Svg,{Path,Ellipse} from 'react-native-svg';
 import {useSession} from '../lib/session';
+import {avatarColors} from '../lib/palette';
 
 export function Mark({size=32,color}:{size?:number;color?:string}) {
   const theme=useTheme();
@@ -21,7 +22,10 @@ export function Icon({name,color,size=24}:{name:'friends'|'requests'|'profile';c
 export function PersonAvatar({name,size=52}:{name:string;size?:number}) {
   const theme=useTheme();
   const initials=name.split(/[ _\.]+/).map(s=>s[0]).slice(0,2).join('').toUpperCase();
-  return <Avatar.Text size={size} label={initials} style={{backgroundColor:theme.colors.secondaryContainer}} color={theme.colors.onSecondaryContainer}/>;
+  const palette=avatarColors[theme.dark?'dark':'light'];
+  const index=Array.from(name).reduce((sum,c)=>sum+c.charCodeAt(0),0)%palette.length;
+  const [background,foreground]=palette[index];
+  return <Avatar.Text size={size} label={initials} style={{backgroundColor:background}} color={foreground}/>;
 }
 export function Page({children,refresh=false}:{children:React.ReactNode;refresh?:boolean}) {
   const {demo,error,reload,loading}=useSession(),theme=useTheme();

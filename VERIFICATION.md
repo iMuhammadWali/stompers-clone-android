@@ -32,3 +32,10 @@ The hosted browser preview uses local synthetic data only.
 adaptive foreground, monochrome icon, and favicon PNGs were deterministically rendered from
 that geometry using Sharp. They are not generated photographs or third-party character assets.
 Material Community Icons are supplied by @expo/vector-icons under their upstream license.
+
+## Palette and password revision
+
+Six additional palette contrast tests cover text, controls, and four avatar color pairs in
+each theme. Native component tests cover a visible SVG eye and show/hide masking on both
+sign-in and registration. No icon font is required for that control. Physical-device testing
+remains open; these component checks do not grant native release approval.
