@@ -47,7 +47,8 @@
           }
         }
       ],
-      "./plugins/withHealthPrivacy"
+      "./plugins/withHealthPrivacy",
+      "./plugins/withFontLicense"
     ],
     "scheme": "stride"
   }
