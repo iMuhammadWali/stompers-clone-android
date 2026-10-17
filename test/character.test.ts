@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {defaultAppearance,parseAppearance,appearanceKey,hairstyles,skinTones,hairColors,outfits,pets,eyeStyles,noseStyles,expressions,shirtStyles,genders,isStyleAllowed,eyewearStyles} from '../src/lib/character/catalog';
-import {trackSvg,raceSvg,portraitSvg,petSvg,characterLayers,faceFeatures} from '../src/lib/character/artwork';
+import {trackSvg,raceSvg,raceGeometry,portraitSvg,petSvg,characterLayers,faceFeatures} from '../src/lib/character/artwork';
 
 test('stored appearance tolerates corrupt data and obsolete choices without losing valid choices',()=>{
   for(const raw of [null,'broken','null','[]','3'])assert.deepEqual(parseAppearance(raw),defaultAppearance);
@@ -132,5 +132,8 @@ test('race stage keeps the whole rig above the floor in short and tall viewports
     const [, ,top,scale]=transforms[transforms.length-2];
     assert.ok(Number(top)>=0);
     assert.ok(Number(top)+185*Number(scale)<h);
+    const geometry=raceGeometry(size);
+    const footClearance=(geometry.height-geometry.y-185*geometry.scale)*size.width/390;
+    assert.ok(footClearance>=106,'feet must remain above the fixed name label and rail');
   }
 });

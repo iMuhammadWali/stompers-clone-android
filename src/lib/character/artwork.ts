@@ -191,9 +191,9 @@ export function trackSvg(a:Appearance,frame=0,steps?:number|null):string {
     '</svg>';
 }
 export function raceGeometry(size:{width:number;height:number}) {
-  const height=Math.max(230,390*size.height/Math.max(1,size.width));
-  const scale=Math.min(.82,(height-145)/185),base=height-108;
-  return {height,scale,base,x:90-60*scale,y:base-180*scale,ground:height-142};
+  const unit=390/Math.max(1,size.width),height=Math.max(1,size.height)*unit;
+  const base=height-118*unit,scale=Math.min(.82,Math.max(.3,(base-32)/185));
+  return {height,scale,base,x:90-60*scale,y:base-180*scale,ground:height-150*unit};
 }
 /** Small runner, narrow sand lane and broad orange foreground share the reference's proportions. */
 export function raceSvg(a:Appearance,frame=0,steps?:number|null,size={width:390,height:360}):string {
