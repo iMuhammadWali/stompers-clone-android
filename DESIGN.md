@@ -317,3 +317,25 @@ Switching category resets only the options scroll position; draft selections are
 
 ## Personal Health Connect race
 Home pairs a large today-step counter with the saved character and companion on the track. Only the device user appears. Unknown steps use a dash; zero appears only after a successful read. Native permission/update/error/empty states have explicit actions. Source and update time identify the data. Read-only step use is explained before connecting. The counter and track step bubble use the same aggregate.
+
+## Personal race composition revision — 17 October 2026
+
+Rebuilt the Home screen around the supplied Stompers composition: centered outlined
+rounded wordmark, circular controls, a real-date week strip, outlined step total and
+local-midnight reset, open sky, a small runner low and left, a narrow sand lane and
+broad orange foreground, with a slim floating personal progress rail. Colorful
+original vector icons replace monochrome tab icons; active tabs use a peach pill.
+The previous large target card and header edit button are removed. Character editing,
+provider guidance and step access remain in the race menu and companion shortcut.
+The existing saved character, pet and native Health Connect reader are preserved.
+
+Finish review: full component web renders checked at 393x775 and 320x640 using a
+167-step QA-only bridge; horizontal document width matches the viewport, menu opens
+and closes, and no browser runtime errors were observed. The native reader and
+production web bridge remain unchanged. The QA fixture is excluded from release
+source. The whole character fits above its nameplate; progress rail remains compact.
+Typecheck and lint pass; 33 unit and 24 UI checks pass. APK packaging and physical
+provider sync are separate verification steps; no native runtime screenshot is claimed.
+
+Lilita One was obtained from Google Fonts' google/fonts repository and bundled with
+its SIL Open Font License. All scene and navigation artwork is original code-native SVG.

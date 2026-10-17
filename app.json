@@ -2,7 +2,7 @@
   "expo": {
     "name": "Stride",
     "slug": "stride-walking-club",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +20,7 @@
       "permissions": [
         "android.permission.health.READ_STEPS"
       ],
-      "versionCode": 3,
+      "versionCode": 4,
       "blockedPermissions": [
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",

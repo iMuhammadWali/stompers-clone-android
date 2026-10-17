@@ -63,3 +63,13 @@ marker follows today's aggregate toward a clearly labeled 10,000-step personal t
 The marker stops at the flag after the target; the main count retains every extra step.
 Tap the Health Connect sync line for details and step-access settings. This screen does
 not display sampled friends or fabricate weekly history, rankings, rewards or steps.
+
+## Race screen v1.0.2
+
+The home scene now uses a small runner low on a narrow sandy lane, open sky, a broad
+orange foreground, compact circular controls, rounded outlined game type, a real-date
+week strip, a local-midnight reset timer and a slim floating personal progress rail.
+The previous dashboard target card and large character-edit button are removed.
+The race menu contains step settings and sync details. Today's date is highlighted;
+no weekly step history, ranks, currency or competitors are fabricated.
+The font is Lilita One from Google Fonts, distributed under its bundled OFL license.
