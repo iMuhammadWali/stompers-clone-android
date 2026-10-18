@@ -82,7 +82,7 @@ export default function TrackScreen() {
         {!!phone&&<><AppButton disabled={loading} mode="outlined" onPress={()=>void health.stopPhone()}>Stop phone tracking</AppButton><AppButton disabled={loading} onPress={()=>void health.useHealth()}>Use Health Connect instead</AppButton></>}
         {!!phone&&<Text variant="bodySmall">Carry your phone. Counts begin when tracking starts; earlier steps cannot be recovered. After a reboot, force-stop, or battery restriction, open Stride to resume. Day-boundary gaps may be excluded.</Text>}
         <AppButton mode="contained" onPress={()=>{setDetails(false);router.push('/character');}}>Edit character</AppButton>
-        {state.status!=='unsupported'&&<AppButton mode="outlined" onPress={()=>void health.settings()}>Step access settings</AppButton>}
+        {state.status!=='unsupported'&&<AppButton mode="outlined" onPress={()=>void health.settings()}>{phone||health.phoneError?.includes('Physical activity')?'Phone permissions':'Step access settings'}</AppButton>}
         <Text variant="bodySmall">Read-only Health Connect access. Phone counts stay on your device. The 10k marker is your personal target.</Text>
         {!!loadError&&<Text style={{color:colors.error}}>{loadError}</Text>}
         <AppButton onPress={()=>setDetails(false)}>Close</AppButton>

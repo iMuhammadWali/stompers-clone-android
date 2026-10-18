@@ -34,3 +34,7 @@ it('requires a separate explicit opt-in for accelerometer estimation',async()=>{
 it('a failed native snapshot does not silently read a different source or invent zero',async()=>{
  mockSnapshotError=true;const {result}=await renderHook(()=>useTodaySteps());await waitFor(()=>expect(result.current.state.status).toBe('error'));expect(result.current.state.steps).toBeNull();expect(mockRead).not.toHaveBeenCalled();
 });
+
+it('serializes repeated Start taps into one native start',async()=>{
+ mockPhone={...mockPhone,running:false};const {result}=await renderHook(()=>useTodaySteps());await act(async()=>{await Promise.all([result.current.startPhone(),result.current.startPhone()]);});expect(mockStart).toHaveBeenCalledTimes(1);expect(result.current.loading).toBe(false);
+});

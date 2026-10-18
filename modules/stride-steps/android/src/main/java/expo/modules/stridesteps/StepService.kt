@@ -24,7 +24,7 @@ class StepService: Service(), SensorEventListener {
     try {
       if(Build.VERSION.SDK_INT>=29 && checkSelfPermission(Manifest.permission.ACTIVITY_RECOGNITION)!=PackageManager.PERMISSION_GRANTED)
         throw SecurityException("Physical activity permission is required")
-      val notifications=getSystemService(NotificationManager::class.java)
+      val notifications=requireNotNull(getSystemService(NotificationManager::class.java)) {"Notifications unavailable"}
       notifications.createNotificationChannel(NotificationChannel("stride-steps","Step tracking",NotificationManager.IMPORTANCE_LOW))
       val launch=packageManager.getLaunchIntentForPackage(packageName)!!
       val open=PendingIntent.getActivity(this,0,launch,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
@@ -36,7 +36,7 @@ class StepService: Service(), SensorEventListener {
         .setOngoing(true).addAction(Notification.Action.Builder(null,"Stop",stop).build()).build()
       if(Build.VERSION.SDK_INT>=34) startForeground(741,notification,ServiceInfo.FOREGROUND_SERVICE_TYPE_HEALTH) else startForeground(741,notification)
       if(StepStore.running) return START_STICKY
-      manager=getSystemService(SensorManager::class.java)
+      manager=requireNotNull(getSystemService(SensorManager::class.java)) {"Motion sensors unavailable"}
       kind=when(StepStore.mode(this)) { "counter"->Sensor.TYPE_STEP_COUNTER; "detector"->Sensor.TYPE_STEP_DETECTOR; else->Sensor.TYPE_ACCELEROMETER }
       val sensor=(manager.getDefaultSensor(kind,true) ?: manager.getDefaultSensor(kind)) ?: throw IllegalStateException("Selected sensor is unavailable")
       worker=HandlerThread("stride-step-sensor").also{it.start()}

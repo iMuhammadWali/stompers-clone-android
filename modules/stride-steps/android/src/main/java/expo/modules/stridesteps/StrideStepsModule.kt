@@ -13,11 +13,11 @@ class StrideStepsModule: Module() {
     Name("StrideSteps")
     AsyncFunction("snapshot") { StepStore.snapshot(context()) }
     AsyncFunction("capabilities") {
-      val m=context().getSystemService(SensorManager::class.java)
+      val m=requireNotNull(context().getSystemService(SensorManager::class.java)) {"Motion sensors unavailable"}
       mapOf("counter" to (m.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null),"detector" to (m.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)!=null),"estimate" to (m.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!=null))
     }
     AsyncFunction("start") { estimate: Boolean ->
-      val c=context();val m=c.getSystemService(SensorManager::class.java)
+      val c=context();val m=requireNotNull(c.getSystemService(SensorManager::class.java)) {"Motion sensors unavailable"}
       val mode=when {
         m.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null->"counter"
         m.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)!=null->"detector"
