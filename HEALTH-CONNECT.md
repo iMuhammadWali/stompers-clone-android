@@ -45,7 +45,8 @@ The APK build is separate from JS exports and mocked integration tests.
 
 Use JDK 17+, Android API 37 (SDK package platforms;android-37.0) / Build Tools 37.0.0, NDK 27.1.12297006 and CMake 3.22.1.
 Run `npm ci`, `npx expo prebuild --platform android --no-install`, then
-`cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a`.
+`cd android && ./gradlew assembleRelease --max-workers=1 -Pkotlin.compiler.execution.strategy=in-process -PreactNativeArchitectures=arm64-v8a`.
+The prebuild entry-point plugin validates generated app classes and neutralizes stale Expo template copies; do not edit generated Android sources manually.
 This internal test build uses the Expo template's test signing key; it is not a Play Store
 production release. EAS preview is also configured for APK output.
 
