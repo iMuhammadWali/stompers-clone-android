@@ -23,7 +23,7 @@ evidence, and no native approval was issued. Native keyboard behavior, system in
 TalkBack, enlarged system font sizes, SecureStore behavior, performance, and APK installation are
 not verified. Android phone captures in both themes at 1.0 and 1.3 font scale are still needed.
 
-There is no hosted real API, signed installable APK, or app-store release in this version.
+At that initial verification, there was no hosted real API, signed installable APK, or app-store release. Later APK builds are documented in HEALTH-CONNECT.md; the backend remains unhosted.
 The hosted browser preview uses local synthetic data only.
 
 ## Asset provenance
@@ -44,3 +44,11 @@ remains open; these component checks do not grant native release approval.
 
 Dark mode removed by user request. Runtime theme and native appearance configuration
 are pinned to light; phone/browser dark preference cannot select the former navy theme.
+
+## Phone sensor fallback v1.1.0
+
+The Android service and its hardware/experimental sensor paths are native source under `modules/stride-steps`. The same Java accounting and detector core is exercised by `scripts/test-phone-core.sh`. Thirty checks cover event baselines, stale/duplicate readings, day changes, reboots, counter resets, pauses, timezone/clock changes and synthetic signal behavior. A public real-acceleration recording was replayed unchanged and decimated, explicitly without a validated per-file ground-truth match. These are not physical accuracy measurements.
+
+Five hook tests exercise selected-source isolation, source replacement, retained paused totals, denied permissions, separate experimental opt-in and failed native snapshots. The other 57 existing JS/component checks remain in the suite. Type checking, lint and web export are required. Internal browser captures at 393 and 320 pixels show the step menu without horizontal overflow; browser captures do not prove native behavior.
+
+Physical-device sensor reliability, native permission dialogs, notification Stop, background/screen-off behavior, reboot recovery and OEM battery restrictions still require phone verification. No native-device approval or real-world accuracy percentage is claimed. See STEP-TRACKING-RESEARCH.md for the primary research and test protocol.

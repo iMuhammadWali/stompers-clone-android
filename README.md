@@ -241,3 +241,9 @@ See HEALTH-CONNECT.md for setup, tested cases, permission behavior, and native b
 Race screen v1.0.1 puts the Health Connect action above the track, with an outlined
 daily step counter, an open character stage, a personal target strip and refresh status.
 Install this update over v1.0.0 to preserve device-local character settings.
+
+## Phone tracking v1.1.0
+
+Health Connect is now optional. Home's race menu offers **Use phone step sensor** with Physical activity permission, a persistent tracking notification and Stop/Resume. A hardware counter is preferred, then a step detector; an accelerometer-only estimate requires separate experimental opt-in. The race uses one selected source, never combined totals. Counts start when tracking is enabled; pauses and inaccessible intervals cannot be reconstructed.
+
+See [HEALTH-CONNECT.md](HEALTH-CONNECT.md) for phone instructions and [STEP-TRACKING-RESEARCH.md](STEP-TRACKING-RESEARCH.md) for the papers reviewed, accounting policy, automated verification and physical-device validation still needed.

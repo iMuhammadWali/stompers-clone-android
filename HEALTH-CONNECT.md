@@ -16,7 +16,7 @@ on Refresh steps. A new day clears the previous day's displayed total while refr
 1. Install the APK, open Stride, and choose **Explore demo** if the backend is unconfigured.
 2. Open the Home race and tap **Connect Health Connect**. Allow read access to Steps.
 3. In your fitness app (for example Samsung Health or Google Fit), enable sharing Steps
-   with Health Connect. Stride reads the shared store; it does not collect steps itself.
+   with Health Connect. In Health Connect mode Stride reads the shared store. Phone-sensor mode is a separate optional source described below.
 4. Return to Stride and tap **Refresh steps**. Your character is the one saved by the creator.
 5. If access was denied repeatedly, use **Health Connect settings** to enable Steps access.
 
@@ -73,3 +73,15 @@ The previous dashboard target card and large character-edit button are removed.
 The race menu contains step settings and sync details. Today's date is highlighted;
 no weekly step history, ranks, currency or competitors are fabricated.
 The font is Lilita One from Google Fonts, distributed under its bundled OFL license.
+
+## Phone sensor fallback v1.1.0
+
+Health Connect is optional for this mode. Open the race menu and select **Use phone step sensor** (or **Use phone tracking instead** above the race). Grant **Physical activity**, and allow notifications so the Stop control is easy to reach. Carry the phone and walk; the displayed count refreshes every five seconds while Home is open. Hardware counter delivery itself may lag by ten seconds.
+
+The native service continues counting with the screen off where the device supports it. It prefers a step counter, then a step detector. With neither sensor, a separate experimental accelerometer opt-in appears. The estimate has known false positives and missed short/slow bouts, and uses more battery. No synthetic steps are injected.
+
+Counts begin at activation. Stop keeps the recorded total visible and marks it paused. Resume excludes the stopped interval. Reboot/update recovery is attempted only if you left tracking enabled and permission remains granted; open the app to Resume if the system prevents recovery. Force-stop and vendor battery restrictions can interrupt tracking. Local-day/zone boundaries use conservative accounting and may exclude an ambiguous interval.
+
+Choose **Use Health Connect instead** to switch sources; totals are replaced, never added. Phone mode does not read or write Health Connect. No location or body-sensor access is requested. Android backup is disabled for app data.
+
+Research, implementation details, replay results and the outstanding physical-validation protocol: [STEP-TRACKING-RESEARCH.md](STEP-TRACKING-RESEARCH.md). Run `scripts/test-phone-core.sh` with a JDK on PATH to test the actual native accounting/detector core.
