@@ -1,15 +1,8 @@
-# Personal race / Health Connect v1
+# Daily race / Health Connect
 
-The Home race shows only the current device user's steps for the current local day,
-with their saved character and companion. Connect explicitly requests **read Steps**
-access. No health writes, background/history permissions, server uploads or competitor
-step data are implemented. Character choices remain account-scoped local settings.
+Home shows the selected source’s steps and saved character. Accepted friends appear in the daily race with their synced totals, character and last-sync time. Accounts require character and username setup. Daily totals are uploaded while Home is open; raw sensor measurements are not uploaded. Only read Steps permission is requested; no health writes or background/history Health Connect permissions are used.
 
-The service uses Health Connect's `aggregateRecord(Steps)` and its `COUNT_TOTAL`, rather
-than adding raw records from different source apps. Time range: local midnight to now.
-An empty aggregate is zero; unavailable/denied/error states are not represented as zero.
-The screen refreshes on focus, on foreground return, every minute while focused, and
-on Refresh steps. A new day clears the previous day's displayed total while refreshing.
+Health Connect uses aggregateRecord(Steps) and COUNT_TOTAL, never a sum of overlapping raw source records. The time window is midnight Asia/Karachi to now for every player. An empty aggregate is zero; unavailable, denied and error states remain unknown. The local reading refreshes on focus, foreground return, once per minute and manual refresh. Phone-source readings refresh every five seconds; server race sync runs every fifteen seconds while foregrounded. One selected source replaces the daily total; sources are never added together.
 
 ## On a phone
 
@@ -27,7 +20,7 @@ Web and Expo Go cannot read Health Connect; use this standalone native build.
 ## Testing
 
 `npm test` tests a fake native bridge: 6,142 steps, zero/no data, explicit permission,
-denial/revocation, provider update/unavailability, failed/invalid reads, and local midnight
+denial/revocation, provider update/unavailability, failed/invalid reads, and midnight
 in Asia/Karachi. The fake bridge exists only in tests; no synthetic counts or records are
 injected into the phone's health store. UI tests verify the personal counter, saved avatar,
 connect action, empty state, and honest unsupported-web behavior.

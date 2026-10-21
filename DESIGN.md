@@ -33,309 +33,36 @@ colors:
   light-inversePrimary: "#6DECE4"
 
 ---
-# Design System: Stride (working name)
+# Design System: Stride
 
-## Overview
+Preserve the current always-light theme: cool gray canvas, white surfaces, charcoal text, orange primary actions, peach selections and small golden accents. src/lib/palette.ts is the color source; AppButton owns shared button colors, outlines and static gloss. Do not introduce a second theme or repeat primary button colors in screens.
 
-**Creative North Star: "A walking club’s people directory"**
+Use React Native Paper text roles and outlined fields for account and directory screens. Home retains its outlined Lilita One wordmark and step total, illustrated orange track, original SVG characters and colorful navigation icons. Lilita One's license is bundled. Character catalog thumbnails are fixed samples; the main preview alone reflects draft choices.
 
-This is a source-derived record of the implemented account, friends, requests, invitation, and profile interface. Cool light gray, charcoal ink, orange actions, multicolor initials, and divided people lists give the application a friendly club character. Stride is a working name, not an approved brand identity. No approved visual comp exists.
+## Layout and controls
 
-The implementation uses React Native Paper Material 3 with platform system typography. This is an Android-native interface; web renders are surrogates. Android-device validation remains outstanding. Native screenshots were unavailable, so the reviewer requires recapture rather than granting native approval. No detector ran for the native target; the optional helper engine refused an unverifiable download. This document records implementation, not release readiness.
+Page owns safe areas and the scrollable column: maximum width 600, 24-unit side padding, 20-unit major gaps. Flat divided people lists remain the directory pattern. Allow text and category controls to wrap at narrow widths and larger text scales. Use touch targets of at least 48 dp.
 
-**Key Characteristics:**
-- Always-light neutral surfaces with orange, peach, and golden accents.
-- Flat, readable people lists and explicit invitation states.
-- Platform typography, outlined fields, and restrained primary actions.
-- A small original geometric footprint mark.
+The creator keeps the preview and Look/Face/Clothes/Pet controls above the options scroll region. Selection uses both a border and check. Existing gender/style eligibility and legacy appearance migration remain in catalog.ts. Saving outside setup syncs the account character; failed saves keep the draft available.
 
-## Colors
+## Account setup
 
-The user-supplied Stompers screenshots establish the color direction. Preserve the
-approved layout and typography. Use a cool gray canvas (#F5F6F8), white surfaces,
-charcoal text (#292A31), cool gray search fields (#E7E9F0), peach selections (#FFD0A3),
-and orange contained actions (#FFAD1F) with dark text (#292A31). Golden yellow is a small
-avatar accent. Text actions and focus indicators use charcoal (#292A31) for contrast.
-Dark mode is removed. Semantic foreground/container pairs are defined in src/lib/palette.ts.
-All buttons use AppButton, which applies primaryContainer/onPrimaryContainer to primary actions; other controls
-retain their existing modes and geometry. Native-device validation remains outstanding.
+Signup asks for email and password. The first mandatory screen is character creation, followed by an exact unique @username. Keep availability status beside the field, offer unused suggestions for conflicts and recheck the server when claiming. Returning incomplete accounts resume setup. Setup can be exited through a confirmed sign-out.
 
-## Typography
+The authenticated index remains a routing anchor so protected-route transitions land on the correct screen rather than an empty tabs group. Completed accounts go to Home; unfinished accounts go to setup.
 
-**Display Font:** Android system `sans-serif`; no bundled display font.
-**Body Font:** Android system `sans-serif`; medium roles use `sans-serif-medium`.
-**Platform fallbacks:** Paper selects `System` on iOS and `Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif` on web. Web availability does not establish Android rendering.
+## Friends and race
 
-The frontmatter uses px syntax for portable token consumers; React Native text sizes are logical font units, subject to native font scaling. Source measurements below are nominal size / line-height, not raster guarantees. The native platform requirement takes precedence over a custom editorial font pairing.
+Find a player by exact @username and preview their public identity before sending a request. Distinguish self, existing friendship, incoming request, outgoing request and available invitation. Accepted friends automatically join each other's daily race; removing friendship removes that visibility.
 
-- **Display small:** authentication headline (36 / 44), overridden to bold with tight tracking.
-- **Headline large:** shared screen title (32 / 40), bold with tight tracking.
-- **Title large:** profile identity, empty-state title, and library dialog title (22 / 28); the authentication wordmark has a separate heavy override.
-- **Title medium:** section headings and people names (16 / 24); the compact wordmark is heavier.
-- **Body large:** explanations (16 / 24), locally increased to line-height 25 in empty states and 26 in authentication/invitation prose.
-- **Body medium:** usernames, notices, and help (14 / 20).
-- **Body small:** demo help and footnotes (12 / 16).
-- **Label large:** button labels and profile metadata (14 / 20).
-- **Label medium:** demo banner (12 / 16).
-- **Tab labels:** navigator-local size 12, weight 600; not a separate global type scale.
+Retain the personal Home stage and counter. The daily race below it shows the real accepted players, their saved original character/pet artwork, step totals and last-sync times on flat track lanes. Unknown totals stay unknown; estimates are labeled. Source changes replace totals rather than combining sources. Every player's day uses midnight Asia/Karachi.
 
-**The Role Before Size Rule.** Extend Paper text variants and existing overrides rather than introducing unrelated heading sizes.
+Explain daily-total sharing during setup and in step-access guidance. Email remains private. Show loading, retry, empty and permission states without inventing activity. Demo people and absence of real step totals remain explicit.
 
-## Layout
+## Sign-out
 
-A single scrollable column uses safe areas at top, left, and right. Content is centered with a maximum width of 600 logical units, full available width, 24-unit padding, 40-unit bottom padding, and 20-unit major gaps. These are continuous width constraints, not breakpoint layouts. The app is configured portrait; no tablet-specific design is implemented.
+Use the themed Paper confirmation dialog with Stay signed in and Sign out actions. Clearing local credentials remains reliable even if the server is unreachable.
 
-Title rows pair a flexible title stack with an optional action, a 12-unit gap, and 12-unit top margin. Forms use 16-unit gaps. People rows use 16-unit horizontal gaps and 18-unit vertical padding; name stacks use 4-unit gaps. Request actions wrap with an 8-unit gap. Demo context sits above the scroll region with 20-unit horizontal and 10-unit vertical padding.
+## Verification limits
 
-Primary form actions explicitly request a minimum content height of 52 units; most row actions request 48, and the incoming invitation action requests 56. The product requires at least 48 dp touch targets. Some default Paper actions do not yet have an explicit minimum: authentication toggles, dialog actions, retry, and Add another friend. Their actual Android hit areas must be measured; the source does not demonstrate universal compliance. Long names, narrow widths, keyboard avoidance, and larger font scales still require Android-device checks.
-
-Bottom navigation has three destinations: Friends, Requests, and You. Its height is 72 plus the bottom safe-area inset, with top padding 10 and bottom padding equal to the greater of inset or 10. Active tint is primary; inactive tint is on-surface-variant. A received-request count becomes the Requests badge.
-
-## Elevation & Depth
-
-People lists are flat with dividers rather than cards or decorative shadows. There is no custom shadow vocabulary. Paper supplies native state layers and overlay behavior for the search field, dialog, banner, and snackbar. Its inherited elevation surfaces retain the library’s default tint; this palette drift is recorded, not established as brand doctrine. Native shadow, modal, and ripple rendering has not been visually approved.
-
-Stack navigation explicitly disables transition animation (`animation: 'none'`). Other control feedback remains Paper’s default animation scale (1). No custom motion system exists.
-
-## Shapes
-
-Theme roundness is 3. In the installed Paper implementation, outlined fields use that radius directly; buttons multiply it by five, and bar-mode search multiplies it by seven. Avatars are circular: 52-unit people avatars and a 72-unit profile avatar. Loading silhouettes mirror the avatar circle and use a small rounded text block. Dividers, not enclosing cards, separate people.
-
-## Components
-
-### Buttons
-
-Contained actions use primary/on-primary. Contained-tonal actions use secondary-container/on-secondary-container. Outlined actions retain the surface behind an outline; text actions use primary without a filled container. Loading and disabled states are passed to Paper; ripple, focus, and disabled appearance are inherited, not hand-designed. Preserve action labels and visible success feedback.
-
-### Inputs / Fields
-
-Paper outlined inputs have floating labels, nominal 56-unit standard minimum height, 16-unit horizontal input padding, themed outline, and primary focus stroke. Authentication uses a password-visibility icon with an explicit accessibility label. Username fields avoid autocapitalization and autocorrect. Search uses a separate rounded Searchbar on surface-variant. No custom web hover or focus ring is a native design token.
-
-### Navigation
-
-The three tab icons are inline path-based SVGs, 24 units with 1.8-unit strokes, round caps, and round joins. They are not font glyphs. Built-in Paper control icons remain package-provided assets. Labels remain visible and request badges accompany the Requests destination.
-
-### People rows and avatars
-
-Initials derive from the first two name segments and use mint, peach, gray, and golden yellow paired colors. Names use title-medium; usernames use supporting body-medium. Flat rows expose Manage, Accept/Decline, or Cancel as explicit controls. Received-request actions sit beneath the person description and wrap as necessary. No canonical card or chip component is implemented.
-
-### Feedback and overlays
-
-Notice uses the Paper error role with a polite accessibility live region. A retry Banner shows session errors. Snackbar confirms mutations. Friend removal uses a Portal/Dialog with explanatory content and separate keep/remove actions. Empty states have a title, explanatory body, and optional action; loading placeholders reuse surface-variant at reduced opacity.
-
-### Footprint mark and app icon provenance
-
-`Mark` in `src/components/ui.tsx` is original code-native SVG geometry: four filled ellipses in a 40 × 40 viewbox, two with opposing 25-degree rotations. It appears at 32 units on authentication and 28 in the friends header, using the active theme primary. `assets/stride-mark.svg` is the original 1024-square source drawing on the light background, using the same footprint geometry. The app icon assets (`icon.png`, `adaptive-icon.png`, `monochrome-icon.png`, `favicon.png`) are local raster derivatives of that source, not stock photography or image-generated brand art. Android adaptive background uses the light background value. Device launcher masking and monochrome treatment remain subject to native capture.
-
-## Do's and Don'ts
-
-### Do:
-- **Do** pair semantic foreground and container colors in the current theme.
-- **Do** extend Paper text variants and the existing single-column spacing rhythm.
-- **Do** preserve divided people rows and explicit action labels.
-- **Do** keep demo context visible and identify sample people.
-- **Do** validate Android touch targets, font scaling, keyboard behavior, and fixed light appearance on a device.
-
-### Don't:
-- **Don't** treat surrogate web captures as native visual approval.
-- **Don't** promote inherited lavender elevation tones or unmeasured default action sizes into brand rules.
-- **Don't** invent walking statistics or dashboard components absent from this implementation.
-- **Don't** treat Stride or the footprint as an approved final identity.
-
-## Palette revision
-
-The user requested a more playful visual character. The source of truth is src/lib/palette.ts;
-all elevation, outline, inverse, error, and selection roles are explicit in both themes.
-Avatar containers vary deterministically between mint, coral, lilac, and yellow.
-Research, application limits, and color rationale are in COLOR-RATIONALE.md.
-The password toggle uses SVG paths, independent of font loading.
-
-## Light-only appearance
-
-Dark mode is removed by explicit user instruction. The app does not read the system color
-scheme. MD3LightTheme and the reference palette are always active; native configuration
-uses userInterfaceStyle: light and the status bar uses dark content. Earlier dark-theme
-inspection examples in this document are historical and are not part of the active design.
-
-### Primary button finish
-
-Enabled primary and tonal buttons share a static gloss: a white highlight fading down from the
-top, a small side glint, a darker lower edge, and a charcoal outline. Text, outlined,
-and disabled buttons stay flat. The decorative overlay ignores touch and is hidden
-from accessibility. Paper retains the actual press target, ripple, and loading state.
-`buttonFinish` in `src/lib/palette.ts` controls intensity, edges, corner radius, and
-an application-wide enable switch. `glossy={false}` opts out for one AppButton.
-Changing `brandColors.action` still recolors every primary button, including glossy ones.
-
-## Character and track artwork
-
-Original outlined 2D art uses a shared 120×190 character rig: oversized expressive head,
-soft angular hair silhouettes, bright tee, dark shorts, and pale sneakers. Separate layers
-hold skin, back/front limbs, clothing, face, and hair. Twelve hair silhouettes, three hair
-colors, five skin tones, and four outfits combine on the shared body rig.
-Dog, cat, and rabbit companions share a consistent outline, scale, and ground plane.
-
-The race-track reference informs the side view, neutral sky, orange dirt edges, pale gold
-path, and grounded character placement. Original hills, bushes, stones, dashed lane edges,
-and soft contact shadows give depth. No map, leaderboard, or real race position is implied.
-The 390×420 scene is shared between Home and the live creator preview. Walking is opt-in,
-pauses on blur, and respects reduced motion. Persisted appearance is device-local per account.
-The supplied Stompers screenshot is a direction reference; no game assets are copied.
-
-### Walk-pose revision
-
-Default to the contact/stride pose, with feet separated, rear heel raised, front foot
-reaching forward, and opposing arm swing. Draw explicit elbows, wrists, and mitten-shaped
-hands. Darker far limbs and correct back-to-front drawing order clarify overlap. Keep both
-hands outside the torso silhouette in the default pose. Four offset pet legs have small
-paw shapes; they are not represented by a single two-leg stroke.
-
-The eight-pose sheet (`assets/characters/pose-sheet.svg`) is generated from the same rig
-used by the app and inspected alongside the track design sheet. Normal overlap occurs in
-passing poses; the default contact pose is selected for clear reading at phone size.
-
-References studied:
-- Animation Mentor, “Animating a Basic Human Walk Cycle”: https://www.animationmentor.com/blog/tutorial-animating-human-walk-cycle/
-- Animation Mentor / Anthony Wong, “Building Appealing Character Poses for Animation”: https://www.animationmentor.com/blog/tutorial-building-appealing-character-poses-for-animation/
-
-Design inference: the app's main idle image should communicate an easy walk. A contact
-pose gives a clearer small silhouette than overlapping feet or a raised, waving forearm.
-
-Layering correction: both leg layers render before the shorts, so the near thigh cannot
-erase its trouser leg. Sleeves attach along each upper arm. The resting stride is narrower,
-and character/pet offsets align foot contact with their ground shadows. Pet front paws
-have additional horizontal separation so they do not merge in the default pose.
-
-## Expanded face and clothing system
-
-Eyes, nose profiles, eyebrows/mouth expressions, and shirt details are independent
-layers. Noses sit within a stable, smooth face silhouette. Expressions adjust eyebrows
-and mouths while retaining the selected eye style. Gender choices adjust the jaw and shirt fit. Catalog eligibility provides six disjoint hairstyles per gender. Raglan is male-only
-and Striped female-only; Classic tee and Hoodie remain shared.
-Classic tees are plain, striped tees use two broad curved light bands,
-raglan shirts have contrast sleeves, and hoodies have a hood, long sleeves, drawstrings,
-and a pouch. Hands paint after all sleeves to avoid repeating the previous occlusion bug.
-All selections update the same rig used on the track. A generated features sheet records
-the individual options. Four editor sections keep the longer catalog usable on phones.
-
-## Nose simplification and inventory rules
-
-Noses use a minimal mark, softly shaded button, or interior bridge curve. The cheek
-outline stays smooth, keeping the eyes and expression as the main facial focus. The chosen default is Button nose. Legacy nose IDs migrate to the
-nearest new style. Choices were informed by Raquel Arellano and the Etherington Brothers:
-- https://www.clipstudio.net/how-to-draw/archives/160376
-- https://www.clipstudio.net/how-to-draw/archives/161019
-
-These sources describe simplifying nose structure and varying the profile; the actual
-small-profile designs are an application-specific interpretation. Game catalog gender
-restrictions are specified by the user, not inferred rules about real-world fashion.
-
-
-### Face and clothing refinement
-Cartoon simplification references: Clip Studio Art Rocket,
-https://www.clipstudio.net/how-to-draw/archives/155423, and CrimsyCreates,
-https://tips.clip-studio.com/en-us/articles/4953. These inform compact facial marks
-and fewer, bolder clothing details; the SVG geometry is original.
-
-Minimal nose is a tiny shaded mark; Button nose uses soft volume and a short lower
-curve; Soft bridge uses a light interior contour. None interrupts the cheek outline.
-The tee is plain, stripes are broad curved bands clipped to the torso, raglan sleeves
-use seams, and the hoodie uses a tonal pocket. Details sit beneath arms and collar.
-Visual feature choices have no visible captions; gender cards explicitly label Male and Female. Accessible labels remain, and selected tiles show
-a small check badge. Face thumbnails crop around the relevant feature. Five options
-wrap into two rows rather than squeezing five portraits onto one mobile row.
-
-
-## Creator HCI refinement (16 October 2026)
-Impeccable polish/adapt guidance was read from the upstream skill. Its launcher is
-unavailable in this environment; the existing PRODUCT.md and DESIGN.md provided context.
-The user-approved illustration style, light palette, and glossy primary action remain.
-
-- Recognition rather than recall: visible Male/Female labels, representative crop/ponytail
-  portraits, enlarged feature previews, and familiar category names. Gender previews are
-  representative; compatible saved hair is preserved on selection.
-- Visibility of status: border plus check for selected choices, live character preview,
-  explicit Saved look/Unsaved changes state, and disabled Save when unchanged.
-- User control: Reset changes restores the persisted appearance without leaving the editor.
-- Grouping and space: compact editor track crops unused sky, consistent section gaps,
-  and separate wrapping category buttons bring choices closer to the preview.
-- Target size and reflow: category targets have a 48-unit minimum; choice tiles have an
-  88-unit minimum. Category rows switch to two columns on narrow windows/large text;
-  choice columns reduce with available width and font scaling. Gender cards have a
-  minimum height, not fixed height; captions wrap without a line limit. Check badges
-  occupy a corner with caption padding. No captions were added to expression tiles.
-
-Pose correction: the near hand hangs slightly lower and closer to its elbow. Forearm
-direction determines both wrist and cuff endpoints and the hand rotation. Round joins
-remove the angular sleeve hooks seen in the supplied hoodie screenshot.
-
-Sources used as design guidance (not claims of certified compliance):
-- Nielsen Norman Group, 10 Usability Heuristics: https://www.nngroup.com/articles/ten-usability-heuristics/
-- W3C Reflow: https://www.w3.org/WAI/WCAG22/Understanding/reflow.html
-- W3C Target Size: https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
-- Impeccable: https://github.com/pbakaus/impeccable/blob/main/skill/SKILL.src.md
-
-Verification: unit/UI checks exercise migration, inventory, selection, reset and save
-behavior; SVG renders inspect the altered hands and representative portraits. The user
-is checking phone screenshots. Automated text layout and native-device visual approval
-remain unverified; no browser login was requested again after the user's refusal.
-
-Catalog thumbnails are fixed samples, independent of the current draft. Hair, eyes,
-nose, expression, shirt and gender artwork are generated once from a standard sample
-appearance. Only the main track preview reflects current character selections.
-
-
-## Pinned creator preview and expanded options
-The creator's header is a sibling of the options ScrollView, never a child or an absolute
-overlay. Back and the live character remain visible while all choices and save controls
-scroll beneath them. Header content stays in the 600-unit centered column; the preview
-uses 24% of window height clamped to 72–200 units. This limits fixed-area space on short
-windows. Title text has flexible width and no line limit; existing wrapping category
-controls and picture-only option tiles remain. Gender labels are the explicit exception.
-
-Sand is the default skin for new looks and static catalog samples. Stored user skin tones
-are preserved. Twelve authored hairstyle silhouettes form separate male/female catalogs:
-Crop, Waves, Curls, Quiff, Side part, Spikes; Ponytail, Bob, Bun, Braids, Long waves, Ringlets.
-Female legacy Waves/Curls map to Long waves/Ringlets. Layered rear hair keeps long styles
-behind the head and body. Sunglasses paint over the eyes, below hair; selected eye style
-is retained in appearance data and returns when eyewear is removed.
-
-New companions follow the existing outline and palette: Ember the fox, Sprout the dragon,
-and Orbit the saucer with a green pilot. Animal companions keep four leg layers. Orbit
-has no legs and floats above its ground shadow, with subtle motion during walk preview.
-All choice thumbnails remain fixed samples; only the main track reflects the draft.
-
-Verification: 27 unit tests and 19 UI tests pass. Added checks cover disjoint catalogs,
-legacy migration, glasses removal, new companion validation, fixed header ancestry,
-combined selections, and actual appearance-store restoration after remount. Original
-SVG catalog and track renders were visually inspected. Native phone layout remains
-subject to the user's screenshot review.
-
-The Look/Face/Clothes/Pet category controls are pinned directly below the preview.
-Switching category resets only the options scroll position; draft selections are retained.
-
-
-## Personal Health Connect race
-Home pairs a large today-step counter with the saved character and companion on the track. Only the device user appears. Unknown steps use a dash; zero appears only after a successful read. Native permission/update/error/empty states have explicit actions. Source and update time identify the data. Read-only step use is explained before connecting. The counter and track step bubble use the same aggregate.
-
-## Personal race composition revision — 17 October 2026
-
-Rebuilt the Home screen around the supplied Stompers composition: centered outlined
-rounded wordmark, circular controls, a real-date week strip, outlined step total and
-local-midnight reset, open sky, a small runner low and left, a narrow sand lane and
-broad orange foreground, with a slim floating personal progress rail. Colorful
-original vector icons replace monochrome tab icons; active tabs use a peach pill.
-The previous large target card and header edit button are removed. Character editing,
-provider guidance and step access remain in the race menu and companion shortcut.
-The existing saved character, pet and native Health Connect reader are preserved.
-
-Finish review: full component web renders checked at 393x775 and 320x640 using a
-167-step QA-only bridge; horizontal document width matches the viewport, menu opens
-and closes, and no browser runtime errors were observed. The native reader and
-production web bridge remain unchanged. The QA fixture is excluded from release
-source. The whole character fits above its nameplate; progress rail remains compact.
-Typecheck and lint pass; 33 unit and 24 UI checks pass. APK packaging and physical
-provider sync are separate verification steps; no native runtime screenshot is claimed.
-
-Lilita One was obtained from Google Fonts' google/fonts repository and bundled with
-its SIL Open Font License. All scene and navigation artwork is original code-native SVG.
+Automated contrast checks cover the existing theme. UI tests cover the new interaction paths; browser previews establish web behavior, not Android touch, keyboard, font or sensor accuracy. Physical-device testing remains required before distribution. See VERIFICATION.md.

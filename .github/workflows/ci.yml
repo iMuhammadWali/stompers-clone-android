@@ -12,6 +12,7 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
+      - run: bash scripts/test-phone-core.sh
       - run: npm test
       - run: npm run test:ui
       - run: npx expo export --platform android

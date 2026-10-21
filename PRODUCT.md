@@ -1,9 +1,8 @@
 # Stride
 
-Working product name for an Android social walking app. Current scope is the API v1
-companion: sign up, sign in, manage friends, handle requests, and edit your display name.
-A local character creator, pet selection, and illustrated track preview are implemented.
-Health Connect now supplies today's step total for a personal race. Live competitions, items, rankings and group functionality are not implemented.
+Working product name for an Android social walking app. Current scope includes authenticated account setup, unique usernames, friend requests, profiles and a daily friends race.
+A character creator, pet selection, and illustrated track preview are implemented.
+Health Connect or optional phone tracking supplies today's total. Accepted friends compete using synced daily totals and saved characters. Items and groups are not implemented.
 
 People use this on a phone, often one-handed. Primary tasks are finding an exact username,
 accepting incoming requests, and seeing who is already a friend. Navigation must match
@@ -28,8 +27,7 @@ the user is travelling and has asked not to block work with setup questions.
 Characters and pets: the new Home tab shows the current avatar and companion on a side-on
 orange walking track. The creator has twelve hairstyles (six per gender), three hair colors, five skin tones,
 four outfits, and dog/cat/rabbit/fox/dragon/alien-spaceship/no-pet choices. Facial features now include independent eye, nose, and expression choices.
-Appearance saves locally per account, separately from authentication. Demo social data still
-resets; saved appearance persists. There are no invented step counts or race results.
+Appearance syncs to the authenticated account, with a local cache separate from authentication. Demo social data resets; saved demo appearance remains local. There are no invented step counts or race results.
 
 The creator has Look/Face/Clothes/Pet sections. Eyes: 4; noses: 3; expressions: 5;
 shirt styles: 4; base gender/face/fit variants: Male and Female. Face choices and colors remain independent. Hairstyle catalogs are disjoint; shirt inventory includes shared
@@ -55,4 +53,4 @@ height adapts to the window so options retain space. The new default skin is San
 persisted skin remains a user choice. Sunglasses are an independent removable accessory.
 New companions have original artwork; the spaceship has a visible alien pilot and hovers.
 
-Health Connect: native Android only, read-only Steps permission, aggregate from local midnight to now. Permission is requested explicitly. Health totals stay on-device and are not stored or uploaded. Web shows an unsupported state.
+Health Connect: native Android only, read-only Steps permission, aggregate from midnight Asia/Karachi to now. Permission is requested explicitly. While Home is open, the selected daily total is uploaded for the accepted-friends race; raw sensor measurements are not uploaded. Web cannot read device steps.

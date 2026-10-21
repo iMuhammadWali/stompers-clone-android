@@ -44,3 +44,6 @@ yarn-error.*
 .env.*
 !.env.example
 .impeccable/review/
+
+# Reproducible authoring previews
+/assets/characters/*-sheet.svg

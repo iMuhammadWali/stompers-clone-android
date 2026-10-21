@@ -1,12 +1,12 @@
 # Phone step tracking: research, implementation and validation
 
-Version 1.1.0 / Android build 5. Reviewed 18 October 2026.
+Research reviewed 18 October 2026. Social-race accounting updated for version 1.2.0 / Android build 6.
 
 ## Decision
 
 Health Connect remains the existing default source. If it is missing, the user can select **Use phone tracking instead**, then **Use phone step sensor**. The native module prefers Android's cumulative step-counter sensor, then the step-detector sensor. An accelerometer-only estimator is offered only after an additional explicit opt-in when both step sensors are absent. These are capability checks, not assumptions about a brand of phone.
 
-Only one source supplies the race total. Health Connect and phone counts are never added. Changing the source can change the displayed count. No sensor data or counts are uploaded, and no Health Connect records are written. Tracking does not require a backend account.
+Only one source supplies the race total. Health Connect and phone counts are never added. Changing the source can change the displayed count. No raw sensor data is uploaded and no Health Connect records are written. For signed-in accounts, the selected daily count, source and sync time are uploaded while Home is open and shared with accepted friends. Demo counting stays local.
 
 ## Research reviewed
 
@@ -39,9 +39,9 @@ Reviewed current [Android motion sensor documentation](https://developer.android
 
 `StepLedger.java` is the accounting core used by the Android service and the standalone JVM checks. Total, counter baseline, event timestamp, boot identifier and day/zone are committed together in one preferences value. Duplicate/out-of-order events are ignored. Reboot and decreasing counters establish a new baseline while retaining the current day's recorded count. Explicit resume establishes a fresh baseline and excludes the stopped interval.
 
-Phone counts cover recorded intervals only. They cannot recover activity before activation. Midnight and timezone changes reset the displayed daily bucket. A cumulative counter delta spanning a date/zone boundary cannot be reliably divided; it is excluded and tracked as unallocated rather than invented as today's steps. The experimental detector resets its pending bout at a day/zone change. This conservative policy can undercount around a boundary.
+Phone counts cover recorded intervals only. They cannot recover activity before activation. The daily bucket resets at midnight Asia/Karachi regardless of the phone timezone. Upgrading a ledger from another timezone starts a fresh bucket instead of mixing incompatible totals. A cumulative counter delta spanning a date/zone boundary cannot be reliably divided; it is excluded and tracked as unallocated rather than invented as today's steps. The experimental detector resets its pending bout at a day/zone change. This conservative policy can undercount around a boundary.
 
-The current phone ledger retains the current day, not a historical daily chart. Local data can be removed by clearing app storage. No historical or server reconciliation is implied.
+The current phone ledger retains the current day, not a historical daily chart. Local data can be removed by clearing app storage. The server retains uploaded daily snapshots, but cannot reconstruct missed or unallocated native intervals.
 
 The original experimental estimator uses orientation-independent magnitude, time-based drift and noise filtering, an adaptive amplitude floor, peak/valley evidence, a 280 ms refractory interval, cadence-consistency checks against a smoothed recent interval, and a four-candidate bout gate. Sampling gaps reset its state. Very short or slow bouts may be missed; rhythmic shaking or vehicle vibration can cause false positives. It is not intended for clinical or anti-cheat use. The app labels it **Experimental phone estimate**.
 
