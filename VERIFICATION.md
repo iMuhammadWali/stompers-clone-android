@@ -3,7 +3,7 @@
 Local checks for the social-race update:
 
 - Server: 28 HTTP/database integration tests, typecheck and build passed. The GitHub server workflow also passed against PostgreSQL 17.
-- Mobile: typecheck and lint passed; 41 unit tests and 34 UI tests passed.
+- Mobile: typecheck and lint passed; 41 unit tests and 35 UI tests passed.
 - Native accounting: 30 JVM checks passed. Synthetic signals do not establish physical step accuracy.
 - Web JavaScript export passed. Browser walkthroughs exercise the actual API against a disposable embedded PostgreSQL instance, separate from release code.
 - Impeccable's mechanical scan reported no findings for the new setup, lookup, confirmation and friends-race components. Existing palette and character artwork are preserved.

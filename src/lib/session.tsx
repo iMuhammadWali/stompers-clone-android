@@ -30,7 +30,8 @@ export function SessionProvider({children}:{children:React.ReactNode}) {
   const [service,setService]=useState<Service|null>(live);
   const restore=useCallback(async()=>{
     setBooting(true);setRestoringError('');
-    try {if(live) setUser(await live.restore());}
+    const current=generation.current;
+    try {if(live) {const restored=await live.restore();if(current===generation.current)setUser(restored);}}
     catch(e) {if(!(e instanceof ApiError && e.status===401)) setRestoringError(message(e));}
     finally {setBooting(false);}
   },[live]);
@@ -51,8 +52,8 @@ export function SessionProvider({children}:{children:React.ReactNode}) {
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(()=>{void reload();},[reload]);
   const value:State={user,demo,booting,restoringError,error,people,pending,loading,configured:!!live,service,
-    async completeOnboarding(username,appearance) {if(!service)throw new Error('Connect to the server and try again.');setUser(await service.completeOnboarding(username,appearance));},
-    async saveAppearance(appearance) {if(!service)throw new Error('Connect to the server and try again.');setUser(await service.saveAppearance(appearance));},
+    async completeOnboarding(username,appearance) {if(!service)throw new Error('Connect to the server and try again.');const current=generation.current,next=await service.completeOnboarding(username,appearance);if(current===generation.current)setUser(next);},
+    async saveAppearance(appearance) {if(!service)throw new Error('Connect to the server and try again.');const current=generation.current,next=await service.saveAppearance(appearance);if(current===generation.current)setUser(next);},
     retryRestore:restore,reload,
     async login(email,password) {if(!live) throw new Error('The backend is not connected yet. Use the demo to explore.');const u=await live.login(email,password);generation.current++;setService(live);setDemo(false);setRestoringError('');setUser(u);},
     async register(data) {if(!live) throw new Error('The backend is not connected yet. Use the demo to explore.');const u=await live.register(data);generation.current++;setService(live);setDemo(false);setRestoringError('');setUser(u);},
@@ -62,7 +63,7 @@ export function SessionProvider({children}:{children:React.ReactNode}) {
       finally {generation.current++;setUser(null);setPeople([]);setPending([]);setError('');setLoading(false);setDemo(false);setService(live);}
     },
     async mutate(action) {if(!service) return;await action(service);await reload();},
-    async updateName(name) {if(service) setUser(await service.updateName(name));},
+    async updateName(name) {if(service) {const current=generation.current,next=await service.updateName(name);if(current===generation.current)setUser(next);}},
     async checkHealth() {return service?service.health():false;},
   };
   return <Context.Provider value={value}>{children}</Context.Provider>;

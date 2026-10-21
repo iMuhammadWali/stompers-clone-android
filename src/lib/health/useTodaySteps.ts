@@ -20,8 +20,12 @@ export function useTodaySteps() {
   useFocusEffect(useCallback(()=>{
     void refresh();
     const listener=AppState.addEventListener('change',status=>{if(status==='active')void refresh();});
-    let ticks=0;
-    const timer=setInterval(()=>{ticks++;if(AppState.currentState==='active'&&(phoneSource.current||ticks%12===0))void refresh();},5000);
+    let ticks=0,observedDay=todayWindow(new Date()).day;
+    const timer=setInterval(()=>{
+      ticks++;
+      const day=todayWindow(new Date()).day,rolled=day!==observedDay;observedDay=day;
+      if(AppState.currentState==='active'&&(rolled||phoneSource.current||ticks%12===0))void refresh();
+    },5000);
     return ()=>{generation.current++;listener.remove();clearInterval(timer);};
   },[refresh]));
   async function settings(){try {if(phone?.source==='phone'||phoneError?.includes('Physical activity')){await Linking.openSettings();return;}const bridge=await getHealthBridge();bridge?.openHealthConnectSettings();}catch {setPhoneError('Settings could not be opened. Open Android Settings, then Apps, Stride, Permissions.');}}
