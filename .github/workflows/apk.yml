@@ -34,13 +34,14 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
+      - uses: android-actions/setup-android@v4
       - name: Prepare Android SDK
         run: sdkmanager 'platforms;android-37' 'build-tools;37.0.0' 'ndk;27.1.12297006' 'cmake;3.22.1'
       - name: Generate native project from the checked-in config

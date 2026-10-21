@@ -14,6 +14,14 @@ Expo SDK 58 / React Native. Version 1.2.0, Android build 6.
 
 Race days reset at midnight Asia/Karachi. While Home is foregrounded, race data refreshes every 15 seconds and the selected daily total syncs to the server. Unknown or unreadable totals are never fabricated as zero. Phone counting can continue through its native foreground service; network uploads occur while Home is open. Experimental accelerometer estimates are labeled.
 
+## Download APK
+
+Installable preview APKs are attached to [GitHub Releases](https://github.com/iMuhammadWali/stompers-clone-android/releases). Open a release and download the .apk under Assets. This private repository requires a signed-in account with access.
+
+The Downloadable Android APK workflow builds and verifies a standalone APK when app.json changes, or when run manually from Actions. It uses the Expo template development signing key for previews. APKs include their JavaScript and do not need Metro or Expo Go. Signature compatibility with older installations is unverified.
+
+Until the hosted API is configured, downloads support demo mode and local tracking. Set the repository variable EXPO_PUBLIC_API_URL to the permanent HTTPS API before creating a connected build. Store/distribution signing remains a separate EAS setup.
+
 ## Connect and run
 
 Use Node 24. Set the public API address in .env:
