@@ -51,18 +51,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ${{ env.STRIDE_SDK_ROOT }}/platforms/android-37.0
-            ${{ env.STRIDE_SDK_ROOT }}/build-tools/37.0.0
+            ${{ env.STRIDE_SDK_ROOT }}/platforms/android-36
+            ${{ env.STRIDE_SDK_ROOT }}/build-tools/36.0.0
             ${{ env.STRIDE_SDK_ROOT }}/ndk/27.1.12297006
             ${{ env.STRIDE_SDK_ROOT }}/cmake/3.22.1
-          key: android-sdk-${{ runner.os }}-api37.0-tools37.0.0-ndk27.1.12297006-cmake3.22.1
+          key: android-sdk-${{ runner.os }}-api36-tools36.0.0-ndk27.1.12297006-cmake3.22.1
       - name: Prepare Android SDK
         run: |
-          sdkmanager 'platforms;android-37.0' 'build-tools;37.0.0' 'ndk;27.1.12297006' 'cmake;3.22.1'
-          # React Native still resolves the integer API hash for this SDK.
-          if [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
-            ln -s android-37.0 "$ANDROID_HOME/platforms/android-37"
-          fi
+          sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'ndk;27.1.12297006' 'cmake;3.22.1'
       - name: Generate native project from the checked-in config
         run: npx expo prebuild --platform android --no-install
       - name: Restore native compilation outputs
@@ -95,7 +91,7 @@ jobs:
           mkdir -p apk-download
           cp android/app/build/outputs/apk/release/app-release.apk "apk-download/Stride-v${version}-preview.apk"
           apk="apk-download/Stride-v${version}-preview.apk"
-          tools="$ANDROID_HOME/build-tools/37.0.0"
+          tools="$ANDROID_HOME/build-tools/36.0.0"
           "$tools/apksigner" verify --verbose --print-certs "$apk" > apk-download/SIGNATURE.txt
           "$tools/zipalign" -c -P 16 4 "$apk"
           "$tools/aapt" dump badging "$apk" > apk-download/PACKAGE.txt
