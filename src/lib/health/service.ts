@@ -1,3 +1,4 @@
+import {raceWindow} from '../race-time';
 export type HealthPermission={accessType:string;recordType?:string};
 export type StepRequest={recordType:'Steps';timeRangeFilter:{operator:'between';startTime:string;endTime:string}};
 export interface HealthBridge {
@@ -12,8 +13,8 @@ export type HealthStatus='unsupported'|'unavailable'|'update-required'|'permissi
 export type StepState={status:HealthStatus;steps:number|null;updatedAt:string|null;day:string};
 export const stepPermission={accessType:'read',recordType:'Steps'} as const;
 export function todayWindow(now:Date) {
-  const start=new Date(now);start.setHours(0,0,0,0);
-  return {startTime:start.toISOString(),endTime:now.toISOString(),day:`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`};
+  const {startTime,endTime,day}=raceWindow(now);
+  return {startTime,endTime,day};
 }
 export async function readTodaySteps(bridge:HealthBridge|null,askPermission=false,now=new Date()):Promise<StepState> {
   const window=todayWindow(now);

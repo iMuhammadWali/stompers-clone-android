@@ -7,8 +7,9 @@ import {useSession} from '../../lib/session';
 import {GameIcon} from '../../components/GameChrome';
 
 export default function TabsLayout() {
-  const {user,pending}=useSession(),theme=useTheme(),insets=useSafeAreaInsets();
+  const {user,pending,demo}=useSession(),theme=useTheme(),insets=useSafeAreaInsets();
   if(!user) return <Redirect href="/"/>;
+  if(!demo&&user.onboardingComplete!==true)return <Redirect href="/onboarding"/>;
   const count=pending.filter(r=>r.recipientId===user.id).length;
   return <Tabs screenOptions={{headerShown:false,tabBarActiveTintColor:theme.colors.primary,tabBarInactiveTintColor:theme.colors.onSurfaceVariant,
     tabBarStyle:{backgroundColor:theme.colors.surface,borderTopColor:theme.colors.outlineVariant,height:74+insets.bottom,paddingTop:6,paddingBottom:Math.max(insets.bottom,8)},tabBarLabelStyle:{fontSize:11,fontWeight:'700'}}}>

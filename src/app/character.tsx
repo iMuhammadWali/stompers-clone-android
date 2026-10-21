@@ -1,3 +1,4 @@
+import {SignOutButton} from '../components/SignOutButton';
 import React,{useState,useContext,createContext} from 'react';
 import {View,Pressable,useWindowDimensions} from 'react-native';
 import {Text,useTheme,ActivityIndicator} from 'react-native-paper';
@@ -25,10 +26,10 @@ function ChoiceGroup({title,children}:{title:string;children:React.ReactNode}) {
   const columns=Math.max(1,Math.min(preferred,Math.floor((Math.min(width,600)-48+8)/(fontScale>1.3?140:72))));
   return <ChoiceColumns.Provider value={columns}><View style={{gap:12}}><Text variant="titleMedium" style={{fontWeight:'700'}}>{title}</Text><View accessibilityRole="radiogroup" accessibilityLabel={title} style={{flexDirection:'row',gap:8,flexWrap:'wrap'}}>{children}</View></View></ChoiceColumns.Provider>;
 }
-function Editor() {
+export function CharacterEditor({onSave,initialAppearance}:{onSave?:(appearance:Appearance)=>Promise<void>;initialAppearance?:Appearance}) {
   const {appearance,save}=useAppearance(),theme=useTheme(),{width,height,fontScale}=useWindowDimensions();
   const [section,setSection]=useState('look');
-  const [draft,setDraft]=useState<Appearance>(appearance),[busy,setBusy]=useState(false),[error,setError]=useState('');
+  const [draft,setDraft]=useState<Appearance>(initialAppearance??appearance),[busy,setBusy]=useState(false),[error,setError]=useState('');
   const [adjustment,setAdjustment]=useState('');
   const dirty=JSON.stringify(draft)!==JSON.stringify(appearance);
   function reset(){setDraft(appearance);setAdjustment('');setError('');}
@@ -39,11 +40,11 @@ function Editor() {
   }
   async function submit() {
     setBusy(true);setError('');
-    try {await save(draft);router.replace('/(tabs)/track');}
-    catch {setError('Your look could not be saved on this device. Please try again.');setBusy(false);}
+    try {if(onSave)await onSave(draft);else {await save(draft);router.replace('/(tabs)/track');}}
+    catch {setError('Your look could not be saved. Check your connection and try again.');setBusy(false);}
   }
   return <Page scrollKey={section} fixedHeader={<View style={{width:'100%',maxWidth:600,alignSelf:'center',paddingHorizontal:24,paddingBottom:12,gap:8}}>
-    <View style={{flexDirection:'row',alignItems:'center',gap:12}}><AppButton onPress={()=>router.canGoBack()?router.back():router.replace('/(tabs)/track')} contentStyle={{minHeight:48}}>Back</AppButton><Text variant="titleLarge" style={{fontWeight:'700',flex:1,flexShrink:1}}>Edit character</Text></View>
+    <View style={{flexDirection:'row',alignItems:'center',gap:12}}>{!onSave&&<AppButton onPress={()=>router.canGoBack()?router.back():router.replace('/(tabs)/track')} contentStyle={{minHeight:48}}>Back</AppButton>}<Text variant="titleLarge" style={{fontWeight:'700',flex:1,flexShrink:1}}>{onSave?'Create your character':'Edit character'}</Text></View>
     <View testID="character-preview" style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:theme.colors.outlineVariant,backgroundColor:theme.colors.background}}><TrackScene appearance={draft} compact height={Math.min(200,Math.max(72,Math.round(height*0.24)))}/></View>
     <View accessibilityRole="radiogroup" accessibilityLabel="Character category" style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>
       {[{id:'look',label:'Look'},{id:'face',label:'Face'},{id:'clothes',label:'Clothes'},{id:'pet',label:'Pet'}].map(item=><Pressable key={item.id} accessibilityRole="radio" accessibilityLabel={item.label} accessibilityState={{selected:section===item.id,checked:section===item.id}} onPress={()=>setSection(item.id)} android_ripple={{color:theme.colors.surfaceVariant}} style={{flexGrow:1,flexShrink:1,flexBasis:fontScale>1.3||width<360?'44%':'21%',minWidth:64,minHeight:48,paddingVertical:12,paddingHorizontal:8,borderRadius:12,borderWidth:section===item.id?2:1,borderColor:section===item.id?theme.colors.onSurface:theme.colors.outline,backgroundColor:section===item.id?theme.colors.secondaryContainer:theme.colors.surface,justifyContent:'center',alignItems:'center'}}><Text variant="labelLarge" style={{textAlign:'center',fontWeight:'700',flexShrink:1,color:theme.colors.onSurface}}>{item.label}</Text></Pressable>)}
@@ -70,16 +71,17 @@ function Editor() {
     <ChoiceGroup title="Walking buddy">{pets.map(p=><Choice key={p.id} label={p.id==='none'?p.label:`${p.label} · ${p.species}`} selected={draft.pet===p.id} onPress={()=>choose('pet',p.id)}>{p.id==='none'?<View style={{height:62,justifyContent:'center'}}><Text variant="headlineSmall">—</Text></View>:<SvgXml xml={choiceArtwork.pet[p.id]} width="100%" height={68} accessible={false}/>}</Choice>)}</ChoiceGroup>
     </>}
     <View style={{gap:8,borderTopWidth:1,borderColor:theme.colors.outlineVariant,paddingTop:16}}>
-      <Text accessibilityLiveRegion="polite" variant="bodyMedium" style={{fontWeight:'600',color:theme.colors.onSurface}}>{dirty?'Unsaved changes':'Saved look'}</Text>
-      <Text variant="bodySmall" style={{color:theme.colors.onSurfaceVariant}}>Your look is saved on this device.</Text>
+      <Text accessibilityLiveRegion="polite" variant="bodyMedium" style={{fontWeight:'600',color:theme.colors.onSurface}}>{onSave?'Make it yours':dirty?'Unsaved changes':'Saved look'}</Text>
+      <Text variant="bodySmall" style={{color:theme.colors.onSurfaceVariant}}>{onSave?'Next, choose your unique username.':'Your saved look is shared with accepted friends.'}</Text>
       {dirty&&<AppButton onPress={reset} contentStyle={{minHeight:48}} style={{alignSelf:'flex-start'}}>Reset changes</AppButton>}
     </View>
     {!!adjustment&&<Text accessibilityLiveRegion="polite" variant="bodySmall" style={{color:theme.colors.onSurfaceVariant}}>{adjustment}</Text>}
     <Notice text={error}/>
-    <AppButton mode="contained" disabled={busy||!dirty} loading={busy} onPress={()=>void submit()} contentStyle={styles.button}>Save look</AppButton>
+    <AppButton mode="contained" disabled={busy||(!onSave&&!dirty)} loading={busy} onPress={()=>void submit()} contentStyle={styles.button}>{onSave?'Continue to username':'Save look'}</AppButton>
+    {!!onSave&&<SignOutButton/>}
   </Page>;
 }
 export default function CharacterScreen() {
   const {ready}=useAppearance();
-  return ready?<Editor/>:<Page><View style={{alignItems:'flex-start'}}><AppButton onPress={()=>router.canGoBack()?router.back():router.replace('/(tabs)/track')}>Back</AppButton></View><ActivityIndicator accessibilityLabel="Loading your saved look"/></Page>;
+  return ready?<CharacterEditor/>:<Page><View style={{alignItems:'flex-start'}}><AppButton onPress={()=>router.canGoBack()?router.back():router.replace('/(tabs)/track')}>Back</AppButton></View><ActivityIndicator accessibilityLabel="Loading your saved look"/></Page>;
 }

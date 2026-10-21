@@ -1,10 +1,12 @@
-import type {Service, User, Friend, FriendRequest, Registration} from './types';
+import {raceWindow} from './race-time';
+import type {Appearance} from './character/catalog';
+import type {PlayerLookup,DailyRace,StepUpload,Service,User,Friend,FriendRequest,Registration} from './types';
 
 export class DemoService implements Service {
-  private me: User = {id:'demo-me',username:'you',displayName:'Alex Walker',email:'alex@example.com'};
+  private me: User = {id:'demo-me',username:'you',displayName:'Alex Walker',email:'alex@example.com',onboardingComplete:true};
   private people: Friend[] = [
     {id:'friend-1',username:'maya_moves',displayName:'Maya Chen'},
-    {id:'friend-2',username:'omar.outside',displayName:'Omar Hassan'},
+    {id:'friend-2',username:'omar_outside',displayName:'Omar Hassan'},
     {id:'friend-3',username:'ellie_walks',displayName:'Ellie Brooks'},
   ];
   private pending: FriendRequest[] = [
@@ -34,5 +36,15 @@ export class DemoService implements Service {
   async cancel(id: string) {this.pending=this.pending.filter(p=>p.id!==id || p.senderId!==this.me.id);}
   async remove(id: string) {this.people=this.people.filter(p=>p.id!==id);}
   async updateName(name: string) {this.me={...this.me,displayName:name};return {...this.me};}
+  async usernameAvailability(username:string) {return {username,available:!this.people.some(p=>p.username===username),suggestions:[]};}
+  async completeOnboarding(username:string,appearance:Appearance) {this.me={...this.me,username,appearance,onboardingComplete:true};return {...this.me};}
+  async saveAppearance(appearance:Appearance) {this.me={...this.me,appearance};return {...this.me};}
+  async lookupPlayer(username:string):Promise<PlayerLookup> {
+    const user=[this.me,...this.people].find(p=>p.username===username)??(username==='trail_friend'?{id:'trail-friend',username,displayName:'Trail Friend'}:null);
+    if(!user)throw new Error('No sample player has that username. Try trail_friend.');
+    return {user,relationship:user.id===this.me.id?'self':this.people.some(p=>p.id===user.id)?'friends':this.pending.some(p=>p.recipientUsername===username)?'outgoing':'none'};
+  }
+  async dailyRace():Promise<DailyRace> {return {...raceWindow(),data:[this.me,...this.people].map(p=>({...p,steps:null,source:null,lastSyncedAt:null}))};}
+  async syncSteps(_input:StepUpload) {}
   async health() {return true;}
 }

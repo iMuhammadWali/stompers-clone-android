@@ -36,7 +36,7 @@ test('distinguishes no data, unsupported platform, unavailable provider, update 
   assert.equal((await readTodaySteps(fake({fail:true}).bridge,false,now)).steps,null);
   for(const count of [-1,NaN,Infinity,2.5])assert.equal((await readTodaySteps(fake({count}).bridge,false,now)).status,'error');
 });
-test('local-day boundaries use the phone timezone and roll over at midnight',()=>{
+test('race-day boundaries use Pakistan midnight',()=>{
   const before=process.env.TZ;process.env.TZ='Asia/Karachi';
   try {
     const early=todayWindow(new Date('2026-10-15T19:01:00Z'));

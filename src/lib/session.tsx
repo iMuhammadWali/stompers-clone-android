@@ -3,6 +3,7 @@ import {ApiClient,ApiError} from './client';
 import {tokenStore} from './storage';
 import {DemoService} from './demo';
 import type {Service,User,Friend,FriendRequest,Registration} from './types';
+import type {Appearance} from './character/catalog';
 
 const configuredUrl=process.env.EXPO_PUBLIC_API_URL?.trim();
 type State={user:User|null;demo:boolean;booting:boolean;restoringError:string;error:string;
@@ -10,6 +11,8 @@ type State={user:User|null;demo:boolean;booting:boolean;restoringError:string;er
   login:(email:string,password:string)=>Promise<void>;register:(data:Registration)=>Promise<void>;
   startDemo:()=>void;logout:()=>Promise<void>;retryRestore:()=>Promise<void>;
   reload:()=>Promise<void>;mutate:(action:(service:Service)=>Promise<unknown>)=>Promise<void>;
+  service:Service|null;completeOnboarding:(username:string,appearance:Appearance)=>Promise<void>;
+  saveAppearance:(appearance:Appearance)=>Promise<void>;
   updateName:(name:string)=>Promise<void>;checkHealth:()=>Promise<boolean>};
 const Context=createContext<State|null>(null);
 export const message=(e:unknown)=>e instanceof Error?e.message:'Something went wrong. Try again.';
@@ -35,7 +38,7 @@ export function SessionProvider({children}:{children:React.ReactNode}) {
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(()=>{void restore();},[restore]);
   const reload=useCallback(async()=>{
-    if(!service||!user) return;
+    if(!service||!user||user.onboardingComplete===false) return;
     const current=generation.current;
     setLoading(true);setError('');
     try {
@@ -47,7 +50,9 @@ export function SessionProvider({children}:{children:React.ReactNode}) {
   // Fetch when the external API account changes; loading is deliberately set before I/O.
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(()=>{void reload();},[reload]);
-  const value:State={user,demo,booting,restoringError,error,people,pending,loading,configured:!!live,
+  const value:State={user,demo,booting,restoringError,error,people,pending,loading,configured:!!live,service,
+    async completeOnboarding(username,appearance) {if(!service)throw new Error('Connect to the server and try again.');setUser(await service.completeOnboarding(username,appearance));},
+    async saveAppearance(appearance) {if(!service)throw new Error('Connect to the server and try again.');setUser(await service.saveAppearance(appearance));},
     retryRestore:restore,reload,
     async login(email,password) {if(!live) throw new Error('The backend is not connected yet. Use the demo to explore.');const u=await live.login(email,password);generation.current++;setService(live);setDemo(false);setRestoringError('');setUser(u);},
     async register(data) {if(!live) throw new Error('The backend is not connected yet. Use the demo to explore.');const u=await live.register(data);generation.current++;setService(live);setDemo(false);setRestoringError('');setUser(u);},

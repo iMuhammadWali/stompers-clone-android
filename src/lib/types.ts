@@ -1,7 +1,13 @@
-export type User = {id: string; username: string; displayName: string; email?: string; createdAt?: string};
+import type {Appearance} from './character/catalog';
+export type User = {id: string; username: string; displayName: string; email?: string; createdAt?: string; onboardingComplete?:boolean; appearance?:Appearance|null};
 export type Friend = User & {friendsSince?: string};
 export type FriendRequest = {id: string; senderId: string; recipientId: string; senderUsername: string; recipientUsername: string; status: string; createdAt?: string};
-export type Registration = {username: string; email: string; password: string; displayName?: string};
+export type Registration = {username?: string; email: string; password: string; displayName?: string};
+export type PlayerLookup={user:User;relationship:'self'|'friends'|'incoming'|'outgoing'|'none'};
+export type HandleAvailability={username:string;available:boolean;suggestions:string[]};
+export type StepUpload={day:string;steps:number;source:'health-connect'|'phone-counter'|'phone-detector'|'phone-estimate';observedAt:string};
+export type Racer=User&{steps:number|null;source:StepUpload['source']|null;lastSyncedAt:string|null};
+export type DailyRace={day:string;timeZone:string;resetsAt:string;data:Racer[]};
 export interface Service {
   restore(): Promise<User | null>;
   login(email: string, password: string): Promise<User>;
@@ -15,4 +21,10 @@ export interface Service {
   remove(userId: string): Promise<void>;
   updateName(displayName: string): Promise<User>;
   health(): Promise<boolean>;
+  usernameAvailability(username:string):Promise<HandleAvailability>;
+  completeOnboarding(username:string,appearance:Appearance):Promise<User>;
+  saveAppearance(appearance:Appearance):Promise<User>;
+  lookupPlayer(username:string):Promise<PlayerLookup>;
+  dailyRace():Promise<DailyRace>;
+  syncSteps(input:StepUpload):Promise<void>;
 }

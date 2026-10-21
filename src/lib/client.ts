@@ -1,4 +1,5 @@
-import type {Service, User, Friend, FriendRequest, Registration} from './types';
+import type {Service, User, Friend, FriendRequest, Registration,HandleAvailability,PlayerLookup,DailyRace,StepUpload} from './types';
+import type {Appearance} from './character/catalog';
 
 export class ApiError extends Error {
   constructor(public status: number, public code: string, message: string) {super(message);}
@@ -22,7 +23,9 @@ export class ApiClient implements Service {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 12000);
     try {
-      const response = await this.transport(this.base + path, {
+      // Browser fetch requires its normal global receiver, not this ApiClient instance.
+      const transport=this.transport;
+      const response = await transport(this.base + path, {
         method, signal: controller.signal,
         headers: {Accept: 'application/json', ...(body !== undefined ? {'Content-Type':'application/json'} : {}),
           ...(access ? {Authorization: `Bearer ${access}`} : {})},
@@ -91,7 +94,7 @@ export class ApiClient implements Service {
     const epoch = ++this.epoch;
     const result = await this.raw('/auth/register','POST',input);
     await this.save(result,epoch);
-    return {...result.user,email:input.email.trim()} as User;
+    return {...result.user,username:result.user.username??'',email:input.email.trim()} as User;
   }
   async logout() {
     try {await this.call('/auth/logout','POST');}
@@ -108,6 +111,29 @@ export class ApiClient implements Service {
   }
   friends() {return this.all<Friend>('/friends');}
   requests() {return this.all<FriendRequest>('/friend-requests');}
+  usernameAvailability(username:string):Promise<HandleAvailability> {return this.call('/usernames/availability?username='+encodeURIComponent(username));}
+  async completeOnboarding(username:string,appearance:Appearance) {
+    try {return (await this.call('/me/onboarding','PUT',{username,appearance})).user as User;}
+    catch(e) {
+      // A lost success response must not trap an already-completed account in setup.
+      if(e instanceof ApiError&&e.code==='ONBOARDING_COMPLETE')return (await this.call('/me')).user as User;
+      throw e;
+    }
+  }
+  async saveAppearance(appearance:Appearance) {return (await this.call('/me/appearance','PUT',{appearance})).user as User;}
+  lookupPlayer(username:string):Promise<PlayerLookup> {return this.call('/users/'+encodeURIComponent(username));}
+  async dailyRace():Promise<DailyRace> {
+    let race:DailyRace|undefined;
+    for(let offset=0;;offset+=100) {
+      const page=await this.call('/race/today?limit=100&offset='+offset) as DailyRace;
+      if(!race) race={...page,data:[]};
+      if(page.day!==race.day) throw new Error('The race just reset. Refresh to see today’s race.');
+      race.data.push(...page.data);
+      if(page.data.length<100) return race;
+      if(offset>=100000) throw new Error('Too many players to display.');
+    }
+  }
+  async syncSteps(input:StepUpload) {await this.call('/steps/today','PUT',input);}
   async sendRequest(username: string) {await this.call('/friend-requests','POST',{username:username.trim()});}
   async respond(id: string,action: 'accept'|'decline') {await this.call(`/friend-requests/${encodeURIComponent(id)}`,'PATCH',{action});}
   async cancel(id: string) {await this.call(`/friend-requests/${encodeURIComponent(id)}`,'DELETE');}

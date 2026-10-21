@@ -12,7 +12,7 @@ internal object StepStore {
   @Volatile var failure: String? = null
   private fun prefs(c: Context) = c.getSharedPreferences(PREF, Context.MODE_PRIVATE)
   fun boot(c: Context): Long = Settings.Global.getInt(c.contentResolver, Settings.Global.BOOT_COUNT, -1).toLong()
-  fun day(time: Long): String = Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault()).toLocalDate().toString()
+  fun day(time: Long): String = Instant.ofEpochMilli(time).atZone(ZoneId.of("Asia/Karachi")).toLocalDate().toString()
   @Synchronized fun load(c: Context): StepLedger {
     val saved=prefs(c).getString("ledger",null) ?: return StepLedger()
     val j=JSONObject(saved)
@@ -37,7 +37,7 @@ internal object StepStore {
   fun snapshot(c: Context): Map<String, Any?> {
     val l=load(c); val now=System.currentTimeMillis(); val today=day(now)
     return mapOf("source" to source(c), "mode" to mode(c), "running" to running, "enabled" to enabled(c),
-      "steps" to if(l.day==today && l.zone==ZoneId.systemDefault().id) l.total else 0L,
+      "steps" to if(l.day==today && l.zone==ZoneId.of("Asia/Karachi").id) l.total else 0L,
       "day" to today, "gap" to (l.gap || l.day!=today), "unallocated" to l.unallocated, "error" to failure)
   }
 }

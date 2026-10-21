@@ -7,6 +7,13 @@ function memory(value:string|null=null):TokenStore {let token=value;return {get:
 const json=(body:unknown,status=200)=>new Response(body===undefined?null:JSON.stringify(body),{status,headers:{'Content-Type':'application/json'}});
 const me={id:'a',username:'alice',displayName:'Alice'};
 
+test('transport is called without binding the API client as its receiver',async()=>{
+  const api=new ApiClient('https://api.example/api/v1',memory(),async function(this:unknown) {
+    assert.equal(this,undefined);return json({status:'ok',database:'up'});
+  });
+  assert.equal(await api.health(),true);
+});
+
 test('login stores only refresh token and attaches bearer access token',async()=>{
   const store=memory();const calls:any[]=[];
   const fetcher:typeof fetch=async(url,init)=>{calls.push({url,init});if(String(url).endsWith('/auth/login'))return json({accessToken:'access',refreshToken:'refresh'});return json({user:me});};

@@ -1,3 +1,6 @@
+import {useDailyRace} from '../../lib/useDailyRace';
+import {FriendsRace} from '../../components/character/FriendsRace';
+import {raceWindow} from '../../lib/race-time';
 import React,{useState,useEffect} from 'react';
 import {View,ScrollView,StyleSheet,Pressable,Modal} from 'react-native';
 import {Text,useTheme,ActivityIndicator} from 'react-native-paper';
@@ -15,21 +18,22 @@ const TARGET=10000;
 function ResetClock() {
   const [now,setNow]=useState(()=>new Date());
   useEffect(()=>{const id=setInterval(()=>setNow(new Date()),1000);return ()=>clearInterval(id);},[]);
-  const end=new Date(now);end.setHours(24,0,0,0);const sec=Math.max(0,Math.floor((+end-+now)/1000));
+  const end=new Date(raceWindow(now).resetsAt);const sec=Math.max(0,Math.floor((+end-+now)/1000));
   const label=`Resets in ${[Math.floor(sec/3600),Math.floor(sec/60)%60,sec%60].map(v=>String(v).padStart(2,'0')).join(':')}`;
   return <View accessible accessibilityLabel={label}><GameText text={label} size={17} width={225} height={24}/></View>;
 }
 export default function TrackScreen() {
-  const {appearance,ready,loadError}=useAppearance(),{colors}=useTheme(),{user}=useSession();
+  const {appearance,ready,loadError}=useAppearance(),{colors}=useTheme(),{user,demo}=useSession();
   const health=useTodaySteps(),{state,loading}=health,[details,setDetails]=useState(false);
+  const competition=useDailyRace(state,health.phone);
   const connected=state.status==='ready',steps=connected?state.steps!:null,percent=Math.min(100,(steps??0)/TARGET*100);
   const total=steps===null?'···':steps.toLocaleString();
-  const now=new Date(),monday=new Date(now);monday.setDate(now.getDate()-((now.getDay()+6)%7));
+  const now=new Date(raceWindow().day+'T12:00:00'),monday=new Date(now);monday.setDate(now.getDate()-((now.getDay()+6)%7));
   const week=Array.from({length:7},(_,i)=>{const date=new Date(monday);date.setDate(monday.getDate()+i);return {date,today:date.toDateString()===now.toDateString()};});
   const name=user?.displayName?.split(' ')[0]||'You';
   const phone=health.phone?.source==='phone'?health.phone:null;
   const sourceName=phone?(phone.mode==='estimate'?'Experimental phone estimate':'Phone step sensor'):'Health Connect';
-  const message=phone?(phone.running?'Counting steps while you carry your phone. Only steps recorded since starting are included.':phone.error||'Phone tracking is paused. Open the race menu to resume.'): {unsupported:'Health Connect works in the Android APK. The web preview cannot read your steps.',unavailable:'Health Connect is unavailable on this device.', 'update-required':'Install or update Health Connect, then return here.','permission-required':'Allow read access to Steps. Your health app must share steps with Health Connect.',error:'Steps could not be read. Check step access, then refresh.',ready:steps===0?'No steps received today. Check that your health app is sharing Steps with Health Connect.':'Your step total from Health Connect. Only you are on this track.'}[state.status];
+  const message=phone?(phone.running?'Counting steps while you carry your phone. Only steps recorded since starting are included.':phone.error||'Phone tracking is paused. Open the race menu to resume.'): {unsupported:'Health Connect works in the Android APK. The web preview cannot read your steps.',unavailable:'Health Connect is unavailable on this device.', 'update-required':'Install or update Health Connect, then return here.','permission-required':'Allow read access to Steps. Your health app must share steps with Health Connect.',error:'Steps could not be read. Check step access, then refresh.',ready:steps===0?'No steps received today. Check that your health app is sharing Steps with Health Connect.':'Your step total from Health Connect. Accepted friends appear in your daily race below.'}[state.status];
   return <SafeAreaView edges={['top','left','right']} style={[s.screen,{backgroundColor:colors.background}]}>
     <ScrollView testID="race-scroll" contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       <View style={s.header}>
@@ -46,7 +50,7 @@ export default function TrackScreen() {
       <View style={s.score}>
         <GameText text="Steps today" width={190} height={30} size={24}/>
         <View accessible accessibilityLiveRegion="polite" accessibilityLabel={connected?`${steps} steps today`:'Steps not connected'}><GameText text={total} width={300} height={104} size={Math.min(100,440/total.length)}/></View>
-        <View style={s.refresh}><RoundControl label="Refresh steps" onPress={()=>void health.refresh()} disabled={loading||state.status==='unsupported'}>{loading?<ActivityIndicator size={20}/>:<GameIcon name="refresh" size={27}/>}</RoundControl></View>
+        <View style={s.refresh}><RoundControl label="Refresh steps" onPress={()=>{void health.refresh();void competition.refresh();}} disabled={loading||competition.busy}>{loading?<ActivityIndicator size={20}/>:<GameIcon name="refresh" size={27}/>}</RoundControl></View>
         <ResetClock/>
         {!!phone&&<Text style={{fontSize:12,color:colors.onSurfaceVariant,marginTop:4}}>{sourceName} · {phone.running?'since starting':'recorded steps · paused'}</Text>}
       </View>
@@ -58,7 +62,7 @@ export default function TrackScreen() {
       <View testID="personal-race-stage" style={s.stage}>
         {ready?<View style={StyleSheet.absoluteFill}><TrackScene appearance={appearance} race fill stepCount={steps}/></View>:<ActivityIndicator accessibilityLabel="Loading your character"/>}
         <View pointerEvents="none" style={s.nameAnchor}><View style={[s.nameplate,{backgroundColor:colors.surface,borderColor:colors.onSurface}]}><Text numberOfLines={1} style={{fontFamily:'LilitaOne',fontSize:14,color:colors.onSurface}}>{name}</Text></View></View>
-        <View style={s.solo}><Text style={{fontFamily:'LilitaOne',fontSize:15,color:colors.onSurface}}>Solo walk</Text></View>
+        <View style={s.solo}><Text style={{fontFamily:'LilitaOne',fontSize:15,color:colors.onSurface}}>{competition.race&&competition.race.data.length>1?'Friends race':'Your walk'}</Text></View>
         <View style={[s.progress,{backgroundColor:colors.surface,borderColor:colors.outlineVariant}]}>
           <View accessible accessibilityRole="progressbar" accessibilityLabel="Progress toward your 10,000-step target" accessibilityValue={{min:0,max:TARGET,now:Math.min(steps??0,TARGET),text:steps===null?'Connect Health Connect to see progress':`${steps.toLocaleString()} of 10,000 steps`}} style={s.rail}>
             <View style={[s.dashes,{borderColor:colors.outlineVariant}]}/>
@@ -69,6 +73,8 @@ export default function TrackScreen() {
         </View>
         {steps===0&&<Pressable accessibilityRole="button" accessibilityLabel="No steps received today. Open step settings" onPress={()=>setDetails(true)} style={s.noData}><Text style={{fontSize:11,color:colors.onSurfaceVariant}}>No steps received today · Step settings</Text></Pressable>}
       </View>
+      {!!competition.error&&<View style={{paddingHorizontal:24,gap:8,paddingVertical:12}}><Text accessibilityLiveRegion="polite" style={{color:colors.error}}>{competition.error}</Text><AppButton mode="outlined" disabled={competition.busy} onPress={()=>void competition.refresh()}>Retry race sync</AppButton></View>}
+      {competition.race?<FriendsRace race={competition.race} selfId={user?.id??''} demo={demo}/>:competition.busy?<ActivityIndicator accessibilityLabel="Loading your daily race"/>:null}
     </ScrollView>
     <Modal visible={details} transparent animationType="fade" onRequestClose={()=>setDetails(false)}>
       <View style={s.backdrop}><Pressable accessibilityRole="button" accessibilityLabel="Close race menu" style={StyleSheet.absoluteFill} onPress={()=>setDetails(false)}/><ScrollView accessibilityViewIsModal style={[s.sheet,{backgroundColor:colors.surface}]} contentContainerStyle={{padding:22,gap:14}}>
@@ -83,7 +89,7 @@ export default function TrackScreen() {
         {!!phone&&<Text variant="bodySmall">Carry your phone. Counts begin when tracking starts; earlier steps cannot be recovered. After a reboot, force-stop, or battery restriction, open Stride to resume. Day-boundary gaps may be excluded.</Text>}
         <AppButton mode="contained" onPress={()=>{setDetails(false);router.push('/character');}}>Edit character</AppButton>
         {state.status!=='unsupported'&&<AppButton mode="outlined" onPress={()=>void health.settings()}>{phone||health.phoneError?.includes('Physical activity')?'Phone permissions':'Step access settings'}</AppButton>}
-        <Text variant="bodySmall">Read-only Health Connect access. Phone counts stay on your device. The 10k marker is your personal target.</Text>
+        <Text variant="bodySmall">Read-only Health Connect access. Your selected source’s daily total is shared with accepted friends while this screen is open. The race resets at midnight Pakistan time. The 10k marker is your personal target.</Text>
         {!!loadError&&<Text style={{color:colors.error}}>{loadError}</Text>}
         <AppButton onPress={()=>setDetails(false)}>Close</AppButton>
       </ScrollView></View>

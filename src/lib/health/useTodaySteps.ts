@@ -14,7 +14,7 @@ export function useTodaySteps() {
     let snapshot:PhoneSnapshot|null=null,readError=false;
     try{snapshot=await getPhoneBridge()?.snapshot()??null;}catch{readError=true;setPhoneError('Phone tracking status could not be read.');}
     let result:StepState={status:'error',steps:null,day,updatedAt:null};
-    if(!readError){try{result=snapshot?.source==='phone'?{status:'ready',steps:snapshot.steps,day:snapshot.day,updatedAt:snapshot.running?new Date().toISOString():null}:await readTodaySteps(await getHealthBridge(),ask);}catch{/* A failed native bridge must not leave a stale total visible. */}}
+    if(!readError){try{result=snapshot?.source==='phone'?{status:'ready',steps:snapshot.steps,day:snapshot.day,updatedAt:new Date().toISOString()}:await readTodaySteps(await getHealthBridge(),ask);}catch{/* A failed native bridge must not leave a stale total visible. */}}
     if(generation.current===current){phoneSource.current=snapshot?.source==='phone';setPhone(snapshot);setState(result);if(!actionBusy.current)setLoading(false);}
   },[]);
   useFocusEffect(useCallback(()=>{

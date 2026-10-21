@@ -59,7 +59,7 @@ class StepService: Service(), SensorEventListener {
       val eventMillis=e.timestamp/1_000_000
       if(eventMillis>SystemClock.elapsedRealtime()+1000) return
       val wall=eventMillis+offset
-      val day=StepStore.day(wall); val zone=ZoneId.systemDefault().id;val boot=StepStore.boot(this)
+      val day=StepStore.day(wall); val zone=ZoneId.of("Asia/Karachi").id;val boot=StepStore.boot(this)
       if(day!=StepStore.day(System.currentTimeMillis())) return
       if(kind==Sensor.TYPE_STEP_COUNTER) {
         val raw=e.values[0].toDouble()

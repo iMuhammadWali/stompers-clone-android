@@ -31,7 +31,7 @@ it('keeps the edited look and shows an error if device storage fails',async()=>{
   await fireEvent.press(view.getByText('Pet'));
   await fireEvent.press(view.getByLabelText('Just me'));
   await fireEvent.press(view.getByText('Save look'));
-  expect(view.getByText('Your look could not be saved on this device. Please try again.')).toBeTruthy();
+  expect(view.getByText('Your look could not be saved. Check your connection and try again.')).toBeTruthy();
   expect(router.replace).not.toHaveBeenCalled();
   expect(view.getByLabelText('Just me').props.accessibilityState.selected).toBe(true);
 });

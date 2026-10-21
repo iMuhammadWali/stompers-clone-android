@@ -10,16 +10,14 @@ import {PasswordField} from '../components/PasswordField';
 export default function AuthScreen() {
   const session=useSession(),theme=useTheme();
   const [signup,setSignup]=useState(false),[email,setEmail]=useState(''),[password,setPassword]=useState('');
-  const [username,setUsername]=useState(''),[name,setName]=useState('');
   const [busy,setBusy]=useState(false),[error,setError]=useState('');
-  if(session.user) return <Redirect href="/(tabs)/track"/>;
+  if(session.user) return <Redirect href={!session.demo&&session.user.onboardingComplete!==true?"/onboarding":"/(tabs)/track"}/>;
   async function submit() {
     setError('');
     if(!/^\S+@\S+\.\S+$/.test(email.trim())) {setError('Enter a valid email address.');return;}
-    if(signup&&!/^[a-zA-Z0-9_]{3,30}$/.test(username.trim())) {setError('Use 3–30 letters, numbers, or underscores for your username.');return;}
     if(password.length<(signup?10:1)||password.length>128) {setError(signup?'Use a password with 10–128 characters.':'Enter your password.');return;}
     setBusy(true);
-    try {if(signup) await session.register({username:username.trim(),email:email.trim(),password,...(name.trim()?{displayName:name.trim()}: {})});else await session.login(email,password);}
+    try {if(signup) await session.register({email:email.trim(),password});else await session.login(email,password);}
     catch(e) {setError(message(e));} finally {setBusy(false);}
   }
   return <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS==='ios'?'padding':'height'}><Page>
@@ -29,8 +27,8 @@ export default function AuthScreen() {
     {session.booting?<ActivityIndicator accessibilityLabel="Restoring your session"/>:<>
       {session.restoringError&&<><Notice text={session.restoringError}/><Button onPress={()=>void session.retryRestore()}>Retry connection</Button></>}
       <View style={styles.form}>
-        {signup&&<><TextInput mode="outlined" label="Display name (optional)" accessibilityLabel="Display name (optional)" value={name} onChangeText={setName} maxLength={60} autoComplete="name" disabled={busy}/><TextInput mode="outlined" label="Username" accessibilityLabel="Username" value={username} onChangeText={setUsername} autoCapitalize="none" autoCorrect={false} maxLength={30} disabled={busy}/></>}
         <TextInput mode="outlined" label="Email address" accessibilityLabel="Email address" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoCorrect={false} autoComplete="email" disabled={busy}/>
+        {signup&&<Text variant="bodyMedium" style={{color:theme.colors.onSurfaceVariant}}>Next, create your character and choose a unique @username.</Text>}
         <PasswordField value={password} onChangeText={setPassword} signup={signup} disabled={busy}/>
         <Notice text={error}/>
         <Button mode="contained" loading={busy} disabled={busy||!session.configured} onPress={()=>void submit()} contentStyle={styles.button}>{signup?'Create account':'Sign in'}</Button>

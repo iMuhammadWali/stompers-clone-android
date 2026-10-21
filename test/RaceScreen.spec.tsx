@@ -29,7 +29,7 @@ it('shows the fetched personal total with the saved character and no competitor'
   expect(view.queryByTestId('step-connection-panel')).toBeNull();
   expect(view.getByRole('progressbar').props.accessibilityValue).toMatchObject({now:6142,max:10000});
   await fireEvent.press(view.getByLabelText('Open race menu'));
-  expect(view.getByText(/Only you are on this track/)).toBeTruthy();
+  expect(view.getByText(/Accepted friends appear in your daily race/)).toBeTruthy();
 });
 it('explains empty source data and handles browser preview without a fake step total',async()=>{
   mockState={status:'ready',steps:0,updatedAt:'2026-10-16T13:00:00Z',day:'2026-10-16'};
