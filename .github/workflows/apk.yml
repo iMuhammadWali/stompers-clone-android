@@ -1,0 +1,140 @@
+name: Downloadable Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - app.json
+      - .github/workflows/apk.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: downloadable-apk
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      version: ${{ steps.metadata.outputs.version }}
+      tag: ${{ steps.metadata.outputs.tag }}
+    env:
+      CI: '1'
+      EXPO_NO_TELEMETRY: '1'
+      EXPO_PUBLIC_API_URL: ${{ vars.EXPO_PUBLIC_API_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - name: Prepare Android SDK
+        run: sdkmanager 'platforms;android-37' 'build-tools;37.0.0' 'ndk;27.1.12297006' 'cmake;3.22.1'
+      - name: Generate native project from the checked-in config
+        run: npx expo prebuild --platform android --no-install
+      - name: Build a standalone preview APK with bundled JavaScript
+        working-directory: android
+        run: ./gradlew :app:assembleRelease --no-daemon --max-workers=2 -PreactNativeArchitectures=arm64-v8a,armeabi-v7a
+      - name: Package and verify download
+        id: metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./app.json').expo.version")
+          tag="preview-v${version}-${GITHUB_RUN_NUMBER}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          mkdir -p apk-download
+          cp android/app/build/outputs/apk/release/app-release.apk "apk-download/Stride-v${version}-preview.apk"
+          apk="apk-download/Stride-v${version}-preview.apk"
+          tools="$ANDROID_HOME/build-tools/37.0.0"
+          "$tools/apksigner" verify --verbose --print-certs "$apk" > apk-download/SIGNATURE.txt
+          "$tools/zipalign" -c -P 16 4 "$apk"
+          "$tools/aapt" dump badging "$apk" > apk-download/PACKAGE.txt
+          grep -F "name='com.walkingclub.stride'" apk-download/PACKAGE.txt
+          unzip -t "$apk"
+          unzip -Z1 "$apk" | grep -Fx 'assets/index.android.bundle'
+          (cd apk-download && sha256sum ./*.apk > SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stride-apk
+          path: apk-download/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: stride-apk
+          path: apk-download
+      - name: Publish the verified APK as a GitHub prerelease
+        uses: actions/github-script@v8
+        env:
+          APP_VERSION: ${{ needs.build.outputs.version }}
+          RELEASE_TAG: ${{ needs.build.outputs.tag }}
+          API_URL: ${{ vars.EXPO_PUBLIC_API_URL }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const path = require('node:path');
+            const {owner, repo} = context.repo;
+            const tag = process.env.RELEASE_TAG;
+            const body = [
+              'Download the .apk asset below on your Android phone.',
+              '',
+              process.env.API_URL
+                ? 'API configured: ' + process.env.API_URL
+                : 'The backend is not deployed/configured in this build. Use Explore the demo for character customization and on-device step tracking. Real accounts and friends races require a later APK configured with the hosted API.',
+              '',
+              'Standalone preview: JavaScript is bundled, so a development server or Expo Go is not required. Supports ARM64 and ARMv7 Android phones.',
+              '',
+              'This preview uses the Expo template development signing key, not a private production signing key. Compatibility with older installed APK signatures is unverified. Physical-device validation is still required.',
+              '',
+              'SHA256SUMS.txt, SIGNATURE.txt and PACKAGE.txt document the attached build.',
+              '',
+              'Source commit: ' + context.sha,
+            ].join('\n');
+            let release;
+            try {
+              release = (await github.rest.repos.getReleaseByTag({owner, repo, tag})).data;
+              await github.rest.repos.updateRelease({owner, repo, release_id: release.id, draft: true, body});
+            } catch (error) {
+              if (error.status !== 404) throw error;
+              release = (await github.rest.repos.createRelease({
+                owner, repo, tag_name: tag, target_commitish: context.sha,
+                name: 'Stride ' + process.env.APP_VERSION + ' — Android preview',
+                draft: true, prerelease: true, body,
+              })).data;
+            }
+            const assets = await github.paginate(github.rest.repos.listReleaseAssets, {owner, repo, release_id: release.id});
+            for (const name of fs.readdirSync('apk-download')) {
+              const previous = assets.find(asset => asset.name === name);
+              if (previous) await github.rest.repos.deleteReleaseAsset({owner, repo, asset_id: previous.id});
+              const data = fs.readFileSync(path.join('apk-download', name));
+              await github.rest.repos.uploadReleaseAsset({
+                owner, repo, release_id: release.id, name, data,
+                headers: {'content-type': name.endsWith('.apk') ? 'application/vnd.android.package-archive' : 'text/plain', 'content-length': data.length},
+              });
+            }
+            const published = (await github.rest.repos.updateRelease({owner, repo, release_id: release.id, draft: false, prerelease: true, body})).data;
+            core.notice('APK download: ' + published.html_url);
+            await core.summary.addHeading('Download Stride').addLink('GitHub release and APK', published.html_url).write();
