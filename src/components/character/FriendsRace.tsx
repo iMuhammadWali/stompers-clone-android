@@ -23,7 +23,7 @@ export function FriendsRace({race,selfId,demo=false}:{race:DailyRace;selfId:stri
       const appearance=parseAppearance(JSON.stringify(player.appearance??null));
       const progress=Math.max(0,Math.min(1,(player.steps??0)/highest));
       const x=12+progress*Math.max(0,width-112);
-      const scene=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="98" viewBox="0 0 ${width} 98"><path d="M0 72 Q80 66 ${width} 74 V98 H0 Z" fill="${sceneColors.edge}"/><path d="M0 74 H${width} V89 H0 Z" fill="${sceneColors.track}"/><path d="M0 82 H${width}" stroke="${sceneColors.ink}" stroke-opacity=".25" stroke-dasharray="5 8"/><g transform="translate(${x},-6) scale(.47)">${characterLayers(appearance)}<g transform="translate(122,95) scale(.65)">${petLayers(appearance.pet)}</g></g></svg>`;
+      const scene=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="98" viewBox="0 0 ${width} 98"><path d="M0 72 Q80 66 ${width} 74 V98 H0 Z" fill="${sceneColors.edge}"/><path d="M0 74 H${width} V89 H0 Z" fill="${sceneColors.track}"/><path d="M0 82 H${width}" stroke="${sceneColors.ink}" stroke-opacity=".25" stroke-dasharray="5 8"/><g transform="translate(${x},8) scale(.41)">${characterLayers(appearance)}</g><g transform="translate(${x+60},56) scale(.36)">${petLayers(appearance.pet)}</g></svg>`;
       return <View key={player.id} style={{paddingTop:12,borderTopWidth:1,borderColor:colors.outlineVariant,gap:4}}>
         <View style={{flexDirection:'row',alignItems:'flex-start',gap:12}}>
           <Text accessibilityLabel={player.steps===null?'Unranked':`Position ${index+1}`} variant="titleMedium">{player.steps===null?'—':index+1}</Text>
