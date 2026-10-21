@@ -38,10 +38,24 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
       - uses: android-actions/setup-android@v4
+      - name: Locate Android SDK cache
+        run: echo "STRIDE_SDK_ROOT=$ANDROID_HOME" >> "$GITHUB_ENV"
+      - name: Cache pinned Android toolchain
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.STRIDE_SDK_ROOT }}/platforms/android-37.0
+            ${{ env.STRIDE_SDK_ROOT }}/build-tools/37.0.0
+            ${{ env.STRIDE_SDK_ROOT }}/ndk/27.1.12297006
+            ${{ env.STRIDE_SDK_ROOT }}/cmake/3.22.1
+          key: android-sdk-${{ runner.os }}-api37.0-tools37.0.0-ndk27.1.12297006-cmake3.22.1
       - name: Prepare Android SDK
         run: |
           sdkmanager 'platforms;android-37.0' 'build-tools;37.0.0' 'ndk;27.1.12297006' 'cmake;3.22.1'
@@ -51,9 +65,24 @@ jobs:
           fi
       - name: Generate native project from the checked-in config
         run: npx expo prebuild --platform android --no-install
+      - name: Restore native compilation outputs
+        uses: actions/cache@v4
+        with:
+          path: |
+            android/.gradle
+            android/build
+            android/app/build
+            android/app/.cxx
+            node_modules/**/android/build
+            node_modules/**/android/.cxx
+            node_modules/@react-native/gradle-plugin/**/build
+          key: android-native-v1-${{ runner.os }}-${{ hashFiles('package-lock.json', 'plugins/**', 'modules/**', 'app.json') }}-${{ github.run_id }}
+          restore-keys: |
+            android-native-v1-${{ runner.os }}-${{ hashFiles('package-lock.json', 'plugins/**', 'modules/**', 'app.json') }}-
+            android-native-v1-${{ runner.os }}-
       - name: Build a standalone preview APK with bundled JavaScript
         working-directory: android
-        run: ./gradlew :app:assembleRelease --no-daemon --max-workers=2 -PreactNativeArchitectures=arm64-v8a,armeabi-v7a
+        run: ./gradlew :app:assembleRelease --build-cache --parallel --no-daemon --max-workers=2 -PreactNativeArchitectures=arm64-v8a,armeabi-v7a
       - name: Package and verify download
         id: metadata
         shell: bash
