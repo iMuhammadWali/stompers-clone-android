@@ -19,7 +19,7 @@ permissions:
 
 concurrency:
   group: downloadable-apk
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
