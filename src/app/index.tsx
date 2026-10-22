@@ -1,7 +1,8 @@
+import {AppInput} from '../components/AppInput';
 import {AppButton as Button} from '../components/AppButton';
 import React,{useState} from 'react';
 import {View,KeyboardAvoidingView,Platform} from 'react-native';
-import {Text,TextInput,useTheme,ActivityIndicator} from 'react-native-paper';
+import {Text,useTheme,ActivityIndicator} from 'react-native-paper';
 import {Redirect} from 'expo-router';
 import {Page,Mark,Notice,styles} from '../components/ui';
 import {useSession,message} from '../lib/session';
@@ -27,7 +28,7 @@ export default function AuthScreen() {
     {session.booting?<ActivityIndicator accessibilityLabel="Restoring your session"/>:<>
       {session.restoringError&&<><Notice text={session.restoringError}/><Button onPress={()=>void session.retryRestore()}>Retry connection</Button></>}
       <View style={styles.form}>
-        <TextInput mode="outlined" label="Email address" accessibilityLabel="Email address" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoCorrect={false} autoComplete="email" disabled={busy}/>
+        <AppInput mode="outlined" label="Email address" accessibilityLabel="Email address" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoCorrect={false} autoComplete="email" disabled={busy}/>
         {signup&&<Text variant="bodyMedium" style={{color:theme.colors.onSurfaceVariant}}>Next, create your character and choose a unique @username.</Text>}
         <PasswordField value={password} onChangeText={setPassword} signup={signup} disabled={busy}/>
         <Notice text={error}/>

@@ -1,3 +1,4 @@
+import {AppInput} from '../components/AppInput';
 import React,{useEffect,useState} from 'react';
 import {KeyboardAvoidingView,Platform,View} from 'react-native';
 import {Redirect} from 'expo-router';
@@ -44,7 +45,7 @@ export default function OnboardingScreen() {
     <AppButton disabled={busy} onPress={()=>setEditing(true)} style={{alignSelf:'flex-start'}} contentStyle={{minHeight:48}}>Back to character</AppButton>
     <Title title="Choose your @username." subtitle="This is your player ID. Friends use it to find you."/>
     <View style={styles.form}>
-      <TextInput mode="outlined" label="Username" accessibilityLabel="Username" value={username} onChangeText={value=>{setUsername(value.replace(/^@/,'').toLowerCase());setAvailability(null);setError('');setLookupError('');setChecking(false);}} autoCapitalize="none" autoCorrect={false} maxLength={30} disabled={busy} left={<TextInput.Affix text="@"/>}/>
+      <AppInput mode="outlined" label="Username" accessibilityLabel="Username" value={username} onChangeText={value=>{setUsername(value.replace(/^@/,'').toLowerCase());setAvailability(null);setError('');setLookupError('');setChecking(false);}} autoCapitalize="none" autoCorrect={false} maxLength={30} disabled={busy} left={<TextInput.Affix text="@"/>}/>
       <Text variant="bodyMedium" style={{color:theme.colors.onSurfaceVariant}}>Use 3–30 letters, numbers or underscores. Your username is unique and stays with your account.</Text>
       <View accessibilityLiveRegion="polite">
         {checking?<Text>Checking availability…</Text>:result?<Text style={{color:result.available?theme.colors.onSurface:theme.colors.error}}>{result.available?`@${username} is available.`:'That username is taken. Try another.'}</Text>:username&&!valid?<Text style={{color:theme.colors.error}}>Use 3–30 letters, numbers or underscores.</Text>:null}

@@ -71,3 +71,21 @@ test('demo accepts requests, adds friends, cancels requests and removes friends'
   await demo.remove('friend-1');assert.equal((await demo.friends()).length,3);
   await assert.rejects(()=>demo.sendRequest('you'));await assert.rejects(()=>demo.sendRequest('ellie_walks'));
 });
+
+test('friends reads coalesce, reuse cache, and invalidate after mutations',async()=>{
+  let reads=0;let release:()=>void=()=>{};const gate=new Promise<void>(r=>{release=r;});
+  const api=new ApiClient('https://api.example/api/v1',memory(),async(url,init)=>{
+    if(String(url).includes('/friends?')){reads++;await gate;return json({data:[me]});}
+    return json(undefined,204);
+  });
+  const a=api.friends(),b=api.friends();release();await Promise.all([a,b]);assert.equal(reads,1);
+  await api.friends();assert.equal(reads,1);
+  await api.remove('b');await api.friends();assert.equal(reads,2);
+  api.invalidateCache();await api.friends();assert.equal(reads,3);
+});
+test('a failed read is retried and a late read cannot refill an invalidated cache',async()=>{
+  let calls=0;let resolve:(value:Response)=>void=()=>{};const pending=new Promise<Response>(r=>{resolve=r;});
+  const api=new ApiClient('https://api.example/api/v1',memory(),async()=>{calls++;if(calls===1)return pending;if(calls===2)throw new Error('offline');return json({data:[]});});
+  const old=api.friends();api.invalidateCache();resolve(json({data:[me]}));await old;
+  await assert.rejects(api.friends());await api.friends();assert.equal(calls,3);
+});

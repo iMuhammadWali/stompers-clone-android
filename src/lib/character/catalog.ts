@@ -23,6 +23,12 @@ export const outfits = [
   {id:'lagoon',label:'Lagoon',color:'#56C9CE',shade:'#279BA6',shorts:'#35465C'},
   {id:'lilac',label:'Lilac',color:'#B6A1E9',shade:'#8971BF',shorts:'#42405B'},
   {id:'clover',label:'Clover',color:'#AED27E',shade:'#78A654',shorts:'#3D4C40'},
+  {"id":"coral","label":"Coral","color":"#F0836F","shade":"#BE5448","shorts":"#35465C"},
+  {"id":"rose","label":"Rose","color":"#EAA2BA","shade":"#BD6D8C","shorts":"#42405B"},
+  {"id":"sky","label":"Sky","color":"#88BDEB","shade":"#548BC0","shorts":"#35465C"},
+  {"id":"navy","label":"Navy","color":"#465B88","shade":"#2E3C60","shorts":"#3D4159"},
+  {"id":"cream","label":"Cream","color":"#F3E6C7","shade":"#C8AF7D","shorts":"#3D4C40"},
+  {"id":"charcoal","label":"Charcoal","color":"#626370","shade":"#41424D","shorts":"#35465C"},
 ] as const;
 export const pets = [
   {id:'dog',label:'Biscuit',species:'Dog',color:'#E6AE68'},
@@ -53,6 +59,7 @@ export const genders = [
   {id:'male',label:'Male'}, {id:'female',label:'Female'},
 ] as const;
 export type Appearance = {
+  heightCm?:number; stature?:'short'|'average'|'tall';
   hair:typeof hairstyles[number]['id'];skin:typeof skinTones[number]['id'];
   hairColor:typeof hairColors[number]['id'];outfit:typeof outfits[number]['id'];
   pet:typeof pets[number]['id'];eyes:typeof eyeStyles[number]['id'];nose:typeof noseStyles[number]['id'];
@@ -82,9 +89,12 @@ export function parseAppearance(raw:string|null):Appearance {
   if(input.gender==='nonbinary')input.gender=hairstyles.some(h=>h.id===input.hair&&h.gender==='female')||input.shirt==='striped'?'female':'male';
   const result={...defaultAppearance};
   const catalogs={hair:hairstyles,skin:skinTones,hairColor:hairColors,outfit:outfits,pet:pets,eyes:eyeStyles,eyewear:eyewearStyles,nose:noseStyles,expression:expressions,shirt:shirtStyles,gender:genders};
-  for(const key of Object.keys(catalogs) as (keyof Appearance)[]) {
+  for(const key of Object.keys(catalogs) as (keyof typeof catalogs)[]) {
     if(catalogs[key].some(item=>item.id===input[key]))Object.assign(result,{[key]:input[key]});
   }
+  if(typeof input.heightCm==='number'&&Number.isInteger(input.heightCm)&&input.heightCm>=80&&input.heightCm<=250){
+    result.heightCm=input.heightCm;result.stature=input.heightCm<160?'short':input.heightCm>180?'tall':'average';
+  } else if(['short','average','tall'].includes(String(input.stature))) result.stature=input.stature as Appearance['stature'];
   return normalizeStyles(result);
 }
 export function appearanceKey(account:string) {return 'stride.appearance.v1.'+Array.from(account).map(c=>c.codePointAt(0)!.toString(16)).join('-');}

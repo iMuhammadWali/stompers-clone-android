@@ -1,3 +1,4 @@
+import {AppInput} from '../components/AppInput';
 import React,{useState} from 'react';
 import {View,KeyboardAvoidingView,Platform} from 'react-native';
 import {Text,TextInput,useTheme} from 'react-native-paper';
@@ -41,7 +42,7 @@ export default function AddFriendScreen() {
     <AppButton icon="arrow-left" onPress={()=>router.canGoBack()?router.back():router.replace('/(tabs)/friends')} style={{alignSelf:'flex-start'}} contentStyle={{minHeight:48}}>Back</AppButton>
     <Title title="Find your friend." subtitle="Search their exact @username to check you’ve found the right person."/>
     <View style={styles.form}>
-      <TextInput label="Their username" accessibilityLabel="Their username" mode="outlined" value={username} onChangeText={value=>{setUsername(value);setFound(null);setSent(false);setError('');}} autoCapitalize="none" autoCorrect={false} maxLength={31} disabled={busy} left={<TextInput.Affix text="@"/>} onSubmitEditing={()=>void search()} returnKeyType="search"/>
+      <AppInput label="Their username" accessibilityLabel="Their username" mode="outlined" value={username} onChangeText={value=>{setUsername(value);setFound(null);setSent(false);setError('');}} autoCapitalize="none" autoCorrect={false} maxLength={31} disabled={busy} left={<TextInput.Affix text="@"/>} onSubmitEditing={()=>void search()} returnKeyType="search"/>
       {demo&&<Text variant="bodySmall">Sample lookup: trail_friend. No real invitation is sent.</Text>}
       <AppButton mode="contained" loading={busy&&!found} disabled={busy||!username.trim()} onPress={()=>void search()} contentStyle={styles.button}>Find player</AppButton>
       <Notice text={error}/>

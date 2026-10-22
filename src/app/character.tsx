@@ -1,7 +1,8 @@
+import {AppInput} from '../components/AppInput';
 import {SignOutButton} from '../components/SignOutButton';
 import React,{useState,useContext,createContext} from 'react';
 import {View,Pressable,useWindowDimensions} from 'react-native';
-import {Text,useTheme,ActivityIndicator} from 'react-native-paper';
+import {Text,TextInput,useTheme,ActivityIndicator} from 'react-native-paper';
 import {router} from 'expo-router';
 import Svg,{Path,SvgXml} from 'react-native-svg';
 import {Page,styles,Notice} from '../components/ui';
@@ -29,16 +30,19 @@ function ChoiceGroup({title,children}:{title:string;children:React.ReactNode}) {
 export function CharacterEditor({onSave,initialAppearance}:{onSave?:(appearance:Appearance)=>Promise<void>;initialAppearance?:Appearance}) {
   const {appearance,save}=useAppearance(),theme=useTheme(),{width,height,fontScale}=useWindowDimensions();
   const [section,setSection]=useState('look');
+  const [heightText,setHeightText]=useState(String((initialAppearance??appearance).heightCm??''));
   const [draft,setDraft]=useState<Appearance>(initialAppearance??appearance),[busy,setBusy]=useState(false),[error,setError]=useState('');
   const [adjustment,setAdjustment]=useState('');
   const dirty=JSON.stringify(draft)!==JSON.stringify(appearance);
-  function reset(){setDraft(appearance);setAdjustment('');setError('');}
+  function reset(){setHeightText(String(appearance.heightCm??''));setDraft(appearance);setAdjustment('');setError('');}
   function choose<K extends keyof Appearance>(key:K,value:Appearance[K]) {
     const next=parseAppearance(JSON.stringify({...draft,[key]:value}));
     const adjusted=key==='gender'&&(next.hair!==draft.hair||next.shirt!==draft.shirt);
     setDraft(next);setAdjustment(adjusted?'Hairstyle and clothing were adjusted for this gender. Your other choices are unchanged.':'');
   }
   async function submit() {
+    if(heightText!==''&&(!/^\d{2,3}$/.test(heightText)||Number(heightText)<80||Number(heightText)>250)){setError('Enter your height between 80 and 250 cm.');setSection('look');return;}
+    if(onSave&&!heightText){setError('Enter your height to size your character.');setSection('look');return;}
     setBusy(true);setError('');
     try {if(onSave)await onSave(draft);else {await save(draft);router.replace('/(tabs)/track');}}
     catch {setError('Your look could not be saved. Check your connection and try again.');setBusy(false);}
@@ -51,6 +55,7 @@ export function CharacterEditor({onSave,initialAppearance}:{onSave?:(appearance:
     </View>
   </View>}>
     {section==='look'&&<>
+    <View style={{gap:8}}><Text variant="titleMedium" style={{fontWeight:'700'}}>Your height</Text><AppInput mode="outlined" accessibilityLabel="Height in centimeters" placeholder="Height in cm" value={heightText} keyboardType="number-pad" maxLength={3} onChangeText={value=>{const text=value.replace(/[^0-9]/g,'');setHeightText(text);if(Number(text)>=80&&Number(text)<=250)choose('heightCm',Number(text));else if(!text)setDraft(previous=>{const next={...previous};delete next.heightCm;delete next.stature;return next;});}} right={<TextInput.Affix text="cm"/>}/><Text variant="bodySmall" style={{color:theme.colors.onSurfaceVariant}}>Used to size your character. Your exact height stays private.</Text></View>
     <ChoiceGroup title="Gender">{genders.map(g=><Choice caption key={g.id} label={g.label} selected={draft.gender===g.id} onPress={()=>choose('gender',g.id)}><SvgXml xml={choiceArtwork.gender[g.id]} width="100%" height={68} accessible={false}/></Choice>)}</ChoiceGroup>
 
     <ChoiceGroup title="Hairstyle">{hairstyles.filter(h=>isStyleAllowed('hair',h.id,draft.gender)).map(h=><Choice key={h.id} label={h.label} selected={draft.hair===h.id} onPress={()=>choose('hair',h.id)}><SvgXml xml={choiceArtwork.hair[h.id]} width="100%" height={68} accessible={false}/></Choice>)}</ChoiceGroup>
@@ -65,7 +70,7 @@ export function CharacterEditor({onSave,initialAppearance}:{onSave?:(appearance:
     </>}
     {section==='clothes'&&<>
     <ChoiceGroup title="Shirt style">{shirtStyles.filter(s=>isStyleAllowed('shirt',s.id,draft.gender)).map(s=><Choice key={s.id} label={s.label} selected={draft.shirt===s.id} onPress={()=>choose('shirt',s.id)}><SvgXml xml={choiceArtwork.shirt[s.id]} width="100%" height={68} accessible={false}/></Choice>)}</ChoiceGroup>
-    <ChoiceGroup title="Outfit">{outfits.map(o=><Choice key={o.id} label={o.label} selected={draft.outfit===o.id} onPress={()=>choose('outfit',o.id)}><View style={{width:30,height:32,borderRadius:8,backgroundColor:o.color,borderWidth:1.5,borderColor:theme.colors.onSurface}}/></Choice>)}</ChoiceGroup>
+    <ChoiceGroup title="Top color">{outfits.map(o=><Choice key={o.id} label={o.label} caption selected={draft.outfit===o.id} onPress={()=>choose('outfit',o.id)}><View style={{width:30,height:32,borderRadius:8,backgroundColor:o.color,borderWidth:1.5,borderColor:theme.colors.onSurface}}/></Choice>)}</ChoiceGroup>
     </>}
     {section==='pet'&&<>
     <ChoiceGroup title="Walking buddy">{pets.map(p=><Choice key={p.id} label={p.id==='none'?p.label:`${p.label} · ${p.species}`} selected={draft.pet===p.id} onPress={()=>choose('pet',p.id)}>{p.id==='none'?<View style={{height:62,justifyContent:'center'}}><Text variant="headlineSmall">—</Text></View>:<SvgXml xml={choiceArtwork.pet[p.id]} width="100%" height={68} accessible={false}/>}</Choice>)}</ChoiceGroup>

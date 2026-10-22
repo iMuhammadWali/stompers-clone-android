@@ -1,3 +1,4 @@
+import {SharedTrack} from '../../components/character/SharedTrack';
 import {useDailyRace} from '../../lib/useDailyRace';
 import {FriendsRace} from '../../components/character/FriendsRace';
 import {raceWindow} from '../../lib/race-time';
@@ -25,6 +26,7 @@ function ResetClock() {
 export default function TrackScreen() {
   const {appearance,ready,loadError}=useAppearance(),{colors}=useTheme(),{user,demo}=useSession();
   const health=useTodaySteps(),{state,loading}=health,[details,setDetails]=useState(false);
+  const [showWalkers,setShowWalkers]=useState(false);
   const competition=useDailyRace(state,health.phone);
   const connected=state.status==='ready',steps=connected?state.steps!:null,percent=Math.min(100,(steps??0)/TARGET*100);
   const total=steps===null?'···':steps.toLocaleString();
@@ -59,9 +61,9 @@ export default function TrackScreen() {
         {phone?<AppButton mode="contained" onPress={()=>void health.startPhone(phone.mode==='estimate')} loading={loading} disabled={loading}>Resume phone tracking</AppButton>:state.status==='permission-required'?<AppButton mode="contained" onPress={()=>void health.connect()} loading={loading} disabled={loading} contentStyle={{minHeight:44}}>Connect Health Connect</AppButton>:state.status==='update-required'?<AppButton mode="contained" onPress={()=>void health.install()}>Install or update Health Connect</AppButton>:<Pressable accessibilityRole="button" onPress={()=>setDetails(true)}><Text style={{textAlign:'center',color:colors.onSurfaceVariant}}>{message}</Text></Pressable>}
         {state.status!=='unsupported'&&!phone&&<AppButton mode="outlined" disabled={loading} onPress={()=>setDetails(true)}>Use phone tracking instead</AppButton>}
       </View>}
-      <View testID="personal-race-stage" style={s.stage}>
-        {ready?<View style={StyleSheet.absoluteFill}><TrackScene appearance={appearance} race fill stepCount={steps}/></View>:<ActivityIndicator accessibilityLabel="Loading your character"/>}
-        <View pointerEvents="none" style={s.nameAnchor}><View style={[s.nameplate,{backgroundColor:colors.surface,borderColor:colors.onSurface}]}><Text numberOfLines={1} style={{fontFamily:'LilitaOne',fontSize:14,color:colors.onSurface}}>{name}</Text></View></View>
+      <View testID="personal-race-stage" style={[s.stage,competition.race&&{minHeight:400,flexBasis:400}]}>
+        {competition.race?<SharedTrack race={competition.race} selfId={user?.id??''}/>:ready?<View style={StyleSheet.absoluteFill}><TrackScene appearance={appearance} race fill stepCount={steps}/></View>:<ActivityIndicator accessibilityLabel="Loading your character"/>}
+        {!competition.race&&<View pointerEvents="none" style={s.nameAnchor}><View style={[s.nameplate,{backgroundColor:colors.surface,borderColor:colors.onSurface}]}><Text numberOfLines={1} style={{fontFamily:'LilitaOne',fontSize:14,color:colors.onSurface}}>{name}</Text></View></View>}
         <View style={s.solo}><Text style={{fontFamily:'LilitaOne',fontSize:15,color:colors.onSurface}}>{competition.race&&competition.race.data.length>1?'Friends race':'Your walk'}</Text></View>
         <View style={[s.progress,{backgroundColor:colors.surface,borderColor:colors.outlineVariant}]}>
           <View accessible accessibilityRole="progressbar" accessibilityLabel="Progress toward your 10,000-step target" accessibilityValue={{min:0,max:TARGET,now:Math.min(steps??0,TARGET),text:steps===null?'Connect Health Connect to see progress':`${steps.toLocaleString()} of 10,000 steps`}} style={s.rail}>
@@ -74,7 +76,7 @@ export default function TrackScreen() {
         {steps===0&&<Pressable accessibilityRole="button" accessibilityLabel="No steps received today. Open step settings" onPress={()=>setDetails(true)} style={s.noData}><Text style={{fontSize:11,color:colors.onSurfaceVariant}}>No steps received today · Step settings</Text></Pressable>}
       </View>
       {!!competition.error&&<View style={{paddingHorizontal:24,gap:8,paddingVertical:12}}><Text accessibilityLiveRegion="polite" style={{color:colors.error}}>{competition.error}</Text><AppButton mode="outlined" disabled={competition.busy} onPress={()=>void competition.refresh()}>Retry race sync</AppButton></View>}
-      {competition.race?<FriendsRace race={competition.race} selfId={user?.id??''} demo={demo}/>:competition.busy?<ActivityIndicator accessibilityLabel="Loading your daily race"/>:null}
+      {competition.race?<View><Pressable accessibilityRole="button" accessibilityLabel="Individual walker details" accessibilityState={{expanded:showWalkers}} onPress={()=>setShowWalkers(v=>!v)} style={{paddingHorizontal:24,minHeight:52,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}><Text variant="titleMedium" style={{fontWeight:'700'}}>Individual walker details</Text><Text style={{fontSize:24}}>{showWalkers?'⌃':'⌄'}</Text></Pressable>{showWalkers&&<FriendsRace race={competition.race} selfId={user?.id??''} demo={demo}/>}</View>:competition.busy?<ActivityIndicator accessibilityLabel="Loading your daily race"/>:null}
     </ScrollView>
     <Modal visible={details} transparent animationType="fade" onRequestClose={()=>setDetails(false)}>
       <View style={s.backdrop}><Pressable accessibilityRole="button" accessibilityLabel="Close race menu" style={StyleSheet.absoluteFill} onPress={()=>setDetails(false)}/><ScrollView accessibilityViewIsModal style={[s.sheet,{backgroundColor:colors.surface}]} contentContainerStyle={{padding:22,gap:14}}>

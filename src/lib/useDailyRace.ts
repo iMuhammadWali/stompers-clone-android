@@ -18,7 +18,7 @@ export function useDailyRace(state:StepState,phone:PhoneSnapshot|null|undefined)
   const refreshRef=useRef<()=>Promise<void>>(async()=>{});
   useFocusEffect(useCallback(()=>{
     if(!service||!userId)return;
-    let active=true,running=false;
+    let active=true,running=false,lastUpload='';
     async function refresh() {
       if(running||AppState.currentState!=='active')return;
       running=true;setBusy(true);
@@ -27,17 +27,17 @@ export function useDailyRace(state:StepState,phone:PhoneSnapshot|null|undefined)
       let syncError='';
       try {
         const upload=stepUpload(latest.current.state,latest.current.phone,now);
-        if(upload&&!demo) {
-          try {await service!.syncSteps(upload);} catch(e) {syncError='Your steps could not sync. '+message(e);}
+        if(upload&&!demo&&JSON.stringify([upload.day,upload.steps,upload.source])!==lastUpload) {
+          try {await service!.syncSteps(upload);lastUpload=JSON.stringify([upload.day,upload.steps,upload.source]);} catch(e) {syncError='Your steps could not sync. '+message(e);}
         }
         const result=await service!.dailyRace();
         if(active){setRace(result);setError(syncError);}
-      } catch(e) {if(active){setRace(null);setError(message(e));}}
+      } catch(e) {if(active){setError(message(e));}}
       finally {running=false;if(active)setBusy(false);}
     }
-    refreshRef.current=refresh;
+    refreshRef.current=async()=>{service?.invalidateCache?.();await refresh();};
     void refresh();
-    const timer=setInterval(()=>void refresh(),15000);
+    const timer=setInterval(()=>void refresh(),30000);
     const listener=AppState.addEventListener('change',status=>{if(status==='active')void refresh();});
     return ()=>{active=false;clearInterval(timer);listener.remove();refreshRef.current=async()=>{};};
   },[service,userId,demo]));

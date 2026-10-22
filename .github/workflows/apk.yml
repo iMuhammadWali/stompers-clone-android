@@ -129,6 +129,13 @@ jobs:
             const path = require('node:path');
             const {owner, repo} = context.repo;
             const tag = process.env.RELEASE_TAG;
+            const branch = context.ref.replace('refs/heads/', '');
+            const head = (await github.rest.repos.getBranch({owner, repo, branch})).data.commit.sha;
+            if (head !== context.sha) {
+              core.notice('Newer source exists; keeping this APK in workflow artifacts and letting the latest build publish.');
+              await core.summary.addHeading('APK built successfully').addRaw('Superseded by a newer commit. Download this run’s stride-apk artifact if needed.').write();
+              return;
+            }
             const body = [
               'Download the .apk asset below on your Android phone.',
               '',

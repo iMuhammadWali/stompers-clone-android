@@ -18,7 +18,7 @@ export function FriendsRace({race,selfId,demo=false}:{race:DailyRace;selfId:stri
   const highest=Math.max(10000,...race.data.map(p=>p.steps??0));
   return <View style={{paddingHorizontal:20,paddingBottom:24,gap:12}}>
     <Text variant="titleLarge" style={{fontFamily:'LilitaOne'}}>Your daily race</Text>
-    <Text variant="bodySmall" style={{color:colors.onSurfaceVariant}}>{demo?'Demo people · step totals are not simulated.':'Accepted friends · refreshes every 15 seconds while open.'} Resets at midnight Pakistan time.</Text>
+    <Text variant="bodySmall" style={{color:colors.onSurfaceVariant}}>{demo?'Demo people · step totals are not simulated.':'Accepted friends · refreshes every 30 seconds while open.'} Resets at midnight Pakistan time.</Text>
     {race.data.map((player,index)=>{
       const appearance=parseAppearance(JSON.stringify(player.appearance??null));
       const progress=Math.max(0,Math.min(1,(player.steps??0)/highest));

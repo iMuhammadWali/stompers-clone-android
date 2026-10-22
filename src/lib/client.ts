@@ -11,6 +11,10 @@ export class ApiClient implements Service {
   private access: string | null = null;
   private refreshing: Promise<void> | null = null;
   private epoch = 0;
+  private cacheVersion = 0;
+  private cache = new Map<string,{expires:number;value:any}>();
+  private pending = new Map<string,Promise<any>>();
+  invalidateCache() {this.cacheVersion++;this.cache.clear();this.pending.clear();}
   constructor(private base: string, private store: TokenStore, private transport: typeof fetch = fetch,
     private onExpired: () => void = () => {}) {
     const url = new URL(base);
@@ -48,7 +52,7 @@ export class ApiClient implements Service {
     this.access = tokens.accessToken;
   }
   private async expire() {
-    this.epoch++;
+    this.epoch++;this.invalidateCache();
     this.access = null;
     await this.store.clear();
     this.onExpired();
@@ -67,7 +71,7 @@ export class ApiClient implements Service {
     }).finally(() => {this.refreshing = null;});
     return this.refreshing;
   }
-  private async call(path: string, method = 'GET', body?: unknown) {
+  private async request(path: string, method = 'GET', body?: unknown) {
     const epoch = this.epoch, original = this.access;
     try {return await this.raw(path, method, body, original);}
     catch (e) {
@@ -79,13 +83,26 @@ export class ApiClient implements Service {
       catch (retry) {if (retry instanceof ApiError && retry.status === 401) await this.expire(); throw retry;}
     }
   }
+  private async call(path:string,method='GET',body?:unknown):Promise<any> {
+    if(method!=='GET') {this.invalidateCache();try{return await this.request(path,method,body);}finally{this.invalidateCache();}}
+    if(!/^\/(friends\?|friend-requests\?|race\/today\?)/.test(path))return this.request(path,method,body);
+    const cached=this.cache.get(path);if(cached&&cached.expires>Date.now())return cached.value;
+    const existing=this.pending.get(path);if(existing)return existing;
+    const version=this.cacheVersion,epoch=this.epoch;
+    const work=this.request(path).then(value=>{
+      if(epoch!==this.epoch)throw new ApiError(401,'SESSION_CHANGED','Please sign in again.');
+      if(version===this.cacheVersion){if(this.cache.size>=64)this.cache.clear();const reset=Date.parse(value.resetsAt??'');this.cache.set(path,{expires:Math.min(Date.now()+15000,Number.isFinite(reset)?reset:Infinity),value});}
+      return value;
+    }).finally(()=>{if(this.pending.get(path)===work)this.pending.delete(path);});
+    this.pending.set(path,work);return work;
+  }
   async restore() {
     if (!(await this.store.get())) return null;
     await this.refresh();
     return (await this.call('/me')).user as User;
   }
   async login(email: string, password: string) {
-    const epoch = ++this.epoch;
+    const epoch = ++this.epoch;this.invalidateCache();
     const tokens = await this.raw('/auth/login', 'POST', {email:email.trim(), password});
     await this.save(tokens,epoch);
     return (await this.call('/me')).user as User;

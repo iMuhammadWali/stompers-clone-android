@@ -1,0 +1,25 @@
+import React from 'react';
+import {it,expect,jest} from '@jest/globals';
+import {render,fireEvent} from '@testing-library/react-native';
+import {PaperProvider,MD3LightTheme} from 'react-native-paper';
+import TrackScreen from '../src/app/(tabs)/track';
+import {defaultAppearance} from '../src/lib/character/catalog';
+const mockRace={day:'2026-10-22',timeZone:'Asia/Karachi',resetsAt:'2026-10-22T19:00:00Z',data:[{id:'me',username:'me',displayName:'Wali',steps:100,appearance:defaultAppearance,source:null,lastSyncedAt:null},{id:'friend',username:'sara',displayName:'Sara',steps:200,appearance:{...defaultAppearance,pet:'cat'},source:null,lastSyncedAt:null},{id:'unknown',username:'ali',displayName:'Ali',steps:null,appearance:defaultAppearance,source:null,lastSyncedAt:null}]};
+jest.mock('expo-router',()=>({router:{push:jest.fn()}}));
+jest.mock('react-native-safe-area-context',()=>require('react-native-safe-area-context/jest/mock').default);
+jest.mock('../src/lib/session',()=>({useSession:()=>({user:{id:'me',displayName:'Wali'},demo:false})}));
+jest.mock('../src/lib/character/appearance',()=>({useAppearance:()=>({appearance:require('../src/lib/character/catalog').defaultAppearance,ready:true,loadError:''})}));
+jest.mock('../src/lib/health/useTodaySteps',()=>({useTodaySteps:()=>({state:{status:'ready',steps:100,day:'2026-10-22'},loading:false,refresh:jest.fn()})}));
+jest.mock('../src/lib/useDailyRace',()=>({useDailyRace:()=>({race:mockRace,refresh:jest.fn(),busy:false,error:''})}));
+it('puts all accepted racers on an explorable track and opens individual cards only on demand',async()=>{
+ const view=await render(<PaperProvider settings={{icon:()=>null}} theme={MD3LightTheme}><TrackScreen/></PaperProvider>);
+ expect(view.getByLabelText('Explore friends on the walking track')).toBeTruthy();
+ expect(view.getByLabelText('Wali, you: 100 steps')).toBeTruthy();
+ expect(view.getByLabelText('Sara: 200 steps')).toBeTruthy();
+ expect(view.getByLabelText('Ali: steps not synced')).toBeTruthy();
+ expect(view.queryByText('Your daily race')).toBeNull();
+ const toggle=view.getByLabelText('Individual walker details');expect(toggle.props.accessibilityState.expanded).toBe(false);
+ await fireEvent.press(toggle);expect(view.getByText('Your daily race')).toBeTruthy();
+ await fireEvent.press(view.getByLabelText('Individual walker details'));expect(view.queryByText('Your daily race')).toBeNull();
+ await fireEvent.press(view.getByLabelText('Find me on the track'));
+});

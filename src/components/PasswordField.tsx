@@ -1,3 +1,4 @@
+import {AppInput} from './AppInput';
 import React, {useState} from 'react';
 import {TextInput, useTheme} from 'react-native-paper';
 import Svg, {Path, Circle} from 'react-native-svg';
@@ -12,7 +13,7 @@ export function VisibilityIcon({visible,color,size=24}:{visible:boolean;color:st
 
 export function PasswordField({value,onChangeText,signup=false,disabled=false}:{value:string;onChangeText:(text:string)=>void;signup?:boolean;disabled?:boolean}) {
   const [visible,setVisible]=useState(false),theme=useTheme();
-  return <TextInput mode="outlined" label="Password" accessibilityLabel="Password" value={value}
+  return <AppInput mode="outlined" label="Password" accessibilityLabel="Password" value={value}
     onChangeText={onChangeText} secureTextEntry={!visible} autoCapitalize="none" autoCorrect={false}
     autoComplete={signup?'new-password':'current-password'} maxLength={128} disabled={disabled}
     right={<TextInput.Icon

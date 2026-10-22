@@ -163,3 +163,21 @@ it('offers separate hairstyle catalogs and saves sunglasses and an alien spacesh
   await fireEvent.press(view.getByText('Save look'));
   expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,gender:'female',hair:'braids',eyewear:'sunglasses',pet:'spaceship'});
 });
+
+it('previews and saves a new color on a hoodie',async()=>{
+  mockSave.mockResolvedValue(undefined);
+  const view=await screen();
+  await fireEvent.press(view.getByText('Clothes'));
+  await fireEvent.press(view.getByLabelText('Hoodie'));
+  await fireEvent.press(view.getByLabelText('Navy'));
+  expect(view.getByLabelText(/Your character wearing navy hoodie/)).toBeTruthy();
+  await fireEvent.press(view.getByText('Save look'));
+  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,shirt:'hoodie',outfit:'navy'});
+});
+
+it('uses the entered real height for the preview and saves it',async()=>{
+  mockSave.mockResolvedValue(undefined);const view=await screen();
+  await fireEvent.changeText(view.getByLabelText('Height in centimeters'),'190');
+  await fireEvent.press(view.getByText('Save look'));
+  expect(mockSave).toHaveBeenCalledWith({...defaultAppearance,heightCm:190,stature:'tall'});
+});

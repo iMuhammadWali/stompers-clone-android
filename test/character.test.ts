@@ -137,3 +137,13 @@ test('race stage keeps the whole rig above the floor in short and tall viewports
     assert.ok(footClearance>=106,'feet must remain above the fixed name label and rail');
   }
 });
+
+test('height is validated, migrated independently, and affects grounded character proportions',()=>{
+  const short=parseAppearance(JSON.stringify({...defaultAppearance,heightCm:150}));
+  const tall=parseAppearance(JSON.stringify({...defaultAppearance,heightCm:190}));
+  assert.equal(short.stature,'short');assert.equal(tall.stature,'tall');
+  assert.notEqual(characterLayers(short),characterLayers(tall));
+  assert.equal(parseAppearance(JSON.stringify({heightCm:999})).heightCm,undefined);
+  assert.equal(parseAppearance(JSON.stringify({stature:'tall'})).stature,'tall');
+  for(const a of [short,tall])for(let frame=0;frame<8;frame++)assert.doesNotMatch(trackSvg(a,frame),/NaN|undefined|Infinity/);
+});

@@ -66,3 +66,6 @@ Use the themed Paper confirmation dialog with Stay signed in and Sign out action
 ## Verification limits
 
 Automated contrast checks cover the existing theme. UI tests cover the new interaction paths; browser previews establish web behavior, not Android touch, keyboard, font or sensor accuracy. Physical-device testing remains required before distribution. See VERIFICATION.md.
+
+## Shared track and sizing
+The home race contains accepted friends in a horizontally explorable scene, with a Find me control and unknown totals labeled Not synced. Individual walker rows are collapsed by default behind an accessible disclosure. Real height is entered in centimeters in the character editor; only derived short/average/tall proportions are exposed to other players. Top colors share the existing outfit palette and apply to tees and hoodies. Input labels sit above outlined fields to keep focus from shifting their position.

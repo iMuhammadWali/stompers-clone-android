@@ -9,6 +9,7 @@ export type StepUpload={day:string;steps:number;source:'health-connect'|'phone-c
 export type Racer=User&{steps:number|null;source:StepUpload['source']|null;lastSyncedAt:string|null};
 export type DailyRace={day:string;timeZone:string;resetsAt:string;data:Racer[]};
 export interface Service {
+  invalidateCache?():void;
   restore(): Promise<User | null>;
   login(email: string, password: string): Promise<User>;
   register(input: Registration): Promise<User>;

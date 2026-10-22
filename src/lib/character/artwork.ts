@@ -34,6 +34,7 @@ export function faceFeatures(a:Appearance):string {
 }
 export function characterLayers(value:Appearance,frame=0):string {
   const a=parseAppearance(JSON.stringify(value));
+  const heightScale=a.stature==='short'?.9:a.stature==='tall'?1.08:1;
   const skin=skinTones.find(x=>x.id===a.skin)!;
   const hair=hairColors.find(x=>x.id===a.hairColor)!;
   const outfit=outfits.find(x=>x.id===a.outfit)!;
@@ -93,7 +94,7 @@ export function characterLayers(value:Appearance,frame=0):string {
     ringlets:path('M35 18 Q20 20 23 34 Q14 42 23 51 Q16 61 24 68 Q17 80 31 82 Q40 88 47 76 L78 75 Q91 82 96 70 Q101 61 92 54 Q102 45 92 37 Q97 23 81 19 Z',hair.color),
   } as Partial<Record<Appearance['hair'],string>>;
   const shinePaths:Partial<Record<Appearance['hair'],string>>={quiff:'M37 17 Q52 5 68 12',sidepart:'M36 23 Q48 13 62 15',spikes:'M38 25 L48 21 L56 15',bun:'M29 12 Q35 9 39 15',braids:'M38 23 Q48 15 60 17',longwaves:'M35 24 Q47 13 59 15'};
-  return `<g data-layer="character" data-gender="${a.gender}" data-shirt="${a.shirt}" transform="translate(0 0)">`+
+  return `<g data-layer="character" data-gender="${a.gender}" data-shirt="${a.shirt}" transform="matrix(${heightScale} 0 0 ${heightScale} ${60*(1-heightScale)} ${180*(1-heightScale)})">`+
     (backHair[a.hair]??'')+
     `<g data-limb="far-leg">${limb(backLeg,skin.shade)}<g transform="rotate(${Math.max(swing,0)*16} ${backX+12} ${backY+9})">${path(backShoe,'#E1E1DD')}</g></g>`+
     arm(78,83+swing*5,farHand,skin.shade,'far-arm')+
