@@ -16,7 +16,7 @@ export function racePositions(race:DailyRace) {
 }
 export function SharedTrack({race,selfId}:{race:DailyRace;selfId:string}) {
   const {colors}=useTheme(),scroll=useRef<ScrollView>(null);
-  const positions=racePositions(race),width=Math.max(700,...positions.map(p=>p.x+170));
+  const positions=racePositions(race),width=positions.reduce((maximum,p)=>Math.max(maximum,p.x+170),700);
   const self=positions.find(p=>p.player.id===selfId);
   const scene=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} 285"><defs><linearGradient id="ground" x2="0" y2="1"><stop stop-color="${sceneColors.edge}"/><stop offset="1" stop-color="${sceneColors.sky}"/></linearGradient></defs><path d="M0 153 Q200 143 ${width} 153 V285 H0Z" fill="url(#ground)"/><path d="M0 168 Q200 158 ${width} 168 V225 H0Z" fill="${sceneColors.track}"/><path d="M0 218 H${width}" stroke="${sceneColors.lane}" stroke-width="2" stroke-dasharray="16 12"/></svg>`;
   return <View style={{flex:1}}>

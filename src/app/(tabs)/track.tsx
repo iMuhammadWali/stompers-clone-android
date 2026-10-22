@@ -29,7 +29,7 @@ export default function TrackScreen() {
   const [showWalkers,setShowWalkers]=useState(false);
   const competition=useDailyRace(state,health.phone);
   const connected=state.status==='ready',steps=connected?state.steps!:null,percent=Math.min(100,(steps??0)/TARGET*100);
-  const total=steps===null?'···':steps.toLocaleString();
+  const total=steps===null?'--':steps.toLocaleString();
   const now=new Date(raceWindow().day+'T12:00:00'),monday=new Date(now);monday.setDate(now.getDate()-((now.getDay()+6)%7));
   const week=Array.from({length:7},(_,i)=>{const date=new Date(monday);date.setDate(monday.getDate()+i);return {date,today:date.toDateString()===now.toDateString()};});
   const name=user?.displayName?.split(' ')[0]||'You';
@@ -62,7 +62,7 @@ export default function TrackScreen() {
         {state.status!=='unsupported'&&!phone&&<AppButton mode="outlined" disabled={loading} onPress={()=>setDetails(true)}>Use phone tracking instead</AppButton>}
       </View>}
       <View testID="personal-race-stage" style={[s.stage,competition.race&&{minHeight:400,flexBasis:400}]}>
-        {competition.race?<SharedTrack race={competition.race} selfId={user?.id??''}/>:ready?<View style={StyleSheet.absoluteFill}><TrackScene appearance={appearance} race fill stepCount={steps}/></View>:<ActivityIndicator accessibilityLabel="Loading your character"/>}
+        {competition.race?<SharedTrack race={{...competition.race,data:competition.race.data.map(player=>player.id===user?.id?{...player,appearance}:player)}} selfId={user?.id??''}/>:ready?<View style={StyleSheet.absoluteFill}><TrackScene appearance={appearance} race fill stepCount={steps}/></View>:<ActivityIndicator accessibilityLabel="Loading your character"/>}
         {!competition.race&&<View pointerEvents="none" style={s.nameAnchor}><View style={[s.nameplate,{backgroundColor:colors.surface,borderColor:colors.onSurface}]}><Text numberOfLines={1} style={{fontFamily:'LilitaOne',fontSize:14,color:colors.onSurface}}>{name}</Text></View></View>}
         <View style={s.solo}><Text style={{fontFamily:'LilitaOne',fontSize:15,color:colors.onSurface}}>{competition.race&&competition.race.data.length>1?'Friends race':'Your walk'}</Text></View>
         <View style={[s.progress,{backgroundColor:colors.surface,borderColor:colors.outlineVariant}]}>

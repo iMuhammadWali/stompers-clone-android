@@ -6,6 +6,12 @@ on:
     branches: [main]
     paths:
       - app.json
+      - package.json
+      - package-lock.json
+      - src/**
+      - modules/**
+      - plugins/**
+      - assets/**
       - .github/workflows/apk.yml
 
 permissions:
