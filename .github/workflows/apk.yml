@@ -67,6 +67,7 @@ jobs:
           sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'ndk;27.1.12297006' 'cmake;3.22.1'
       - name: Generate native project from the checked-in config
         run: npx expo prebuild --platform android --no-install
+      # Generated native sources must never cross dependency/Expo SDK versions.
       - name: Restore native compilation outputs
         uses: actions/cache@v4
         with:
@@ -78,10 +79,9 @@ jobs:
             node_modules/**/android/build
             node_modules/**/android/.cxx
             node_modules/@react-native/gradle-plugin/**/build
-          key: android-native-v1-${{ runner.os }}-${{ hashFiles('package-lock.json', 'plugins/**', 'modules/**', 'app.json') }}-${{ github.run_id }}
+          key: android-native-v2-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
           restore-keys: |
-            android-native-v1-${{ runner.os }}-${{ hashFiles('package-lock.json', 'plugins/**', 'modules/**', 'app.json') }}-
-            android-native-v1-${{ runner.os }}-
+            android-native-v2-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
       - name: Build a standalone preview APK with bundled JavaScript
         working-directory: android
         run: ./gradlew :app:assembleRelease --build-cache --parallel --no-daemon --max-workers=2 -PreactNativeArchitectures=arm64-v8a,armeabi-v7a
